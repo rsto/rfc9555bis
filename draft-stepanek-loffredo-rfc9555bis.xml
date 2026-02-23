@@ -47,6 +47,9 @@
     <abstract>
       <t>This document defines how to convert contact information between the JSContact and vCard data formats.  It defines conversion rules for every JSContact and vCard element registered at IANA at the time of publication.  It also defines new JSContact properties as well as vCard properties and parameters, to support converting arbitrary or unknown JSContact and vCard elements.</t>
     </abstract>
+    <note removeInRFC="true">
+      <t>Differences from RFC 9555 are documented in <xref target="differences-from-rfc9555"/>.</t>
+    </note>
   </front>
   <middle>
     <section>
@@ -3233,6 +3236,11 @@ JSPROP;JSPTR="example.com:foo":"bar"
           </tr>
         </tbody>
       </table>
+    </section>
+    <section anchor="differences-from-rfc9555">
+      <name>Differences from RFC 9555</name>
+      <t>This section documents all significant differences from RFC 9555. Insignificant differences, such as formatting, grammar or typos are not documented.</t>
+      <t>TBD</t>
     </section>
     <section anchor="Acknowledgments" numbered="false">
       <name>Acknowledgements</name>
