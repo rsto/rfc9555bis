@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE rfc [
 <!ENTITY nbsp "&#160;">
 <!ENTITY zwsp "&#8203;">
 <!ENTITY nbhy "&#8209;">
 <!ENTITY wj "&#8288;">
 ]>
-
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude" submissionType="IETF" category="std" consensus="true" docName="draft-stepanek-loffredo-rfc9555bis-0" ipr="pre5378Trust200902" tocInclude="true" tocDepth="4" sortRefs="true" symRefs="true" updates="6350" obsoletes="9555" xml:lang="en" version="3">
   <front>
     <title abbrev="JSContact: Converting vCard">JSContact: Converting from and to vCard</title>
@@ -28,12 +26,12 @@
       <organization>Fastmail</organization>
       <address>
         <postal>
-	  <extaddr>PO Box 234</extaddr>
+          <extaddr>PO Box 234</extaddr>
           <street>Collins St. West</street>
           <city>Melbourne</city>
-	  <region>VIC</region>
+          <region>VIC</region>
           <code>8007</code>
-	  <country>Australia</country>
+          <country>Australia</country>
         </postal>
         <email>rsto@fastmailteam.com</email>
         <uri>https://www.fastmail.com</uri>
@@ -92,14 +90,14 @@
         <section anchor="vcard-type-datetime">
           <name>DATE, TIME, DATE-TIME, DATE-AND-OR-TIME, and TIMESTAMP</name>
           <t>The TIMESTAMP type (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.5" sectionFormat="of"/>) converts to the UTCDateTime type (<xref target="RFC9553" derivedContent="RFC9553" section="1.4.5" sectionFormat="of"/>), unless for anniversaries. For anniversaries, it converts to the Timestamp type (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.1" sectionFormat="of"/>).</t>
-	  <t>The DATE type (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.1" sectionFormat="of"/>) converts to a PartialDate object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.1" sectionFormat="of"/>) when used for an anniversary, unless the DATE value only contains a month or a day (but not both).</t>
-	  <t>The following temporal types do not convert to a JSContact datetime type.  Instead, vCard properties or parameters having such value types convert as defined in <xref target="new-jscontact"/>.</t>
-	  <ul>
-		  <li>TIME (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.2" sectionFormat="of"/>)</li>
-		  <li>DATE-TIME (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.3" sectionFormat="of"/>)</li>
-		  <li>DATE-AND-OR-TIME (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.4" sectionFormat="of"/>)</li>
-		  <li>DATE type values that only define a month or day (but not both)</li>
-  </ul>
+          <t>The DATE type (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.1" sectionFormat="of"/>) converts to a PartialDate object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.1" sectionFormat="of"/>) when used for an anniversary, unless the DATE value only contains a month or a day (but not both).</t>
+          <t>The following temporal types do not convert to a JSContact datetime type.  Instead, vCard properties or parameters having such value types convert as defined in <xref target="new-jscontact"/>.</t>
+          <ul>
+            <li>TIME (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.2" sectionFormat="of"/>)</li>
+            <li>DATE-TIME (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.3" sectionFormat="of"/>)</li>
+            <li>DATE-AND-OR-TIME (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.4" sectionFormat="of"/>)</li>
+            <li>DATE type values that only define a month or day (but not both)</li>
+          </ul>
         </section>
         <section>
           <name>INTEGER</name>
@@ -135,7 +133,7 @@
         </section>
         <section anchor="vcard-param-author">
           <name>AUTHOR</name>
-	  <t>The AUTHOR parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.1" sectionFormat="of"/>) on a NOTE property converts to the Author object's uri property (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.3" sectionFormat="of"/>).  That Author object is set as the value of the Note object's author property (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.3" sectionFormat="of"/>).</t>
+          <t>The AUTHOR parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.1" sectionFormat="of"/>) on a NOTE property converts to the Author object's uri property (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.3" sectionFormat="of"/>).  That Author object is set as the value of the Note object's author property (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.3" sectionFormat="of"/>).</t>
         </section>
         <section anchor="vcard-param-author-name">
           <name>AUTHOR-NAME</name>
@@ -164,7 +162,7 @@
         <section anchor="vcard-param-group">
           <name>GROUP</name>
           <t>The GROUP parameter (<xref target="RFC7095" derivedContent="RFC7095" section="7.1" sectionFormat="of"/>) does not convert to JSContact.  It exclusively is for use in jCard and <bcp14>MUST NOT</bcp14> be set in a vCard.</t>
-<t>Preserving the exact group name when converting from vCard to JSContact and back to vCard is not necessary.  Any group identifiers will do, as long as the resulting vCard groups its properties equally to the original vCard.  Implementations that still wish to preserve the exact property group name of a vCard property <bcp14>MAY</bcp14> set the jCard "group" parameter in the JSContact properties vCardProps or vCardParams as defined in <xref target="new-jscontact"/>.</t>
+          <t>Preserving the exact group name when converting from vCard to JSContact and back to vCard is not necessary.  Any group identifiers will do, as long as the resulting vCard groups its properties equally to the original vCard.  Implementations that still wish to preserve the exact property group name of a vCard property <bcp14>MAY</bcp14> set the jCard "group" parameter in the JSContact properties vCardProps or vCardParams as defined in <xref target="new-jscontact"/>.</t>
           <figure anchor="group_conversion_params">
             <name>Example of How to Preserve the Group Name in vCardParams during Conversion</name>
             <sourcecode type="vcard"><![CDATA[
@@ -279,8 +277,8 @@ TITLE;ALTID=1;LANGUAGE=fr:Patron
         </section>
         <section anchor="vcard-param-phonetic">
           <name>PHONETIC</name>
-	  <t>The PHONETIC parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.6" sectionFormat="of"/>) converts to the Name (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.1" sectionFormat="of"/>) and Address (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>) objects' phoneticSystem property unless the parameter value is "script", in which case the phoneticSystem property is not set.</t>
-	  <t>The value of the SCRIPT parameter converts to the phoneticScript property (see <xref target="vcard-param-phonetic"/>).</t>
+          <t>The PHONETIC parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.6" sectionFormat="of"/>) converts to the Name (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.1" sectionFormat="of"/>) and Address (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>) objects' phoneticSystem property unless the parameter value is "script", in which case the phoneticSystem property is not set.</t>
+          <t>The value of the SCRIPT parameter converts to the phoneticScript property (see <xref target="vcard-param-phonetic"/>).</t>
           <t>The related N or ADR property is defined by the vCard ALTID parameter. The conversion rules for the <xref target="vcard-prop-n">N</xref> and <xref target="vcard-prop-adr">ADR</xref> properties define how the vCard components convert to JSContact.</t>
           <t>The component values of the property on which the PHONETIC parameter is set, convert to the respective NameComponent or AddressComponent objects' phonetic properties.</t>
           <t>If more than one property has the PHONETIC parameter set and relates to the same property, then they convert to the Card object's localizations property according to their LANGUAGE parameter values as outlined in <xref target="vcard-param-language"/>.</t>
@@ -325,7 +323,7 @@ N;ALTID=1;PHONETIC=jyut;
         </section>
         <section anchor="vcard-param-propid">
           <name>PROP-ID</name>
-	  <t>The PROP-ID parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.7" sectionFormat="of"/>) converts to the Id-typed key of the JSContact object to which the vCard property having this parameter converts.</t>
+          <t>The PROP-ID parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.7" sectionFormat="of"/>) converts to the Id-typed key of the JSContact object to which the vCard property having this parameter converts.</t>
           <figure anchor="propid_conversion">
             <name>PROP-ID Conversion Example</name>
             <sourcecode type="vcard"><![CDATA[
@@ -350,14 +348,14 @@ TEL;PROP-ID=PHONE-B;VALUE=uri;TYPE=home
 ]]></sourcecode>
           </figure>
         </section>
-        <section anchor="vcard-param-script">	  
+        <section anchor="vcard-param-script">
           <name>SCRIPT</name>
           <t>The SCRIPT parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.8" sectionFormat="of"/>) converts to the Name (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.1" sectionFormat="of"/>) or Address (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>) objects' phoneticScript property.</t>
           <t>Also see <xref target="vcard-param-phonetic"/>.</t>
         </section>
         <section anchor="vcard-param-service-type">
           <name>SERVICE-TYPE</name>
-	  <t>The SERVICE-TYPE parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.9" sectionFormat="of"/>) converts to the OnlineService object's service property (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>).</t>
+          <t>The SERVICE-TYPE parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.9" sectionFormat="of"/>) converts to the OnlineService object's service property (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>).</t>
         </section>
         <section anchor="vcard-param-sortas">
           <name>SORT-AS</name>
@@ -373,7 +371,7 @@ TEL;PROP-ID=PHONE-B;VALUE=uri;TYPE=home
         </section>
         <section anchor="vcard-param-username">
           <name>USERNAME</name>
-	  <t>The USERNAME parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.10" sectionFormat="of"/>) converts to the OnlineService object's user property (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>).</t>
+          <t>The USERNAME parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.10" sectionFormat="of"/>) converts to the OnlineService object's user property (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>).</t>
         </section>
         <section anchor="vcard-param-value">
           <name>VALUE</name>
@@ -426,21 +424,20 @@ SOURCE:https://dir.example.com/addrbook/jdoe/Jean%20Dupont.vcf
       <section>
         <name>Identification Properties</name>
         <section anchor="vcard-prop-anniversary">
-	<name>ANNIVERSARY, BDAY, BIRTHPLACE, DEATHDATE, and DEATHPLACE</name>
-	<t>The following properties all convert to Anniversary objects in the Card object's anniversaries property (<xref target="anniversary_conversion"/>):</t>
-		<ul spacing="compact">
-			<li>ANNIVERSARY (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.6" sectionFormat="of"/>)</li>
-			<li>BDAY (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.5" sectionFormat="of"/>)</li>
-			<li>BIRTHPLACE (<xref target="RFC6474" derivedContent="RFC6474" section="2.1" sectionFormat="of"/>)</li>
-			<li>DEATHDATE (<xref target="RFC6474" derivedContent="RFC6474" section="2.3" sectionFormat="of"/>)</li>
-			<li>DEATHPLACE (<xref target="RFC6474" derivedContent="RFC6474" section="2.2" sectionFormat="of"/>)</li>
-	</ul>
-
-            <t>BDAY and BIRTHPLACE convert to an Anniversary object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.1" sectionFormat="of"/>) having the date and place properties set.  The kind poperty is set to "birth".
+          <name>ANNIVERSARY, BDAY, BIRTHPLACE, DEATHDATE, and DEATHPLACE</name>
+          <t>The following properties all convert to Anniversary objects in the Card object's anniversaries property (<xref target="anniversary_conversion"/>):</t>
+          <ul spacing="compact">
+            <li>ANNIVERSARY (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.6" sectionFormat="of"/>)</li>
+            <li>BDAY (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.5" sectionFormat="of"/>)</li>
+            <li>BIRTHPLACE (<xref target="RFC6474" derivedContent="RFC6474" section="2.1" sectionFormat="of"/>)</li>
+            <li>DEATHDATE (<xref target="RFC6474" derivedContent="RFC6474" section="2.3" sectionFormat="of"/>)</li>
+            <li>DEATHPLACE (<xref target="RFC6474" derivedContent="RFC6474" section="2.2" sectionFormat="of"/>)</li>
+          </ul>
+          <t>BDAY and BIRTHPLACE convert to an Anniversary object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.1" sectionFormat="of"/>) having the date and place properties set.  The kind poperty is set to "birth".
             </t>
-            <t>DEATHDATE and DEATHPLACE convert to an Anniversary object having the date and place properties set.  The Anniversary object's kind property is set to "death".
+          <t>DEATHDATE and DEATHPLACE convert to an Anniversary object having the date and place properties set.  The Anniversary object's kind property is set to "death".
             </t>
-            <t>ANNIVERSARY converts to the Anniversary object's date property.  The Anniversary object's kind property is set to "wedding".</t>
+          <t>ANNIVERSARY converts to the Anniversary object's date property.  The Anniversary object's kind property is set to "wedding".</t>
           <t>If the BIRTHPLACE or DEATHPLACE property value is of type URI using the "geo:" URI scheme, then it converts to the Address object's coordinates property.  If the value type is TEXT then it converts to the Address object's full property.  Otherwise it converts to the vCardProps property; see <xref target="jscontact-prop-vcardprops"/>.</t>
           <t>The ALTID and LANGUAGE parameters of both the BIRTHPLACE and DEATHPLACE properties convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <figure anchor="anniversary_conversion">
@@ -680,30 +677,34 @@ PHOTO:https://www.example.com/pub/photos/jqpublic.gif
               <tr>
                 <td align="left">extended address</td>
                 <td align="left">apartment</td>
-                <td align="left"><t>To vCard: set the values of the following components:</t>
-                <ul>
-                  <li>room</li>
-                  <li>floor</li>
-                  <li>apartment</li>
-                  <li>building</li>
-                </ul>
-                <t>From vCard: ignore if the ADR structured value is of the format defined in <xref target="RFC9554"/>.  Otherwise, convert to "apartment".</t></td>
+                <td align="left">
+                  <t>To vCard: set the values of the following components:</t>
+                  <ul>
+                    <li>room</li>
+                    <li>floor</li>
+                    <li>apartment</li>
+                    <li>building</li>
+                  </ul>
+                  <t>From vCard: ignore if the ADR structured value is of the format defined in <xref target="RFC9554"/>.  Otherwise, convert to "apartment".</t>
+                </td>
               </tr>
               <tr>
                 <td align="left">street address</td>
                 <td align="left">name</td>
-                <td align="left"><t>To vCard: set the values of the following components:</t>
-                <ul>
-                  <li>number</li>
-                  <li>name</li>
-                  <li>block</li>
-                  <li>direction</li>
-                  <li>landmark</li>
-                  <li>subdistrict</li>
-                  <li>district</li>
-                </ul>
-                <t>From vCard: ignore if the ADR structured value is of the format defined in <xref target="RFC9554"/>.  Otherwise, convert to "name".</t></td>
-            </tr>
+                <td align="left">
+                  <t>To vCard: set the values of the following components:</t>
+                  <ul>
+                    <li>number</li>
+                    <li>name</li>
+                    <li>block</li>
+                    <li>direction</li>
+                    <li>landmark</li>
+                    <li>subdistrict</li>
+                    <li>district</li>
+                  </ul>
+                  <t>From vCard: ignore if the ADR structured value is of the format defined in <xref target="RFC9554"/>.  Otherwise, convert to "name".</t>
+                </td>
+              </tr>
               <tr>
                 <td align="left">locality</td>
                 <td align="left">locality</td>
@@ -773,12 +774,12 @@ PHOTO:https://www.example.com/pub/photos/jqpublic.gif
           </table>
           <t>If the <xref target="vcard-param-jscomps">JSCOMPS</xref> parameter is set, then the Address object's isOrdered property value is "true", and the defaultSeparator property and any separator name components are set according to the parameter value.  The order in the components property <bcp14>MUST</bcp14> adhere to the order of the JSCOMPS parameter value.</t>
           <t>If the JSCOMPS parameter is not set, then the Address object's isOrdered property value is "false", and the defaultSeparator property <bcp14>MUST NOT</bcp14> be set.  The order in the components property <bcp14>MUST</bcp14> follow the order of values in the ADR structured value when read from left to right.</t>
-	  <ul empty="true">
-          <li>The LABEL parameter converts to the Address object's full property.</li>
-          <li>The GEO parameter converts to the Address object's coordinates property.</li>
-          <li>The TZ parameter converts to the Address object's timeZone property.</li>
-          <li>The CC parameter converts to the Address object's countryCode property.</li>
-	  </ul>
+          <ul empty="true">
+            <li>The LABEL parameter converts to the Address object's full property.</li>
+            <li>The GEO parameter converts to the Address object's coordinates property.</li>
+            <li>The TZ parameter converts to the Address object's timeZone property.</li>
+            <li>The CC parameter converts to the Address object's countryCode property.</li>
+          </ul>
           <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.  The ADR-specific values of the TYPE parameter defined in Sections <xref target="RFC9554" sectionFormat="bare" section="5.1"/> and <xref target="RFC9554" sectionFormat="bare" section="5.2"/> of <xref target="RFC9554"/> convert to the corresponding entries of the contexts property as defined in <xref target="RFC9553" sectionFormat="of" section="2.5.1"/>.</t>
           <t>The ALTID and LANGUAGE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.  Each possible language-dependent alternative converts to an entry of the PatchObject where the key references the full property.</t>
           <figure anchor="adr_conversion">
@@ -885,7 +886,7 @@ LANG;TYPE=home:fr
         </section>
         <section anchor="vcard-prop-language">
           <name>LANGUAGE</name>
-	  <t>The LANGUAGE property (<xref target="RFC9554" derivedContent="RFC9554" section="3.3" sectionFormat="of"/>) converts to the Card object's language property (<xref target="languageprop_conversion"/>).</t>
+          <t>The LANGUAGE property (<xref target="RFC9554" derivedContent="RFC9554" section="3.3" sectionFormat="of"/>) converts to the Card object's language property (<xref target="languageprop_conversion"/>).</t>
           <figure anchor="languageprop_conversion">
             <name>LANGUAGE Conversion Example</name>
             <sourcecode type="vcard"><![CDATA[
@@ -898,7 +899,7 @@ LANGUAGE:de-AT
         </section>
         <section anchor="vcard-prop-socialprofile">
           <name>SOCIALPROFILE</name>
-	  <t>The SOCIALPROFILE property (<xref target="RFC9554" derivedContent="RFC9554" section="3.5" sectionFormat="of"/>) converts to an OnlineService object (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>) in the Card object's onlineServices property (<xref target="socialprofile_conversion"/>).  The vCardName property is set to "socialprofile", or it can be omitted.  If the SOCIALPROFILE property value is of type URI, then the OnlineService object's uri property is set, otherwise, the user property is set.</t>
+          <t>The SOCIALPROFILE property (<xref target="RFC9554" derivedContent="RFC9554" section="3.5" sectionFormat="of"/>) converts to an OnlineService object (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>) in the Card object's onlineServices property (<xref target="socialprofile_conversion"/>).  The vCardName property is set to "socialprofile", or it can be omitted.  If the SOCIALPROFILE property value is of type URI, then the OnlineService object's uri property is set, otherwise, the user property is set.</t>
           <t>The SERVICE-TYPE, USERNAME, PREF, and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <figure anchor="socialprofile_conversion">
             <name>SOCIALPROFILE Conversion Example</name>
@@ -964,7 +965,6 @@ SOCIALPROFILE;SERVICE-TYPE=Mastodon:https://example.com/@foo
             </tbody>
           </table>
           <t>The value of the TEL property converts to the Phone object's number property.</t>
-
           <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <figure anchor="tel_conversion">
             <name>TEL Conversion Example</name>
@@ -1059,7 +1059,7 @@ LOGO:https://www.example.com/pub/logos/abccorp.jpg
         </section>
         <section anchor="vcard-prop-member">
           <name>MEMBER</name>
-	  <t>The MEMBER property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.5" sectionFormat="of"/>) converts to the Card object's members property (<xref target="group_example"/>).  Each MEMBER property value is a key in the members property.  The PREF parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.3" sectionFormat="of"/>) parameter does not convert to JSContact.</t>
+          <t>The MEMBER property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.5" sectionFormat="of"/>) converts to the Card object's members property (<xref target="group_example"/>).  Each MEMBER property value is a key in the members property.  The PREF parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.3" sectionFormat="of"/>) parameter does not convert to JSContact.</t>
           <figure anchor="group_example">
             <name>Group Example</name>
             <sourcecode type="vcard"><![CDATA[
@@ -1309,7 +1309,7 @@ CATEGORIES:internet,IETF,Industry,Information Technology
         </section>
         <section anchor="vcard-prop-created">
           <name>CREATED</name>
-	  <t>The CREATED property (<xref target="RFC9554" derivedContent="RFC9554" section="3.1" sectionFormat="of"/>) converts to the Card object's created property (<xref target="created_conversion"/>).</t>
+          <t>The CREATED property (<xref target="RFC9554" derivedContent="RFC9554" section="3.1" sectionFormat="of"/>) converts to the Card object's created property (<xref target="created_conversion"/>).</t>
           <figure anchor="created_conversion">
             <name>CREATED Conversion Example</name>
             <sourcecode type="vcard"><![CDATA[
@@ -1566,7 +1566,7 @@ FBURL;MEDIATYPE=text/calendar:https://example.com/busy/project-a.ifb
                 <sourcecode type="vcard"><![CDATA[
 item1.X-FOO;X-BAR=Hello:World!
 ]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
+                <sourcecode type="json"><![CDATA[
 "vCardProps": [
   ["x-foo", {
     "x-bar": "Hello",
@@ -1591,7 +1591,7 @@ item1.X-FOO;X-BAR=Hello:World!
                 <sourcecode type="vcard"><![CDATA[
 EMAIL;X-FOO=Bar:jane_doe@example.com
 ]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
+                <sourcecode type="json"><![CDATA[
 "emails": {
   "email1": {
     "address": "jane_doe@example.com",
@@ -1618,7 +1618,7 @@ EMAIL;X-FOO=Bar:jane_doe@example.com
                 <sourcecode type="vcard"><![CDATA[
 IMPP:xmpp:alice@example.com
 ]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
+                <sourcecode type="json"><![CDATA[
 "onlineServices": {
   "os1": {
     "uri": "xmpp:alice@example.com",
@@ -1675,9 +1675,9 @@ IMPP:xmpp:alice@example.com
         </dd>
             <dt>Description:</dt>
             <dd>
-		    <t>This property converts an arbitrary JSContact property from and to vCard.  The vCard property value is the JSON-encoded value of the JSContact property, represented as a TEXT value.  The format of the JSON value <bcp14>MUST</bcp14> be compact, e.g., without insignificant whitespace as defined in <xref target="RFC8259" format="default" sectionFormat="of" derivedContent="RFC8259" section="2"/>.  The value of the JSPTR parameter points to the JSContact property within the Card.</t>
-                <t>The root of the JSON pointer is always the Card object that this vCard converts to, irrespective if the JSON pointer starts with the SOLIDUS (U+002F) character.  The pointer <bcp14>MUST NOT</bcp14> reference into an array.</t>
-                <t>All JSPROP properties in a vCard together form a PatchObject as defined in <xref target="RFC9553"/>.  The value of its JSPTR parameter corresponds to a key in the PatchObject; the value of the JSPROP property corresponds to the value for that key.  When converting from vCard to JSContact, the PatchObject <bcp14>MUST</bcp14> only be applied after all other vCard properties have already been converted.  The PatchObject <bcp14>MUST</bcp14> be valid, including the restriction that an invalid PatchObject <bcp14>MUST NOT</bcp14> be applied.</t>
+              <t>This property converts an arbitrary JSContact property from and to vCard.  The vCard property value is the JSON-encoded value of the JSContact property, represented as a TEXT value.  The format of the JSON value <bcp14>MUST</bcp14> be compact, e.g., without insignificant whitespace as defined in <xref target="RFC8259" format="default" sectionFormat="of" derivedContent="RFC8259" section="2"/>.  The value of the JSPTR parameter points to the JSContact property within the Card.</t>
+              <t>The root of the JSON pointer is always the Card object that this vCard converts to, irrespective if the JSON pointer starts with the SOLIDUS (U+002F) character.  The pointer <bcp14>MUST NOT</bcp14> reference into an array.</t>
+              <t>All JSPROP properties in a vCard together form a PatchObject as defined in <xref target="RFC9553"/>.  The value of its JSPTR parameter corresponds to a key in the PatchObject; the value of the JSPROP property corresponds to the value for that key.  When converting from vCard to JSContact, the PatchObject <bcp14>MUST</bcp14> only be applied after all other vCard properties have already been converted.  The PatchObject <bcp14>MUST</bcp14> be valid, including the restriction that an invalid PatchObject <bcp14>MUST NOT</bcp14> be applied.</t>
             </dd>
             <dt>Format definition:</dt>
             <dd>
@@ -1707,7 +1707,7 @@ jsprop-param  = *(
                 <sourcecode type="json"><![CDATA[
 "someUnknownProperty": true
 ]]></sourcecode>
-            <sourcecode type="vcard"><![CDATA[
+                <sourcecode type="vcard"><![CDATA[
 JSPROP;JSPTR="someUnknownProperty":true
 ]]></sourcecode>
               </figure>
@@ -1719,7 +1719,7 @@ JSPROP;JSPTR="someUnknownProperty":true
   "bar": 1234
 }
 ]]></sourcecode>
-            <sourcecode type="vcard"><![CDATA[
+                <sourcecode type="vcard"><![CDATA[
 JSPROP;JSPTR="example.com:foo":{"bar":1234}
 ]]></sourcecode>
               </figure>
@@ -1734,7 +1734,7 @@ JSPROP;JSPTR="example.com:foo":{"bar":1234}
   }
 }
 ]]></sourcecode>
-            <sourcecode type="vcard"><![CDATA[
+                <sourcecode type="vcard"><![CDATA[
 TEL:tel:+33-01-23-45-67
 JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
  "tux hux"
@@ -1809,7 +1809,7 @@ jscomps-entry-verb = *QSAFE-CHAR ; encode special characters according to RFC 68
   "isOrdered": true
 }
 ]]></sourcecode>
-            <sourcecode type="vcard"><![CDATA[
+                <sourcecode type="vcard"><![CDATA[
 N;JSCOMPS=";1;0":Doe;Jane;;;;;;
 FN;DERIVED=TRUE:Jane Doe
 ]]></sourcecode>
@@ -1830,7 +1830,7 @@ FN;DERIVED=TRUE:Jane Doe
   "isOrdered": true
 }
 ]]></sourcecode>
-            <sourcecode type="vcard"><![CDATA[
+                <sourcecode type="vcard"><![CDATA[
 N;JSCOMPS=";1;2;2,1;0;6;4,1":Stevenson;John;Philip,Paul;;Jr.,M.D.;;Jr.
 ]]></sourcecode>
               </figure>
@@ -1851,7 +1851,7 @@ N;JSCOMPS=";1;2;2,1;0;6;4,1":Stevenson;John;Philip,Paul;;Jr.,M.D.;;Jr.
   }
 }
 ]]></sourcecode>
-            <sourcecode type="vcard"><![CDATA[
+                <sourcecode type="vcard"><![CDATA[
 ADR;JSCOMPS="s,\, ;11;s, ;10;3":;;54321 Oak St;Reston;;;;;;;Oak St;54321;;;;;;
 ]]></sourcecode>
               </figure>
@@ -1864,7 +1864,7 @@ ADR;JSCOMPS="s,\, ;11;s, ;10;3":;;54321 Oak St;Reston;;;;;;;Oak St;54321;;;;;;
             <dt>Parameter name:</dt>
             <dd>JSPTR</dd>
             <dt>Purpose:</dt>
-	    <dd>This parameter is set on a <xref target="vcard-prop-jsprop">JSPROP</xref> property.  Its value is a JSON pointer <xref target="RFC6901"/> that points to the JSContact property having the value of the JSPROP property.
+            <dd>This parameter is set on a <xref target="vcard-prop-jsprop">JSPROP</xref> property.  Its value is a JSON pointer <xref target="RFC6901"/> that points to the JSContact property having the value of the JSPROP property.
         </dd>
             <dt>Description:</dt>
             <dd>
@@ -1940,7 +1940,6 @@ JSPROP;JSPTR="example.com:foo":"bar"
       <section>
         <name>New JSContact Properties</name>
         <t>IANA has added the following entries to the "JSContact Properties" registry.  Note that the Since Version is 1.0, the Until Version is not set, and the Change Controller is IETF for all of these properties.</t>
-	
         <table anchor="tab-iana-property-registry" align="center">
           <name>JSContact Properties Registry</name>
           <thead>
@@ -1948,7 +1947,7 @@ JSPROP;JSPTR="example.com:foo":"bar"
               <th align="left">Property Name</th>
               <th align="left">Property Type</th>
               <th align="left">Property Context</th>
-	       <th align="left">Intended Usage</th>
+              <th align="left">Intended Usage</th>
               <th align="left">Reference or Description</th>
             </tr>
           </thead>
@@ -1960,12 +1959,12 @@ JSPROP;JSPTR="example.com:foo":"bar"
               <td align="left">common</td>
               <td align="left">RFC 9555, 
                 <xref target="jscontact-prop-vcardname" format="default"/></td>
-              </tr>
+            </tr>
             <tr>
               <td align="left">vCardParams</td>
               <td align="left">String[String|String[]]</td>
               <td align="left">Any JSContact object</td>
-	      <td align="left">common</td>
+              <td align="left">common</td>
               <td align="left">RFC 9555,
                 <xref target="jscontact-prop-vcardparams" format="default"/>
               </td>
@@ -1974,7 +1973,7 @@ JSPROP;JSPTR="example.com:foo":"bar"
               <td align="left">vCardProps</td>
               <td align="left">JCardProp[]</td>
               <td align="left">Card</td>
-	      <td align="left">common</td>
+              <td align="left">common</td>
               <td align="left">RFC 9555,
                 <xref target="jscontact-prop-vcardprops" format="default"/>
               </td>
@@ -1990,14 +1989,14 @@ JSPROP;JSPTR="example.com:foo":"bar"
           <thead>
             <tr>
               <th align="left">Type Name</th>
-	      <th align="left">Intended Usage</th>
+              <th align="left">Intended Usage</th>
               <th align="left">Reference or Description</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td align="left">JCardProp</td>
-	      <td align="left">common</td>
+              <td align="left">common</td>
               <td align="left">RFC 9555,
                 <xref target="jscontact-prop-vcardprops" format="default"/>
               </td>
@@ -2008,46 +2007,41 @@ JSPROP;JSPTR="example.com:foo":"bar"
     </section>
   </middle>
   <back>
-
-<displayreference target="I-D.calconnect-vobject-i18n" to="vOBJECT"/>
-
+    <displayreference target="I-D.calconnect-vobject-i18n" to="vOBJECT"/>
     <references>
       <name>References</name>
       <references>
         <name>Normative References</name>
-
-<!-- [I-D.ietf-calext-jscontact] in EDIT state as of 2/12/24; companion document RFC 9553 -->
-<reference anchor="RFC9553" target="https://www.rfc-editor.org/info/rfc9553">
-<front>
-<title>JSContact: A JSON Representation of Contact Data</title>
-<author initials='R' surname='Stepanek' fullname='Robert Stepanek'>
-    <organization />
-</author>
-<author initials='M' surname='Loffredo' fullname='Mario Loffredo'>
-    <organization />
-</author>
-<date month='March' year='2024' />
-</front>
-<seriesInfo name="RFC" value="9553"/>
-<seriesInfo name="DOI" value="10.17487/RFC9553"/>
-</reference>
-
-<!-- [I-D.ietf-calext-vcard-jscontact-extensions] in REF state as of 2/12/24; companion document RFC 9554 -->
-<reference anchor="RFC9554" target="https://www.rfc-editor.org/info/rfc9554">
-<front>
-<title>vCard Format Extension for JSContact</title>
-<author initials="R." surname="Stepanek" fullname="Robert Stepanek">
-<organization>Fastmail</organization>
-</author>
-<author initials="M." surname="Loffredo" fullname="Mario Loffredo">
-<organization>IIT-CNR</organization>
-</author>
-<date month="March" year="2024"/>
-</front>
-<seriesInfo name="RFC" value="9554"/>
-<seriesInfo name="DOI" value="10.17487/RFC9554"/>
-</reference>
-
+        <!-- [I-D.ietf-calext-jscontact] in EDIT state as of 2/12/24; companion document RFC 9553 -->
+        <reference anchor="RFC9553" target="https://www.rfc-editor.org/info/rfc9553">
+          <front>
+            <title>JSContact: A JSON Representation of Contact Data</title>
+            <author initials="R" surname="Stepanek" fullname="Robert Stepanek">
+              <organization/>
+            </author>
+            <author initials="M" surname="Loffredo" fullname="Mario Loffredo">
+              <organization/>
+            </author>
+            <date month="March" year="2024"/>
+          </front>
+          <seriesInfo name="RFC" value="9553"/>
+          <seriesInfo name="DOI" value="10.17487/RFC9553"/>
+        </reference>
+        <!-- [I-D.ietf-calext-vcard-jscontact-extensions] in REF state as of 2/12/24; companion document RFC 9554 -->
+        <reference anchor="RFC9554" target="https://www.rfc-editor.org/info/rfc9554">
+          <front>
+            <title>vCard Format Extension for JSContact</title>
+            <author initials="R." surname="Stepanek" fullname="Robert Stepanek">
+              <organization>Fastmail</organization>
+            </author>
+            <author initials="M." surname="Loffredo" fullname="Mario Loffredo">
+              <organization>IIT-CNR</organization>
+            </author>
+            <date month="March" year="2024"/>
+          </front>
+          <seriesInfo name="RFC" value="9554"/>
+          <seriesInfo name="DOI" value="10.17487/RFC9554"/>
+        </reference>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.3986.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5234.xml"/>
@@ -2064,53 +2058,50 @@ JSPROP;JSPTR="example.com:foo":"bar"
       </references>
       <references>
         <name>Informative References</name>
-
-<!--[I-D.calconnect-vobject-i18n] IESG state Expired. Entered the long way to get the correct initials-->
-<reference anchor="I-D.calconnect-vobject-i18n" target="https://datatracker.ietf.org/doc/html/draft-calconnect-vobject-i18n-00">
-  <front>
-    <title>vObject Internationalization</title>
-    <author fullname="Ronald Henry Tse" initials="R." surname="Tse">
-      <organization>Ribose</organization>
-    </author>
-    <author fullname="Peter Tam" initials="P." surname="Tam">
-      <organization>Ribose</organization>
-    </author>
-    <author fullname="Michael Douglass" initials="M." surname="Douglass">
-      <organization>Spherical Cow Group</organization>
-    </author>
-    <date day="7" month="June" year="2018"/>
-  </front>
-  <seriesInfo name="Internet-Draft" value="draft-calconnect-vobject-i18n-00"/>
-</reference>
-
+        <!--[I-D.calconnect-vobject-i18n] IESG state Expired. Entered the long way to get the correct initials-->
+        <reference anchor="I-D.calconnect-vobject-i18n" target="https://datatracker.ietf.org/doc/html/draft-calconnect-vobject-i18n-00">
+          <front>
+            <title>vObject Internationalization</title>
+            <author fullname="Ronald Henry Tse" initials="R." surname="Tse">
+              <organization>Ribose</organization>
+            </author>
+            <author fullname="Peter Tam" initials="P." surname="Tam">
+              <organization>Ribose</organization>
+            </author>
+            <author fullname="Michael Douglass" initials="M." surname="Douglass">
+              <organization>Spherical Cow Group</organization>
+            </author>
+            <date day="7" month="June" year="2018"/>
+          </front>
+          <seriesInfo name="Internet-Draft" value="draft-calconnect-vobject-i18n-00"/>
+        </reference>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8605.xml"/>
-	
-     <reference anchor="CLDRPersonName" target="https://www.unicode.org/reports/tr35/tr35-personNames.html">
-        <front>
-          <title>Unicode Locale Data Markup Language (LDML) Part 8: Person Names</title>
-          <author fullname="M. Davis">
-            <organization/>
-          </author>
-          <author fullname="P. Edberg">
-            <organization/>
-          </author>
-          <author fullname="R. Gillam">
-            <organization/>
-          </author>
-          <author fullname="A. Kolisnychenko">
-            <organization/>
-          </author>
-          <author fullname="M. McKenna">
-            <organization/>
-          </author>
-	  <author>
-          <organization>other CLDR committee members</organization>
-          </author>
-          <date year="2023" month="July"/>
-        </front>
-	<seriesInfo name="Unicode Technical Standard" value="#35"/>
-	<seriesInfo name="Version" value="44.1"/>
-      </reference>
+        <reference anchor="CLDRPersonName" target="https://www.unicode.org/reports/tr35/tr35-personNames.html">
+          <front>
+            <title>Unicode Locale Data Markup Language (LDML) Part 8: Person Names</title>
+            <author fullname="M. Davis">
+              <organization/>
+            </author>
+            <author fullname="P. Edberg">
+              <organization/>
+            </author>
+            <author fullname="R. Gillam">
+              <organization/>
+            </author>
+            <author fullname="A. Kolisnychenko">
+              <organization/>
+            </author>
+            <author fullname="M. McKenna">
+              <organization/>
+            </author>
+            <author>
+              <organization>other CLDR committee members</organization>
+            </author>
+            <date year="2023" month="July"/>
+          </front>
+          <seriesInfo name="Unicode Technical Standard" value="#35"/>
+          <seriesInfo name="Version" value="44.1"/>
+        </reference>
       </references>
     </references>
     <section anchor="convert_jscontact_to_vcard-reverse-rules">
@@ -2200,7 +2191,9 @@ JSPROP;JSPTR="example.com:foo":"bar"
           <tr>
             <td>Address</td>
             <td>phoneticSystem</td>
-            <td><xref target="vcard-param-phonetic"/></td>
+            <td>
+              <xref target="vcard-param-phonetic"/>
+            </td>
           </tr>
           <tr>
             <td>Address</td>
@@ -2231,7 +2224,9 @@ JSPROP;JSPTR="example.com:foo":"bar"
           <tr>
             <td>AddressComponent</td>
             <td>phonetic</td>
-            <td><xref target="vcard-param-phonetic"/></td>
+            <td>
+              <xref target="vcard-param-phonetic"/>
+            </td>
           </tr>
           <tr>
             <td>Anniversary</td>
@@ -2292,7 +2287,7 @@ JSPROP;JSPTR="example.com:foo":"bar"
           </tr>
           <tr>
             <td>Calendar</td>
-             <td>kind</td>
+            <td>kind</td>
             <td>Sections <xref target="vcard-prop-caluri" format="counter"/> and <xref target="vcard-prop-fburl" format="counter"/></td>
           </tr>
           <tr>
@@ -2679,7 +2674,9 @@ JSPROP;JSPTR="example.com:foo":"bar"
           <tr>
             <td>Link</td>
             <td>kind</td>
-            <td><xref target="vcard-prop-contact-uri"/></td>
+            <td>
+              <xref target="vcard-prop-contact-uri"/>
+            </td>
           </tr>
           <tr>
             <td>Link</td>
@@ -2785,7 +2782,9 @@ JSPROP;JSPTR="example.com:foo":"bar"
           <tr>
             <td>Name</td>
             <td>phoneticSystem</td>
-            <td><xref target="vcard-param-phonetic"/></td>
+            <td>
+              <xref target="vcard-param-phonetic"/>
+            </td>
           </tr>
           <tr>
             <td>Name</td>
@@ -2815,7 +2814,9 @@ JSPROP;JSPTR="example.com:foo":"bar"
           <tr>
             <td>NameComponent</td>
             <td>phonetic</td>
-            <td><xref target="vcard-param-phonetic"/></td>
+            <td>
+              <xref target="vcard-param-phonetic"/>
+            </td>
           </tr>
           <tr>
             <td>NameComponent</td>
@@ -3233,7 +3234,7 @@ JSPROP;JSPTR="example.com:foo":"bar"
         </tbody>
       </table>
     </section>
-      <section anchor="Acknowledgments" numbered="false">
+    <section anchor="Acknowledgments" numbered="false">
       <name>Acknowledgements</name>
       <t>The definition and examples of the <xref target="vcard-param-phonetic">PHONETIC</xref> and <xref target="vcard-param-script">SCRIPT</xref> parameters are based on the initial draft version of <xref target="I-D.calconnect-vobject-i18n"/>.</t>
     </section>
