@@ -45,7 +45,7 @@
     <keyword>vCard</keyword>
     <keyword>jCard</keyword>
     <abstract>
-      <t>This document defines how to convert contact information between the JSContact and vCard data formats.  It defines conversion rules for every JSContact and vCard element registered at IANA at the time of publication.  It also defines new JSContact properties as well as vCard properties and parameters, to support converting arbitrary or unknown JSContact and vCard elements.</t>
+      <t>This document defines how to convert contact information between the JSContact and vCard data formats.  It defines conversion rules for every JSContact and vCard element registered at IANA at the time of publication.  It also defines new JSContact properties as well as vCard properties and parameters, to support converting arbitrary or unknown JSContact and vCard elements. This document obsoletes RFC 9555.</t>
     </abstract>
     <note removeInRFC="true">
       <t>Differences from RFC 9555 are documented in <xref target="differences-from-rfc9555"/>.</t>
@@ -64,6 +64,10 @@
         <name>Notational Conventions</name>
         <t>The key words "<bcp14>MUST</bcp14>", "<bcp14>MUST NOT</bcp14>", "<bcp14>REQUIRED</bcp14>", "<bcp14>SHALL</bcp14>", "<bcp14>SHALL NOT</bcp14>", "<bcp14>SHOULD</bcp14>", "<bcp14>SHOULD NOT</bcp14>", "<bcp14>RECOMMENDED</bcp14>", "<bcp14>NOT RECOMMENDED</bcp14>", "<bcp14>MAY</bcp14>", and "<bcp14>OPTIONAL</bcp14>" in this document are to be interpreted as described in BCP 14 <xref target="RFC2119" format="default" sectionFormat="of" derivedContent="RFC2119"/> <xref target="RFC8174" format="default" sectionFormat="of" derivedContent="RFC8174"/> when, and only when, they appear in all capitals, as shown here.</t>
       </section>
+      <section anchor="relation-to-rfc9555">
+        <name>Relation to obsolete RFC 9555</name>
+	<t>This document replaces the JSContact "vCardProps", "vCardParams" and "vCardParam" properties originally defined in <xref target="RFC9555"/> with the new <xref target="jscontact-prop-vcard">"vCard"</xref> property. The new property allows for edge cases where the former elements were insufficient. For vCard, it replaces the <xref target="RFC9554" section="4.7" sectionFormat="parens">PROP-ID</xref> parameter with the new <xref target="vcard-param-jsid">JSID</xref> parameter. Both changes align the conversion-specific elements of vCard and JSContact with those defined for iCalendar and JSCalendar in <xref target="I-D.ietf-calext-jscalendar-icalendar"/>, allowing for code reuse for implementations that support these formats.</t>
+      </section>
       <section anchor="abnf-notations">
         <name>ABNF Notations</name>
         <t>The ABNF definitions in this document use the notations of <xref target="RFC5234"/>. ABNF rules not defined in this document are defined in either <xref target="RFC5234"/> (such as the ABNF for CRLF, WSP, DQUOTE, VCHAR, ALPHA, and DIGIT) or <xref target="RFC6350"/>.
@@ -81,7 +85,7 @@
         </section>
         <section>
           <name>Choosing Identifiers</name>
-          <t>Multivalued properties in JSContact are typically represented as a JSON object where the object keys are of the Id type (<xref target="RFC9553" derivedContent="RFC9553" section="1.4.1" sectionFormat="of"/>) and the object values are the converted vCard property.  In the absence of the PROP-ID parameter (see <xref target="vcard-param-propid"/>), implementations are free to choose any identifier as key for such entries.  Whatever identifier generation scheme implementations use, they <bcp14>MUST</bcp14> generate values that are valid according to the definition of the Id type in <xref target="RFC9553"/>.  For example, this could be an incrementing number across all identifier keys in the Card object or only unique within one JSON object.</t>
+          <t>Multivalued properties in JSContact are typically represented as a JSON object where the object keys are of the Id type (<xref target="RFC9553" derivedContent="RFC9553" section="1.4.1" sectionFormat="of"/>) and the object values are the converted vCard property.  In the absence of the JSID parameter (see <xref target="vcard-param-jsid"/>), implementations are free to choose any identifier as key for such entries.  Whatever identifier generation scheme implementations use, they <bcp14>MUST</bcp14> generate values that are valid according to the definition of the Id type in <xref target="RFC9553"/>.  For example, this could be an incrementing number across all identifier keys in the Card object or only unique within one JSON object.</t>
         </section>
       </section>
       <section anchor="vcard-types">
@@ -94,7 +98,7 @@
           <name>DATE, TIME, DATE-TIME, DATE-AND-OR-TIME, and TIMESTAMP</name>
           <t>The TIMESTAMP type (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.5" sectionFormat="of"/>) converts to the UTCDateTime type (<xref target="RFC9553" derivedContent="RFC9553" section="1.4.5" sectionFormat="of"/>), unless for anniversaries. For anniversaries, it converts to the Timestamp type (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.1" sectionFormat="of"/>).</t>
           <t>The DATE type (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.1" sectionFormat="of"/>) converts to a PartialDate object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.1" sectionFormat="of"/>) when used for an anniversary, unless the DATE value only contains a month or a day (but not both).</t>
-          <t>The following temporal types do not convert to a JSContact datetime type.  Instead, vCard properties or parameters having such value types convert as defined in <xref target="new-jscontact"/>.</t>
+          <t>The following temporal types do not convert to a JSContact datetime type.  Instead, vCard properties or parameters having such value types convert as defined in <xref target="updates-to-jscontact"/>.</t>
           <ul>
             <li>TIME (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.2" sectionFormat="of"/>)</li>
             <li>DATE-TIME (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.3" sectionFormat="of"/>)</li>
@@ -124,15 +128,15 @@
         </section>
         <section>
           <name>UTC-OFFSET</name>
-          <t>The UTC-OFFSET type (<xref target="RFC6350" derivedContent="RFC6350" section="4.7" sectionFormat="of"/>) either converts to a String value containing an IANA Time Zone Database entry name (see <xref target="vcard-prop-tz"/>) or does not convert to any JSContact type.  For the latter, vCard properties or parameters having such values convert as defined in <xref target="new-jscontact"/>. </t>
+          <t>The UTC-OFFSET type (<xref target="RFC6350" derivedContent="RFC6350" section="4.7" sectionFormat="of"/>) either converts to a String value containing an IANA Time Zone Database entry name (see <xref target="vcard-prop-tz"/>) or does not convert to any JSContact type.  For the latter, vCard properties or parameters having such values convert as defined in <xref target="updates-to-jscontact"/>. </t>
         </section>
       </section>
       <section anchor="vcard-parameters">
         <name>vCard Parameters</name>
-        <t>This section contains the conversion rules for vCard parameters.  A rule typically applies only for specific vCard properties.  To convert a vCard parameter on an arbitrary vCard property, see <xref target="jscontact-prop-vcardparams"/>.</t>
+        <t>This section contains the conversion rules for vCard parameters.  A rule typically applies only for specific vCard properties.  To convert a vCard parameter on an arbitrary vCard property, see <xref target="jscontact-prop-vcard"/>.</t>
         <section anchor="vcard-param-altid">
           <name>ALTID</name>
-          <t>The ALTID parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.4" sectionFormat="of"/>) does not convert to an IANA-registered property in JSContact, but several conversion rules make use of this parameter to combine multiple vCard properties into a single JSContact object instance.  For an example of this, see <xref target="vcard-prop-adr"/>.  To preserve the verbatim value of the ALTID parameter, set the JSContact properties defined in <xref target="new-jscontact"/>.</t>
+          <t>The ALTID parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.4" sectionFormat="of"/>) does not convert to an IANA-registered property in JSContact, but several conversion rules make use of this parameter to combine multiple vCard properties into a single JSContact object instance.  For an example of this, see <xref target="vcard-prop-adr"/>.  To preserve the verbatim value of the ALTID parameter, set the JSContact properties defined in <xref target="updates-to-jscontact"/>.</t>
         </section>
         <section anchor="vcard-param-author">
           <name>AUTHOR</name>
@@ -165,33 +169,50 @@
         <section anchor="vcard-param-group">
           <name>GROUP</name>
           <t>The GROUP parameter (<xref target="RFC7095" derivedContent="RFC7095" section="7.1" sectionFormat="of"/>) does not convert to JSContact.  It exclusively is for use in jCard and <bcp14>MUST NOT</bcp14> be set in a vCard.</t>
-          <t>Preserving the exact group name when converting from vCard to JSContact and back to vCard is not necessary.  Any group identifiers will do, as long as the resulting vCard groups its properties equally to the original vCard.  Implementations that still wish to preserve the exact property group name of a vCard property <bcp14>MAY</bcp14> set the jCard "group" parameter in the JSContact properties vCardProps or vCardParams as defined in <xref target="new-jscontact"/>.</t>
+          <t>Preserving the exact group name when converting from vCard to JSContact and back to vCard is not necessary.  Any group identifiers will do, as long as the resulting vCard groups its properties equally to the original vCard.  Implementations <bcp14>MAY</bcp14> preserve the original group name in the <xref target="jscontact-prop-vcard">"parameters" property</xref>.</t>
           <figure anchor="group_conversion_params">
-            <name>Example of How to Preserve the Group Name in vCardParams during Conversion</name>
+            <name>Example of How to Preserve the Group Name for a Known Property</name>
             <sourcecode type="vcard"><![CDATA[
 item1.TEL;VALUE=uri:tel:+1-555-555-5555
+item1.X-ABLabel:Test
 ]]></sourcecode>
             <sourcecode type="json"><![CDATA[
 "phones": {
   "p1": {
     "number": "tel:+1-555-555-5555",
-    "vCardParams" : {
-     "group" : "item1"
+    "label": "test"
+  }
+},
+"vCard": {
+  "convertedProperties": {
+    "phones/p1/number": {
+      "name": "tel",
+      "parameters": {
+        "group": "item1"
+      }
+    },
+    "phones/p1/label": {
+      "name": "x-ablabel",
+      "parameters": {
+        "group": "item1"
+      }
     }
   }
 }
 ]]></sourcecode>
           </figure>
           <figure anchor="group_conversion_props">
-            <name>Example of How to Preserve the Group Name in vCardProps during Conversion</name>
+            <name>Example of How to Preserve the Group Name for an Unknown Property</name>
             <sourcecode><![CDATA[
 item2.X-FOO:bar
 ]]></sourcecode>
             <sourcecode type="json"><![CDATA[
-"vCardProps": [
-  ["x-foo", {
-    "group": "item2"
-  }, "unknown", "bar"]
+"vCard": {
+  "properties": [
+    ["x-foo", {
+      "group": "item2"
+    }, "unknown", "bar"]
+  ]
 ]
 ]]></sourcecode>
           </figure>
@@ -318,7 +339,7 @@ N;ALTID=1;PHONETIC=jyut;
         </section>
         <section anchor="vcard-param-pid">
           <name>PID</name>
-          <t>The PID parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.5" sectionFormat="of"/>) converts to the vCardParams property; see <xref target="jscontact-prop-vcardparams"/>.</t>
+          <t>The PID parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.5" sectionFormat="of"/>) does not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert it to the "parameters" property of the VCardProp object (<xref target="jscontact-prop-vcard"/>.</t>
         </section>
         <section anchor="vcard-param-pref">
           <name>PREF</name>
@@ -326,26 +347,17 @@ N;ALTID=1;PHONETIC=jyut;
         </section>
         <section anchor="vcard-param-propid">
           <name>PROP-ID</name>
-          <t>The PROP-ID parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.7" sectionFormat="of"/>) converts to the Id-typed key of the JSContact object to which the vCard property having this parameter converts.</t>
+          <t>The PROP-ID parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.7" sectionFormat="of"/>) is deprecated. The <xref target="vcard-param-jsid">JSID</xref> parameter replaces it.</t>
+          <t>The PROP-ID parameter <bcp14>MUST</bcp14> be ignored if the JSID parameter is set on the same property. If the JSID parameter is not set, implementations <bcp14>MAY</bcp14>  convert the PROP-ID parameter to the key of the JSContact object to which the vCard property converts to.</t>
           <figure anchor="propid_conversion">
             <name>PROP-ID Conversion Example</name>
             <sourcecode type="vcard"><![CDATA[
-TEL;PROP-ID=PHONE-A;VALUE=uri;PREF=1;TYPE="voice,home"
-  :tel:+1-555-555-5555;ext=5555
-TEL;PROP-ID=PHONE-B;VALUE=uri;TYPE=home
-  :tel:+33-01-23-45-67
+TEL;PROP-ID=xyz;VALUE=uri:tel:+1-555-555-5555;ext=5555
 ]]></sourcecode>
             <sourcecode type="json"><![CDATA[
 "phones": {
-  "PHONE-A": {
-    "contexts": { "private": true },
-    "features": { "voice": true },
+  "xyz": {
     "number": "tel:+1-555-555-5555;ext=5555",
-    "pref": 1
-  },
-  "PHONE-B": {
-    "contexts": { "private": true },
-    "number": "tel:+33-01-23-45-67"
   }
 }
 ]]></sourcecode>
@@ -378,7 +390,7 @@ TEL;PROP-ID=PHONE-B;VALUE=uri;TYPE=home
         </section>
         <section anchor="vcard-param-value">
           <name>VALUE</name>
-          <t>The VALUE parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.2" sectionFormat="of"/>) does not convert to an IANA-registered property in JSContact.  To preserve properties with experimental values, see Sections <xref target="jscontact-prop-vcardprops" format="counter"/> and <xref target="jscontact-prop-vcardparams" format="counter"/>.</t>
+          <t>The VALUE parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.2" sectionFormat="of"/>) does not convert to an IANA-registered property in JSContact.  To preserve properties with experimental values, see Sections <xref target="jscontact-prop-vcard" format="counter"/> and <xref target="jscontact-prop-vcard" format="counter"/>.</t>
         </section>
       </section>
       <section>
@@ -421,7 +433,7 @@ SOURCE:https://dir.example.com/addrbook/jdoe/Jean%20Dupont.vcf
         </section>
         <section anchor="vcard-prop-xml">
           <name>XML</name>
-          <t>The XML property (<xref target="RFC6350" derivedContent="RFC6350" section="6.1.5" sectionFormat="of"/>) converts to the vCardProps property; see <xref target="jscontact-prop-vcardprops"/>.</t>
+          <t>The XML property (<xref target="RFC6350" derivedContent="RFC6350" section="6.1.5" sectionFormat="of"/>) does not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert it to the "properties" property of the VCard object (<xref target="jscontact-prop-vcard"/>).</t>
         </section>
       </section>
       <section>
@@ -441,7 +453,7 @@ SOURCE:https://dir.example.com/addrbook/jdoe/Jean%20Dupont.vcf
           <t>DEATHDATE and DEATHPLACE convert to an Anniversary object having the date and place properties set.  The Anniversary object's kind property is set to "death".
             </t>
           <t>ANNIVERSARY converts to the Anniversary object's date property.  The Anniversary object's kind property is set to "wedding".</t>
-          <t>If the BIRTHPLACE or DEATHPLACE property value is of type URI using the "geo:" URI scheme, then it converts to the Address object's coordinates property.  If the value type is TEXT then it converts to the Address object's full property.  Otherwise it converts to the vCardProps property; see <xref target="jscontact-prop-vcardprops"/>.</t>
+          <t>If the BIRTHPLACE or DEATHPLACE property value is of type URI using the "geo:" URI scheme, then it converts to the Address object's coordinates property.  If the value type is TEXT then it converts to the Address object's full property.  Otherwise it does not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert it to the "properties" property of the VCard object (<xref target="jscontact-prop-vcard"/>).</t>
           <t>The ALTID and LANGUAGE parameters of both the BIRTHPLACE and DEATHPLACE properties convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <figure anchor="anniversary_conversion">
             <name>BDAY, BIRTHPLACE, DEATHDATE, DEATHPLACE, and ANNIVERSARY Conversion Example</name>
@@ -492,7 +504,8 @@ ANNIVERSARY:19860201
         </section>
         <section anchor="vcard-prop-fn">
           <name>FN</name>
-          <t>The FN property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.1" sectionFormat="of"/>) converts to the Name object's full property (<xref target="fn_conversion"/>).  If the LANGUAGE parameter is set, then the FN property converts as outlined in <xref target="vcard-param-language"/>.  In the unexpected case where the vCard contains more than one FN property without the LANGUAGE parameter, convert the FN property that has the least parameters.  If multiple such FN properties are present, choose any of them.  All other FN properties convert to the <xref target="jscontact-prop-vcardprops">vCardProps</xref> property.</t>
+          <t>The FN property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.1" sectionFormat="of"/>) converts to the Name object's full property (<xref target="fn_conversion"/>).  If the LANGUAGE parameter is set, then the FN property converts as outlined in <xref target="vcard-param-language"/>.  In the unexpected case where the vCard contains more than one FN property without the LANGUAGE parameter, convert the FN property that has the least parameters.  If multiple such FN properties are present, choose any of them.</t>
+          <t>All other FN properties do not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert them to the "properties" property of the VCard object (<xref target="jscontact-prop-vcard"/>).</t>
           <figure anchor="fn_conversion">
             <name>FN Conversion Example</name>
             <sourcecode type="vcard"><![CDATA[
@@ -507,7 +520,7 @@ FN:John Q. Public, Esq.
         </section>
         <section anchor="vcard-prop-gender">
           <name>GENDER</name>
-          <t>The GENDER property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.7" sectionFormat="of"/>) does not convert to an IANA-registered property in JSContact.  To convert this property, see <xref target="jscontact-prop-vcardprops"/>.  Alternatively, the Card object's speakToAs property defines how to address and refer to an individual represented by the Card, as do the newly defined vCard GRAMGENDER and PRONOUNS properties of <xref target="RFC9554"/>.</t>
+          <t>The GENDER property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.7" sectionFormat="of"/>) does not convert to an IANA-registered property in JSContact.  To convert this property, see <xref target="jscontact-prop-vcard"/>.  Alternatively, the Card object's speakToAs property defines how to address and refer to an individual represented by the Card, as do the newly defined vCard GRAMGENDER and PRONOUNS properties of <xref target="RFC9554"/>.</t>
         </section>
         <section anchor="vcard-prop-gramgender">
           <name>GRAMGENDER and PRONOUNS</name>
@@ -838,7 +851,8 @@ EMAIL;PREF=1:jane_doe@example.com
         </section>
         <section anchor="vcard-prop-impp">
           <name>IMPP</name>
-          <t>The IMPP property (<xref target="RFC6350" derivedContent="RFC6350" section="6.4.3" sectionFormat="of"/>) converts to an OnlineService object (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>) in the Card object's onlineServices property (<xref target="impp_conversion"/>).  The vCardName property is set to "impp", and the uri property is set to the IMPP value.</t>
+          <t>The IMPP property (<xref target="RFC6350" derivedContent="RFC6350" section="6.4.3" sectionFormat="of"/>) converts to an OnlineService object (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>) in the Card object's onlineServices property (<xref target="impp_conversion"/>).  The "uri" property is set to the IMPP value.</t>
+          <t>Implementations <bcp14>MAY</bcp14> indicate that the OnlineService object converted from the IMPP property by adding an entry for the "uri" property of the OnlineService object in the "vCard/convertedProperties" property.</t>
           <t>The SERVICE-TYPE, USERNAME, PREF, and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <figure anchor="impp_conversion">
             <name>IMPP Conversion Example</name>
@@ -849,8 +863,14 @@ IMPP;PREF=1:xmpp:alice@example.com
 "onlineServices": {
   "OS-1": {
     "uri": "xmpp:alice@example.com",
-    "pref": 1,
-    "vCardName": "impp"
+    "pref": 1
+  }
+},
+"vCard": {
+  "convertedProperties": {
+    "onlineServices/OS-1/uri": {
+      "name": "impp"
+    }
   }
 }
 ]]></sourcecode>
@@ -902,7 +922,8 @@ LANGUAGE:de-AT
         </section>
         <section anchor="vcard-prop-socialprofile">
           <name>SOCIALPROFILE</name>
-          <t>The SOCIALPROFILE property (<xref target="RFC9554" derivedContent="RFC9554" section="3.5" sectionFormat="of"/>) converts to an OnlineService object (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>) in the Card object's onlineServices property (<xref target="socialprofile_conversion"/>).  The vCardName property is set to "socialprofile", or it can be omitted.  If the SOCIALPROFILE property value is of type URI, then the OnlineService object's uri property is set, otherwise, the user property is set.</t>
+          <t>The SOCIALPROFILE property (<xref target="RFC9554" derivedContent="RFC9554" section="3.5" sectionFormat="of"/>) converts to an OnlineService object (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>) in the Card object's onlineServices property (<xref target="socialprofile_conversion"/>). If the SOCIALPROFILE property value is of type URI, then the "uri" property is set, otherwise, the "user" property is set.</t>
+          <t>Implementations <bcp14>MAY</bcp14> indicate that the OnlineService object converted from the SOCIALPROFILE property by adding an entry for the "uri" or "user" property of the OnlineService object in the "vCard/convertedProperties" property.</t>
           <t>The SERVICE-TYPE, USERNAME, PREF, and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <figure anchor="socialprofile_conversion">
             <name>SOCIALPROFILE Conversion Example</name>
@@ -1008,7 +1029,7 @@ TEL;VALUE=uri;TYPE=home:tel:+33-01-23-45-67
             <li>Otherwise, construct the time zone name with "Etc/GMT" suffixed with the string representation of the reversed sign hour offset, including the sign but excluding leading zeros and minutes.  For example, the UTC offset value "-0500" converts to "Etc/GMT+5".</li>
           </ul>
           <t>For such property values, also see <xref target="combine-geo-props"/> to determine which Address object instance to convert to.</t>
-          <t>Any other value of type UTC-OFFSET or URI does not convert to an IANA-registered property in JSContact.  To convert such property, see <xref target="jscontact-prop-vcardprops"/>.</t>
+          <t>Any other value of type UTC-OFFSET or URI does not convert to an IANA-registered property in JSContact.  To convert such property, see <xref target="jscontact-prop-vcard"/>.</t>
         </section>
         <section anchor="combine-geo-props">
           <name>Combining Geographical Properties</name>
@@ -1112,7 +1133,7 @@ ORG;SORT-AS="ABC":ABC\, Inc.;North American Division;Marketing
         </section>
         <section anchor="vcard-prop-related">
           <name>RELATED</name>
-          <t>The RELATED property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.6" sectionFormat="of"/>) converts to the Card object's relatedTo property (<xref target="related_conversion"/>).  The property value converts to the key in the relatedTo property.  The TYPE parameters convert to the Relation object's relation property (<xref target="RFC9553" derivedContent="RFC9553" section="2.1.8" sectionFormat="of"/>).  Any other parameters convert as defined in <xref target="jscontact-prop-vcardparams"/>.</t>
+          <t>The RELATED property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.6" sectionFormat="of"/>) converts to the Card object's relatedTo property (<xref target="related_conversion"/>).  The property value converts to the key in the relatedTo property.  The TYPE parameters convert to the Relation object's relation property (<xref target="RFC9553" derivedContent="RFC9553" section="2.1.8" sectionFormat="of"/>).  Any other parameters convert as defined in <xref target="jscontact-prop-vcard"/>.</t>
           <figure anchor="related_conversion">
             <name>RELATED Conversion Example</name>
             <sourcecode type="vcard"><![CDATA[
@@ -1308,7 +1329,7 @@ CATEGORIES:internet,IETF,Industry,Information Technology
         </section>
         <section anchor="vcard-prop-clientpidmap">
           <name>CLIENTPIDMAP</name>
-          <t>The CLIENTPIDMAP property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.7" sectionFormat="of"/>) converts to the <xref target="jscontact-prop-vcardprops">vCardProps</xref> property.</t>
+          <t>The CLIENTPIDMAP property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.7" sectionFormat="of"/>) does not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert it to the "properties" property of the VCard object (<xref target="jscontact-prop-vcard"/>).</t>
         </section>
         <section anchor="vcard-prop-created">
           <name>CREATED</name>
@@ -1425,7 +1446,7 @@ URL:https://example.org/restaurant.french/~chezchic.html
         </section>
         <section anchor="vcard-prop-version">
           <name>VERSION</name>
-          <t>The VERSION property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.9" sectionFormat="of"/>) converts to the <xref target="jscontact-prop-vcardprops">vCardProps</xref> property.</t>
+          <t>The VERSION property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.9" sectionFormat="of"/>) does not convert to a standard JSContaact element. Implementations <bcp14>MAY</bcp14> convert it to the "properties" property of the VCard object (<xref target="jscontact-prop-vcard"/>).</t>
         </section>
         <section anchor="vcard-prop-xablabel">
           <name>X-ABLabel</name>
@@ -1550,89 +1571,11 @@ FBURL;MEDIATYPE=text/calendar:https://example.com/busy/project-a.ifb
       </section>
       <section anchor="vcard-extended">
         <name>Extended Properties and Parameters</name>
-        <t>Extended properties and parameters convert as specified in <xref target="new-jscontact"/>.</t>
+        <t>Extended properties and parameters convert as specified in <xref target="updates-to-jscontact"/>.</t>
       </section>
-      <section anchor="new-jscontact">
-        <name>New JSContact Properties</name>
-        <t>vCards may contain properties or parameters for which no IANA-registered JSContact property is defined.  For example, a vCard may contain properties and parameters of which the semantics or purposes are unknown to the implementation; see <xref target="RFC6350" sectionFormat="of" section="6.10"/>.</t>
-        <t>This section defines JSContact properties by which such vCard properties and parameters <bcp14>MAY</bcp14> be represented in JSContact.  Implementations <bcp14>MAY</bcp14> choose to convert differently if they deem that more appropriate.</t>
-        <section anchor="jscontact-prop-vcardprops">
-          <name>vCardProps</name>
-          <dl>
-            <dt>vCardProps: JCardProp[] (optional).</dt>
-            <dd>Contains vCard properties that are set in the vCard represented by this JSContact object.  The JCardProp type denotes a jCard-encoded vCard property as defined in <xref target="RFC7095" sectionFormat="of" section="3.3"/>.</dd>
-            <dt>Example:</dt>
-            <dd>
-              <t>This illustrates how to convert a vCard extension property:</t>
-              <figure anchor="props_conversion">
-                <name>JSContact vCardProps Example</name>
-                <sourcecode type="vcard"><![CDATA[
-item1.X-FOO;X-BAR=Hello:World!
-]]></sourcecode>
-                <sourcecode type="json"><![CDATA[
-"vCardProps": [
-  ["x-foo", {
-    "x-bar": "Hello",
-    "group": "item1"
-  }, "unknown", "World!"]
-]
-]]></sourcecode>
-              </figure>
-            </dd>
-          </dl>
-        </section>
-        <section anchor="jscontact-prop-vcardparams">
-          <name>vCardParams</name>
-          <dl>
-            <dt>vCardParams: String[String|String[]] (optional).</dt>
-            <dd>Contains vCard parameters that are set on the vCard property represented by this JSContact object.  The value <bcp14>MUST</bcp14> be a JSON object containing vCard property parameters as defined in <xref target="RFC7095" sectionFormat="of" section="3.3"/>.  Each entry represents a parameter of the vCard property that converts to the JSContact object.</dd>
-            <dt>Example:</dt>
-            <dd>
-              <t>This illustrates how to convert a vCard extension parameter:</t>
-              <figure anchor="params_conversion">
-                <name>JSContact vCardParams Example</name>
-                <sourcecode type="vcard"><![CDATA[
-EMAIL;X-FOO=Bar:jane_doe@example.com
-]]></sourcecode>
-                <sourcecode type="json"><![CDATA[
-"emails": {
-  "email1": {
-    "address": "jane_doe@example.com",
-    "vCardParams": {
-      "x-foo": "Bar"
-    }
-  }
-}
-]]></sourcecode>
-              </figure>
-            </dd>
-          </dl>
-        </section>
-        <section anchor="jscontact-prop-vcardname">
-          <name>vCardName</name>
-          <dl>
-            <dt>vCardName: String (optional).</dt>
-            <dd>Contains the name of the vCard element that is represented by this JSContact object.  For example, this allows to preserve the name of a vCard property when multiple vCard properties convert the same JSContact type.  The case-insensitive value <bcp14>MUST</bcp14> be valid according to the "name" ABNF defined in <xref target="RFC6350" sectionFormat="of" section="3.3"/>.</dd>
-            <dt>Example:</dt>
-            <dd>
-              <t>Both vCard IMPP and SOCIALPROFILE convert to an OnlineService object (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>) in JSContact.  The vCardName property value indicates that the vCard source element was IMPP as follows:</t>
-              <figure anchor="example-vcardname">
-                <name>JSContact vCardName Example</name>
-                <sourcecode type="vcard"><![CDATA[
-IMPP:xmpp:alice@example.com
-]]></sourcecode>
-                <sourcecode type="json"><![CDATA[
-"onlineServices": {
-  "os1": {
-    "uri": "xmpp:alice@example.com",
-    "vCardName": "impp"
-  },
-}
-]]></sourcecode>
-              </figure>
-            </dd>
-          </dl>
-        </section>
+      <section anchor="vcard-unknown">
+        <name>Unknown Properties and Parameters</name>
+        <t>vCards may contain properties or parameters for which no IANA-registered JSContact property is defined.  For example, a vCard may contain properties and parameters of which the semantics or purposes are unknown to the implementation; see <xref target="RFC6350" sectionFormat="of" section="6.10"/>. <xref target="jscontact-prop-vcard"/> defines the "vCard" property to represent such vCard elements in JSContact.</t>
       </section>
     </section>
     <section anchor="convert-jscontact-to-vcard">
@@ -1658,97 +1601,95 @@ IMPP:xmpp:alice@example.com
           <t>This specification defines the new <xref target="vcard-prop-jsprop">JSPROP</xref> vCard property and <xref target="vcard-param-jsptr">JSPTR</xref> vCard parameter by which such JSContact properties <bcp14>MAY</bcp14> be represented in vCard.  Implementations <bcp14>MAY</bcp14> choose to convert differently if they deem that more appropriate.</t>
         </section>
       </section>
-      <section anchor="new-vcard-props">
-        <name>New vCard Properties</name>
-        <section anchor="vcard-prop-jsprop">
-          <name>JSPROP</name>
-          <dl>
-            <dt>Property name:</dt>
-            <dd>JSPROP</dd>
-            <dt>Purpose:</dt>
-            <dd>Represents a JSContact property in vCard.</dd>
-            <dt>Value type:</dt>
-            <dd>TEXT; also see "Format definition" below for value restrictions.</dd>
-            <dt>Conformance:</dt>
-            <dd>Can be specified multiple times in a vCard.</dd>
-            <dt>Property parameters:</dt>
-            <dd>
-          The JSPTR parameter <bcp14>MUST</bcp14> be set for this property.
-          Other IANA-registered and experimental property parameters can be specified on this property.
-        </dd>
-            <dt>Description:</dt>
-            <dd>
-              <t>This property converts an arbitrary JSContact property from and to vCard.  The vCard property value is the JSON-encoded value of the JSContact property, represented as a TEXT value.  The format of the JSON value <bcp14>MUST</bcp14> be compact, e.g., without insignificant whitespace as defined in <xref target="RFC8259" format="default" sectionFormat="of" derivedContent="RFC8259" section="2"/>.  The value of the JSPTR parameter points to the JSContact property within the Card.</t>
-              <t>The root of the JSON pointer is always the Card object that this vCard converts to, irrespective if the JSON pointer starts with the SOLIDUS (U+002F) character.  The pointer <bcp14>MUST NOT</bcp14> reference into an array.</t>
-              <t>All JSPROP properties in a vCard together form a PatchObject as defined in <xref target="RFC9553"/>.  The value of its JSPTR parameter corresponds to a key in the PatchObject; the value of the JSPROP property corresponds to the value for that key.  When converting from vCard to JSContact, the PatchObject <bcp14>MUST</bcp14> only be applied after all other vCard properties have already been converted.  The PatchObject <bcp14>MUST</bcp14> be valid, including the restriction that an invalid PatchObject <bcp14>MUST NOT</bcp14> be applied.</t>
-            </dd>
-            <dt>Format definition:</dt>
-            <dd>
-              <t>This property is defined by the following notation:</t>
-              <sourcecode name="" type="abnf"><![CDATA[
-jsprop = "JSPROP" jsprop-param ":" TEXT
-
-jsprop-param  = *(
-            ; The following are MANDATORY and MUST NOT
-            ; occur more than once
-            ( ";" jsptr-param ) /    ; see next section
-            ( ";" "VALUE" "=" "TEXT")
-            ;
-            ; The following is OPTIONAL
-            ; and MAY occur more than once.
-            ;
-            (";" other-param)
-            ;
-            )
-]]></sourcecode>
-            </dd>
-            <dt anchor="vcard-prop-jsprop-examples">Example(s):</dt>
-            <dd>
-              <t>This illustrates how to convert a property at the top level in a Card object that is unknown to the implementation.</t>
-              <figure anchor="jscontact-prop-unknown">
-                <name>Unknown Property Example</name>
-                <sourcecode type="json"><![CDATA[
-"someUnknownProperty": true
-]]></sourcecode>
-                <sourcecode type="vcard"><![CDATA[
-JSPROP;JSPTR="someUnknownProperty":true
-]]></sourcecode>
-              </figure>
-              <t>This illustrates how to convert a vendor-specific property at the top level of a Card object.  Note the required use of quoted string for the JSPTR value, which allows the path to include the COLON (U+003A) character.</t>
-              <figure anchor="jscontact-prop-vendor-specific">
-                <name>Vendor-Specific Property Conversion Example</name>
-                <sourcecode type="json"><![CDATA[
-"example.com:foo": {
-  "bar": 1234
-}
-]]></sourcecode>
-                <sourcecode type="vcard"><![CDATA[
-JSPROP;JSPTR="example.com:foo":{"bar":1234}
-]]></sourcecode>
-              </figure>
-              <t>This illustrates how to convert a vendor-specific property at a nested level in a Card object using a path relative to the Card object.  Although not recommended, the property name includes the SOLIDUS (U+002F) character, which requires escaping in the JSON pointer.</t>
-              <figure anchor="jscontact-prop-nested">
-                <name>Nested Vendor-Specific Property Example with a Path Relative to Card</name>
-                <sourcecode type="json"><![CDATA[
-"phones": {
-  "phone1": {
-    "number": "tel:+33-01-23-45-67",
-    "example.com:foo/bar": "tux hux"
-  }
-}
-]]></sourcecode>
-                <sourcecode type="vcard"><![CDATA[
-TEL:tel:+33-01-23-45-67
-JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
- "tux hux"
-]]></sourcecode>
-              </figure>
-            </dd>
-          </dl>
-        </section>
-      </section>
       <section>
         <name>New vCard Parameters</name>
+      </section>
+    </section>
+    <section anchor="updates-to-jscontact">
+      <name>Updates to JSContact</name>
+      <section anchor="jscontact-new-properties">
+        <name>New Properties</name>
+        <section anchor="jscontact-prop-vcard">
+          <name>vCard</name>
+          <dl newline="true">
+            <dt>Name:</dt>
+            <dd>vCard</dd>
+            <dt>Context:</dt>
+            <dd>A Card object</dd>
+            <dt>Type:</dt>
+            <dd><tt>VCard</tt> (optional)</dd>
+            <dt>Description</dt>
+            <dd>
+              <t>This property contains information about vCard data that got converted to a JSContact Card object.  It allows for preserving arbitrary vCard elements, such as extension properties and parameters. This specification defines the VCard object type for converting a vCard to a JSContact Card object. Future specifications <bcp14>MAY</bcp14> define additional value types for this property.</t>
+              <t>A VCard object has the following properties:</t>
+              <dl>
+                <dt>@type: String</dt>
+                <dd>This specifies the type of this object. This <bcp14>MUST</bcp14> be <tt>VCard</tt>, if set.</dd>
+                <dt>convertedProperties: String[VCardProperty] (optional)</dt>
+                <dd>
+                  <t>This contains conversion-related information about the vCard properties that got partially or fully converted to JSContact.  Each key defines the path to a JSContact element.  The value for each key contains information about the vCard property which converted to the JSContact element located at that key. Unless otherwise defined for a specific vCard property, the path points to that JSContact object property to which the vCard property value converted to.</t>
+                  <t>The key <bcp14>MUST</bcp14> be a valid key of a PatchObject as defined in <xref target="RFC9553" section="1.4.3" sectionFormat="of"/>.  The key <bcp14>MAY</bcp14> point into a nested object.</t>
+                </dd>
+                <dt>properties: *[][] (optional)</dt>
+                <dd>This contains properties of the vCard which did not convert to standard JSContact elements. The value <bcp14>MUST</bcp14> be a list of vCard properties formatted in jCard as defined in <xref target="RFC7095" section="3.3" sectionFormat="of"/>.
+              </dd>
+              </dl>
+              <t>A VCardProperty object has the following properties:</t>
+              <dl>
+                <dt>@type: String</dt>
+                <dd>This specifies the type of this object. This <bcp14>MUST</bcp14> be <tt>VCardProperty</tt>, if set.</dd>
+                <dt>name: String (mandatory)</dt>
+                <dd>This is the name of the vCard property in lowercase.</dd>
+                <dt>valueType: String (optional)</dt>
+                <dd>This is the name of the vCard property value type in lowercase.</dd>
+                <dt>parameters: String[String|String[]] (optional)</dt>
+                <dd>This contains parameters of the vCard property. The value <bcp14>MUST</bcp14> comply with vCard parameters formatted in jCard as defined in <xref target="RFC7095" section="3.4" sectionFormat="of"/>.</dd>
+              </dl>
+            </dd>
+          </dl>
+          <t>The example in <xref target="test-jscontact-prop-vcard"/> describes how to convert unknown vCard elements to the "vCard" property. The "X-FOO" parameter set on the FN property illustrates how to preserve an unknown vCard parameter on a property that does convert to a standard JSContact element. The "X-BAR" property and "X-BAZ" component illustrate how to convert entirely unknown vCard properties.</t>
+          <figure anchor="test-jscontact-prop-vcard">
+            <name>Converting unknown vCard elements to the vCard property</name>
+            <sourcecode type="text/vcard"><![CDATA[
+BEGIN:VCARD
+VERSION:4.0
+FN;X-FOO=bar:test
+...
+X-BAR:bam
+...
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"name": {
+  "full": "test"
+},
+"vCard": {
+  "version": "4.0",
+  "convertedProperties": {
+    "name/full": {
+      "name": "fn",
+      "parameters": {
+        "x-foo": "bar"
+      }
+    }
+  },
+  "properties": [
+    [
+      "x-bar",
+      {},
+      "unknown",
+      "bam"
+    ]
+  ],
+}
+]]></sourcecode>
+          </figure>
+        </section>
+      </section>
+    </section>
+    <section anchor="updates-to-vCard">
+      <name>Updates to vCard</name>
+      <section>
+        <name>New Parameters</name>
         <section anchor="vcard-param-jscomps">
           <name>JSCOMPS</name>
           <dl>
@@ -1861,6 +1802,42 @@ ADR;JSCOMPS="s,\, ;11;s, ;10;3":;;54321 Oak St;Reston;;;;;;;Oak St;54321;;;;;;
             </dd>
           </dl>
         </section>
+        <section anchor="vcard-param-jsid">
+          <name>JSID</name>
+          <dl newline="true">
+            <dt>Parameter Name:</dt>
+            <dd>JSID</dd>
+            <dt>Purpose:</dt>
+            <dd>Specifies the JSContact identifier of the associated property.</dd>
+            <dt>Description:</dt>
+            <dd>
+              <t>This parameter specifies the JSON object key of the JSContact object to which an vCard property converts to. For example, this parameter set on an EMAIL property defines the key of the EmailAddress object in the Card object's "emails" property (see below for an example).</t>
+              <t>The value of the JSID parameter <bcp14>MUST</bcp14> be a valid key according to the definition of the JSContact property to which the property that this parameter is set on converts to. Typically, this requires the value to be a valid <xref target="RFC9555" section="1.4.1" sectionFormat="parens">Id</xref>.</t>
+            </dd>
+            <dt>Format Definition:</dt>
+            <dd>
+              <sourcecode type="abnf"><![CDATA[
+jsid-param  = "JSID" "=" param-value
+]]></sourcecode>
+            </dd>
+            <dt>Example(s):</dt>
+            <dd>
+              <figure anchor="test-ical-param-jsid-email">
+                <name>Converting the JSID parameter on an EMAIL property</name>
+                <sourcecode type="text/calendar"><![CDATA[
+EMAIL;JSID=xyz:jane_doe@example.com
+]]></sourcecode>
+                <sourcecode type="json"><![CDATA[
+"emails": {
+  "xyz": {
+    "address": "jane_doe@example.com"
+  }
+}
+]]></sourcecode>
+              </figure>
+            </dd>
+          </dl>
+        </section>
         <section anchor="vcard-param-jsptr">
           <name>JSPTR</name>
           <dl>
@@ -1890,6 +1867,95 @@ JSPROP;JSPTR="example.com:foo":"bar"
           </dl>
         </section>
       </section>
+      <section anchor="new-vcard-props">
+        <name>New vCard Properties</name>
+        <section anchor="vcard-prop-jsprop">
+          <name>JSPROP</name>
+          <dl>
+            <dt>Property name:</dt>
+            <dd>JSPROP</dd>
+            <dt>Purpose:</dt>
+            <dd>Represents a JSContact property in vCard.</dd>
+            <dt>Value type:</dt>
+            <dd>TEXT; also see "Format definition" below for value restrictions.</dd>
+            <dt>Conformance:</dt>
+            <dd>Can be specified multiple times in a vCard.</dd>
+            <dt>Property parameters:</dt>
+            <dd>
+          The JSPTR parameter <bcp14>MUST</bcp14> be set for this property.
+          Other IANA-registered and experimental property parameters can be specified on this property.
+        </dd>
+            <dt>Description:</dt>
+            <dd>
+              <t>This property converts an arbitrary JSContact property from and to vCard.  The vCard property value is the JSON-encoded value of the JSContact property, represented as a TEXT value.  The format of the JSON value <bcp14>MUST</bcp14> be compact, e.g., without insignificant whitespace as defined in <xref target="RFC8259" format="default" sectionFormat="of" derivedContent="RFC8259" section="2"/>.  The value of the JSPTR parameter points to the JSContact property within the Card.</t>
+              <t>The root of the JSON pointer is always the Card object that this vCard converts to, irrespective if the JSON pointer starts with the SOLIDUS (U+002F) character.  The pointer <bcp14>MUST NOT</bcp14> reference into an array.</t>
+              <t>All JSPROP properties in a vCard together form a PatchObject as defined in <xref target="RFC9553"/>.  The value of its JSPTR parameter corresponds to a key in the PatchObject; the value of the JSPROP property corresponds to the value for that key.  When converting from vCard to JSContact, the PatchObject <bcp14>MUST</bcp14> only be applied after all other vCard properties have already been converted.  The PatchObject <bcp14>MUST</bcp14> be valid, including the restriction that an invalid PatchObject <bcp14>MUST NOT</bcp14> be applied.</t>
+            </dd>
+            <dt>Format definition:</dt>
+            <dd>
+              <t>This property is defined by the following notation:</t>
+              <sourcecode name="" type="abnf"><![CDATA[
+jsprop = "JSPROP" jsprop-param ":" TEXT
+
+jsprop-param  = *(
+            ; The following are MANDATORY and MUST NOT
+            ; occur more than once
+            ( ";" jsptr-param ) /    ; see next section
+            ( ";" "VALUE" "=" "TEXT")
+            ;
+            ; The following is OPTIONAL
+            ; and MAY occur more than once.
+            ;
+            (";" other-param)
+            ;
+            )
+]]></sourcecode>
+            </dd>
+            <dt anchor="vcard-prop-jsprop-examples">Example(s):</dt>
+            <dd>
+              <t>This illustrates how to convert a property at the top level in a Card object that is unknown to the implementation.</t>
+              <figure anchor="jscontact-prop-unknown">
+                <name>Unknown Property Example</name>
+                <sourcecode type="json"><![CDATA[
+"someUnknownProperty": true
+]]></sourcecode>
+                <sourcecode type="vcard"><![CDATA[
+JSPROP;JSPTR="someUnknownProperty":true
+]]></sourcecode>
+              </figure>
+              <t>This illustrates how to convert a vendor-specific property at the top level of a Card object.  Note the required use of quoted string for the JSPTR value, which allows the path to include the COLON (U+003A) character.</t>
+              <figure anchor="jscontact-prop-vendor-specific">
+                <name>Vendor-Specific Property Conversion Example</name>
+                <sourcecode type="json"><![CDATA[
+"example.com:foo": {
+  "bar": 1234
+}
+]]></sourcecode>
+                <sourcecode type="vcard"><![CDATA[
+JSPROP;JSPTR="example.com:foo":{"bar":1234}
+]]></sourcecode>
+              </figure>
+              <t>This illustrates how to convert a vendor-specific property at a nested level in a Card object using a path relative to the Card object.  Although not recommended, the property name includes the SOLIDUS (U+002F) character, which requires escaping in the JSON pointer.</t>
+              <figure anchor="jscontact-prop-nested">
+                <name>Nested Vendor-Specific Property Example with a Path Relative to Card</name>
+                <sourcecode type="json"><![CDATA[
+"phones": {
+  "phone1": {
+    "number": "tel:+33-01-23-45-67",
+    "example.com:foo/bar": "tux hux"
+  }
+}
+]]></sourcecode>
+                <sourcecode type="vcard"><![CDATA[
+TEL:tel:+33-01-23-45-67
+JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
+ "tux hux"
+]]></sourcecode>
+              </figure>
+            </dd>
+          </dl>
+        </section>
+      </section>
     </section>
     <section anchor="security-considerations">
       <name>Security Considerations</name>
@@ -1898,115 +1964,7 @@ JSPROP;JSPTR="example.com:foo":"bar"
     </section>
     <section anchor="IANA">
       <name>IANA Considerations</name>
-      <section>
-        <name>New vCard Property</name>
-        <t>IANA has added the following entry to the "vCard Properties" registry, as defined in <xref target="RFC6350" sectionFormat="of" section="10.3.1"/>.</t>
-        <table anchor="new_properties">
-          <name>New vCard Property</name>
-          <thead>
-            <tr>
-              <th align="left">Namespace</th>
-              <th align="left">Property</th>
-              <th align="left">Reference</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td/>
-              <td align="left">JSPROP</td>
-              <td align="left">RFC 9555, <xref target="vcard-prop-jsprop"/></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-      <section>
-        <name>New vCard Parameter</name>
-        <t>IANA has added the following entry to the "vCard Parameters" registry, as defined in <xref target="RFC6350" sectionFormat="of" section="10.3.2"/>.</t>
-        <table anchor="new_parameters">
-          <name>New vCard Parameter</name>
-          <thead>
-            <tr>
-              <th align="left">Namespace</th>
-              <th align="left">Parameter</th>
-              <th align="left">Reference</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td/>
-              <td align="left">JSPTR</td>
-              <td align="left">RFC 9555, <xref target="vcard-param-jsptr"/></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-      <section>
-        <name>New JSContact Properties</name>
-        <t>IANA has added the following entries to the "JSContact Properties" registry.  Note that the Since Version is 1.0, the Until Version is not set, and the Change Controller is IETF for all of these properties.</t>
-        <table anchor="tab-iana-property-registry" align="center">
-          <name>JSContact Properties Registry</name>
-          <thead>
-            <tr>
-              <th align="left">Property Name</th>
-              <th align="left">Property Type</th>
-              <th align="left">Property Context</th>
-              <th align="left">Intended Usage</th>
-              <th align="left">Reference or Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td align="left">vCardName</td>
-              <td align="left">String</td>
-              <td align="left">Any JSContact object</td>
-              <td align="left">common</td>
-              <td align="left">RFC 9555, 
-                <xref target="jscontact-prop-vcardname" format="default"/></td>
-            </tr>
-            <tr>
-              <td align="left">vCardParams</td>
-              <td align="left">String[String|String[]]</td>
-              <td align="left">Any JSContact object</td>
-              <td align="left">common</td>
-              <td align="left">RFC 9555,
-                <xref target="jscontact-prop-vcardparams" format="default"/>
-              </td>
-            </tr>
-            <tr>
-              <td align="left">vCardProps</td>
-              <td align="left">JCardProp[]</td>
-              <td align="left">Card</td>
-              <td align="left">common</td>
-              <td align="left">RFC 9555,
-                <xref target="jscontact-prop-vcardprops" format="default"/>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-      <section>
-        <name>New JSContact Type</name>
-        <t>IANA has added the following entry to the "JSContact Types" registry. Note that the Since Version is 1.0, the Until Version is not set, and the Change Controller is IETF for this type.</t>
-        <table anchor="tab-iana-jscontact-type-registry" align="left">
-          <name>JSContact Types Registry</name>
-          <thead>
-            <tr>
-              <th align="left">Type Name</th>
-              <th align="left">Intended Usage</th>
-              <th align="left">Reference or Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td align="left">JCardProp</td>
-              <td align="left">common</td>
-              <td align="left">RFC 9555,
-                <xref target="jscontact-prop-vcardprops" format="default"/>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+      <t>TBD</t>
     </section>
   </middle>
   <back>
@@ -2058,9 +2016,11 @@ JSPROP;JSPTR="example.com:foo":"bar"
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7095.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8259.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9555.xml"/>
       </references>
       <references>
         <name>Informative References</name>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-calext-jscalendar-icalendar.xml"/>
         <!--[I-D.calconnect-vobject-i18n] IESG state Expired. Entered the long way to get the correct initials-->
         <reference anchor="I-D.calconnect-vobject-i18n" target="https://datatracker.ietf.org/doc/html/draft-calconnect-vobject-i18n-00">
           <front>
@@ -3240,7 +3200,135 @@ JSPROP;JSPTR="example.com:foo":"bar"
     <section anchor="differences-from-rfc9555">
       <name>Differences from RFC 9555</name>
       <t>This section documents all significant differences from RFC 9555. Insignificant differences, such as formatting, grammar or typos are not documented.</t>
-      <t>TBD</t>
+      <section>
+        <name>Changes to JSContact</name>
+        <section>
+          <name>Obsoleted Properties</name>
+          <t>The following JSContact properties became obsolete:</t>
+          <dl newline="true" spacing="normal" anchor="obsolete-prop-vcardprops">
+            <dt>
+              <strong>vCardProps</strong>
+            </dt>
+            <dd>
+              <t>This property is deprecated, the "properties" property of the newly defined <xref target="jscontact-prop-vcard">VCard type</xref> replaces it. <xref target="obsolete-vcardprops-example"/> illustrates this using the same example as<xref target="RFC9555" section="2.15.1" sectionFormat="of"/>.</t>
+              <figure anchor="obsolete-vcardprops-example">
+                <name>Example for Representing the Obsolete vCardProps Property</name>
+                <sourcecode type="json"><![CDATA[
+"vCardProps": [
+  ["x-foo", { }, "unknown", "bar"]
+]
+]]></sourcecode>
+                <sourcecode type="json"><![CDATA[
+"vCard": {
+  "properties": [
+    ["x-foo", { }, "unknown", "bar"]
+  ]
+}
+]]></sourcecode>
+              </figure>
+            </dd>
+          </dl>
+          <dl newline="true" spacing="normal">
+            <dt>
+              <strong>vCardParams</strong>
+            </dt>
+            <dd>
+              <t>This property is deprecated, the "parameters" property of the newly defined <xref target="jscontact-prop-vcard">VCardProperty type</xref> replaces it. <xref target="obsolete-vcardparams-example"/> illustrates this using the same example as <xref target="RFC9555" section="2.15.2" sectionFormat="of"/>.</t>
+              <figure anchor="obsolete-vcardparams-example">
+                <name>Example for Representing the Obsolete vCardParams Property</name>
+                <sourcecode type="json"><![CDATA[
+"emails": {
+  "email1": {
+    "address": "jane_doe@example.com",
+    "vCardParams": {
+      "x-foo": "Bar"
+    }
+  }
+}
+]]></sourcecode>
+                <sourcecode type="json"><![CDATA[
+"emails": {
+  "email1": {
+    "address": "jane_doe@example.com"
+  }
+}
+"vCard": {
+  "convertedProperties": {
+    "emails/email1/address": {
+      "name": "email",
+      "parameters": {
+        "x-foo": "Bar"
+      }
+    }
+  }
+}
+]]></sourcecode>
+              </figure>
+            </dd>
+          </dl>
+          <dl newline="true" spacing="normal">
+            <dt>
+              <strong>vCardName</strong>
+            </dt>
+            <dd>
+              <t>This property is deprecated, the "name" property of the newly defined <xref target="jscontact-prop-vcard">VCardProperty type</xref> replaces it. <xref target="obsolete-vcardname-example"/> illustrates this using the same example as <xref target="RFC9555" section="2.15.3" sectionFormat="of"/>.</t>
+              <figure anchor="obsolete-vcardname-example">
+                <name>Example for Representing the Obsolete vCardName Property</name>
+                <sourcecode type="json"><![CDATA[
+"onlineServices": {
+  "os1": {
+    "uri": "xmpp:alice@example.com",
+    "vCardName": "impp"
+  },
+}
+]]></sourcecode>
+                <sourcecode type="json"><![CDATA[
+"onlineServices": {
+  "os1": {
+    "uri": "xmpp:alice@example.com",
+    "vCardName": "impp"
+  },
+}
+"vCard": {
+  "convertedProperties": {
+    "onlineServices/os1/uri": {
+      "name": "impp"
+    }
+  }
+}
+]]></sourcecode>
+              </figure>
+            </dd>
+          </dl>
+        </section>
+        <section>
+          <name>Obsoleted Types</name>
+          <t>The following JSContact type definitions became obsolete:</t>
+          <dl newline="true" spacing="normal">
+            <dt>
+              <strong>JCardProp</strong>
+            </dt>
+            <dd>
+              <t>This type is deprecated because the "vCardProps" property became deprecated. Also see <xref target="obsolete-prop-vcardprops"/>.</t>
+            </dd>
+          </dl>
+        </section>
+      </section>
+      <section>
+        <name>Changes to vCard</name>
+        <section>
+          <name>Obsoleted Parameters</name>
+          <t>The following vCard parameters became obsolete:</t>
+          <dl newline="true" spacing="normal" anchor="obsolete-prop-prop-id">
+            <dt>
+              <strong>PROP-ID</strong>
+            </dt>
+            <dd>
+              <t>This parameter is deprecated, the newly defined <xref target="vcard-param-jsid">JSID parameter</xref> replaces it. <xref target="vcard-param-propid"/> defines how to process the PROP-ID in presence and absence of the JSID parameter.</t>
+            </dd>
+          </dl>
+        </section>
+      </section>
     </section>
     <section anchor="Acknowledgments" numbered="false">
       <name>Acknowledgements</name>
