@@ -66,7 +66,8 @@
       </section>
       <section anchor="relation-to-rfc9555">
         <name>Relation to obsolete RFC 9555</name>
-	<t>This document replaces the JSContact "vCardProps", "vCardParams" and "vCardParam" properties originally defined in <xref target="RFC9555"/> with the new <xref target="jscontact-prop-vcard">"vCard"</xref> property. The new property allows for edge cases where the former elements were insufficient. For vCard, it replaces the <xref target="RFC9554" section="4.7" sectionFormat="parens">PROP-ID</xref> parameter with the new <xref target="vcard-param-jsid">JSID</xref> parameter. Both changes align the conversion-specific elements of vCard and JSContact with those defined for iCalendar and JSCalendar in <xref target="I-D.ietf-calext-jscalendar-icalendar"/>, allowing for code reuse for implementations that support these formats.</t>
+        <t>This document obsoletes <xref target="RFC9555"/>. For contents that remain unchanged, it includes all verified errata for the obsoleted document.</t>
+	<t><xref target="updates-to-jscontact"/> replaces the JSContact "vCardProps", "vCardParams" and "vCardParam" properties originally defined in <xref target="RFC9555"/> with the new "vCard" property. The new property allows for edge cases where the former elements were insufficient. For vCard, <xref target="updates-to-vcard"/> replaces the <xref target="RFC9554" section="4.7" sectionFormat="parens">PROP-ID</xref> parameter with the new JSID parameter. Both changes align the conversion-specific elements of vCard and JSContact with those defined for iCalendar and JSCalendar in <xref target="I-D.ietf-calext-jscalendar-icalendar"/>, allowing for code reuse for implementations that support these formats.</t>
       </section>
       <section anchor="abnf-notations">
         <name>ABNF Notations</name>
@@ -1686,7 +1687,7 @@ X-BAR:bam
         </section>
       </section>
     </section>
-    <section anchor="updates-to-vCard">
+    <section anchor="updates-to-vcard">
       <name>Updates to vCard</name>
       <section>
         <name>New Parameters</name>
@@ -1796,7 +1797,7 @@ N;JSCOMPS=";1;2;2,1;0;6;4,1":Stevenson;John;Philip,Paul;;Jr.,M.D.;;Jr.
 }
 ]]></sourcecode>
                 <sourcecode type="vcard"><![CDATA[
-ADR;JSCOMPS="s,\, ;11;s, ;10;3":;;54321 Oak St;Reston;;;;;;;Oak St;54321;;;;;;
+ADR;JSCOMPS="s,\, ;10;s, ;11;3":;;54321 Oak St;Reston;;;;;;;Oak St;54321;;;;;;
 ]]></sourcecode>
               </figure>
             </dd>
@@ -3200,6 +3201,13 @@ JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
     <section anchor="differences-from-rfc9555">
       <name>Differences from RFC 9555</name>
       <t>This section documents all significant differences from RFC 9555. Insignificant differences, such as formatting, grammar or typos are not documented.</t>
+      <section>
+        <name>Applied Errata</name>
+        <t>The following errrata was applied to to this document:</t>
+        <ul>
+          <li><eref target="https://www.rfc-editor.org/errata/eid8555">Errata 8555</eref></li>
+        </ul>
+      </section>
       <section>
         <name>Changes to JSContact</name>
         <section>
