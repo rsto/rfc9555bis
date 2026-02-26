@@ -45,7 +45,7 @@
     <keyword>vCard</keyword>
     <keyword>jCard</keyword>
     <abstract>
-      <t>This document defines how to convert contact information between the JSContact and vCard data formats.  It defines conversion rules for every JSContact and vCard element registered at IANA at the time of publication.  It also defines new JSContact properties as well as vCard properties and parameters, to support converting arbitrary or unknown JSContact and vCard elements. This document obsoletes RFC 9555.</t>
+      <t>This document defines how to convert contact information between the JSContact and vCard data formats.  It defines conversion rules for every JSContact and vCard element registered at IANA at the time of publication.  It also defines new JSContact properties as well as vCard properties and parameters, to support converting arbitrary or unknown JSContact and vCard elements. This document obsoletes RFC 9555 and updates its definitions for JSContact version "2.0".</t>
     </abstract>
     <note removeInRFC="true">
       <t>Differences from RFC 9555 are documented in <xref target="differences-from-rfc9555"/>.</t>
@@ -66,8 +66,8 @@
       </section>
       <section anchor="relation-to-rfc9555">
         <name>Relation to obsolete RFC 9555</name>
-        <t>This document obsoletes <xref target="RFC9555"/>. For contents that remain unchanged, it includes all verified errata for the obsoleted document.</t>
-	<t><xref target="updates-to-jscontact"/> replaces the JSContact "vCardProps", "vCardParams" and "vCardParam" properties originally defined in <xref target="RFC9555"/> with the new "vCard" property. The new property allows for edge cases where the former elements were insufficient. For vCard, <xref target="updates-to-vcard"/> replaces the <xref target="RFC9554" section="4.7" sectionFormat="parens">PROP-ID</xref> parameter with the new JSID parameter. Both changes align the conversion-specific elements of vCard and JSContact with those defined for iCalendar and JSCalendar in <xref target="I-D.ietf-calext-jscalendar-icalendar"/>, allowing for code reuse for implementations that support these formats.</t>
+        <t>This document obsoletes <xref target="RFC9555"/>. For contents that remain unchanged, it includes all verified errata for the obsoleted document. The conversion rules are updated for JSContact version "2.0", defined in <xref target="I-D.ietf-calext-jscontact-uid"/>.</t>
+        <t><xref target="updates-to-jscontact"/> replaces the JSContact "vCardProps", "vCardParams" and "vCardParam" properties originally defined in <xref target="RFC9555"/> with the new "vCard" property. The new property allows for edge cases where the former elements were insufficient. For vCard, <xref target="updates-to-vcard"/> replaces the <xref target="RFC9554" section="4.7" sectionFormat="parens">PROP-ID</xref> parameter with the new JSID parameter. Both changes align the conversion-specific elements of vCard and JSContact with those defined for iCalendar and JSCalendar in <xref target="I-D.ietf-calext-jscalendar-icalendar"/>, allowing for code reuse for implementations that support these formats.</t>
       </section>
       <section anchor="abnf-notations">
         <name>ABNF Notations</name>
@@ -80,9 +80,11 @@
       <t>This section contains the conversion rules from the vCard to the JSContact Card.  It follows the same structure as vCard v4 <xref target="RFC6350"/>.  Properties and parameters of vCard extension RFCs, including those described in "vCard Format Extension for JSContact" <xref target="RFC9554"/>, have been added to the appropriate subsections.</t>
       <section>
         <name>General Rules</name>
-        <section>
+        <section anchor="convert-card-uid">
           <name>The Card uid Property</name>
-          <t>The UID property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.6" sectionFormat="of"/>) in vCard is optional, but the Card object's uid property (<xref target="RFC9553" derivedContent="RFC9553" section="2.1.9" sectionFormat="of"/>) is mandatory.  Implementations that convert a vCard without a UID property <bcp14>MUST</bcp14> generate a unique identifier as value for the uid property.  This value <bcp14>SHOULD</bcp14> be the same when converting the same vCard multiple times, but how to achieve this is implementation-specific.</t>
+          <t>The UID property converts to the "uid" property of the Card object, see <xref target="vcard-prop-uid"/>. In contrast to JSContact version "2.0", the Card "uid" property was mandatory in version "1.0".</t>
+          <t>Implementations that convert a vCard without a <xref target="RFC6350" section="6.7.6" sectionFormat="parens">UID property</xref> to a Card of version "2.0" or higher <bcp14>MUST NOT</bcp14> generate a unique identifier as value for the <xref target="RFC9553" section="2.1.9" sectionFormat="parens">uid property</xref>.</t>
+          <t>When converting a vCard without UID property to JSContact version "1.0", implementations <bcp14>MUST</bcp14> generate a value for the uid property. Generating unique identifiers is implementation-specific. An implementation <bcp14>SHOULD</bcp14> generate the same value when generating the same Card multiple times. <xref target="I-D.ietf-calext-jscontact-uid" section="2"/> describes why this is problematic. Consequently, implementations <bcp14>SHOULD NOT</bcp14> convert to version "1.0" Card objects.</t>
         </section>
         <section>
           <name>Choosing Identifiers</name>
@@ -2018,6 +2020,7 @@ JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8259.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9555.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-calext-jscontact-uid.xml"/>
       </references>
       <references>
         <name>Informative References</name>
@@ -3205,8 +3208,19 @@ JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
         <name>Applied Errata</name>
         <t>The following errrata was applied to to this document:</t>
         <ul>
-          <li><eref target="https://www.rfc-editor.org/errata/eid8555">Errata 8555</eref></li>
+          <li>
+            <eref target="https://www.rfc-editor.org/errata/eid8555">Errata 8555</eref>
+          </li>
         </ul>
+      </section>
+      <section>
+        <name>Changed Conversion Rules</name>
+        <section>
+          <name>vCard to JSContact</name>
+          <ul>
+            <li>Converting the UID property to the "uid" property is redefined for JSContact version "2.0". See <xref target="convert-card-uid"/>.</li>
+          </ul>
+        </section>
       </section>
       <section>
         <name>Changes to JSContact</name>
