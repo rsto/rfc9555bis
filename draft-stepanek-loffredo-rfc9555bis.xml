@@ -169,7 +169,7 @@
         <section anchor="vcard-param-group">
           <name>GROUP</name>
           <t>The GROUP parameter (<xref target="RFC7095" derivedContent="RFC7095" section="7.1" sectionFormat="of"/>) does not convert to JSContact.  It exclusively is for use in jCard and <bcp14>MUST NOT</bcp14> be set in a vCard.</t>
-          <t>Preserving the exact group name when converting from vCard to JSContact and back to vCard is not necessary.  Any group identifiers will do, as long as the resulting vCard groups its properties equally to the original vCard.  Implementations <bcp14>MAY</bcp14> preserve the original group name in the "parameters" property of the VCard object (<xref target="jscontact-prop-vcard"/>.</t>
+          <t>Preserving the exact group name when converting from vCard to JSContact and back to vCard is not necessary.  Any group identifiers will do, as long as the resulting vCard groups its properties equally to the original vCard.  Implementations <bcp14>MAY</bcp14> preserve the original group name in the "parameters" property of the VCardProperty object (<xref target="jscontact-prop-vcard"/>.</t>
           <figure anchor="group_conversion_params">
             <name>Example of How to Preserve the Group Name for a Known Property</name>
             <sourcecode type="vcard"><![CDATA[
@@ -339,7 +339,7 @@ N;ALTID=1;PHONETIC=jyut;
         </section>
         <section anchor="vcard-param-pid">
           <name>PID</name>
-          <t>The PID parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.5" sectionFormat="of"/>) does not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert it to the "parameters" property of the VCard object (<xref target="jscontact-prop-vcard"/>.</t>
+          <t>The PID parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.5" sectionFormat="of"/>) does not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert it to the "parameters" property of the VCardProperty object (<xref target="jscontact-prop-vcard"/>.</t>
         </section>
         <section anchor="vcard-param-pref">
           <name>PREF</name>
