@@ -1847,22 +1847,20 @@ EMAIL;JSID=xyz:jane_doe@example.com
             <dt>Parameter name:</dt>
             <dd>JSPTR</dd>
             <dt>Purpose:</dt>
-            <dd>This parameter is set on a <xref target="vcard-prop-jsprop">JSPROP</xref> property.  Its value is a JSON pointer <xref target="RFC6901"/> that points to the JSContact property having the value of the JSPROP property.
-        </dd>
+            <dd>To specify a pointer to a JSContact property.</dd>
             <dt>Description:</dt>
             <dd>
-              <t>This parameter has a single value that <bcp14>MUST</bcp14> be a valid JSON pointer as defined in <xref target="RFC6901"/>.  Note that the value <bcp14>MUST</bcp14> be quoted according to the "param-value" ABNF in <xref target="RFC6350"/>.</t>
+              <t>This parameter is set on a <xref target="vcard-prop-jsprop">JSPROP</xref> property.  Its value points to a JSContact property.  The parameter has a single value that <bcp14>MUST</bcp14> be a valid PatchObject key as defined in <xref target="RFC9553" section="1.4.3"/>. The parameter value <bcp14>MUST</bcp14> be quoted and is case-sensitive.</t>
             </dd>
             <dt>Format definition:</dt>
             <dd>
               <sourcecode name="" type="abnf"><![CDATA[
-jsptr-param  = "JSPTR" "=" param-value
-             ; also see param-value in RFC 6350, Section 3.3
+jsptr-param  = "JSPTR" "=" DQUOTE *QSAFE-CHAR DQUOTE
 ]]></sourcecode>
             </dd>
             <dt>Example(s):</dt>
             <dd>
-              <t>This illustrates a simple example.  For further examples, see <xref target="vcard-prop-jsprop-examples"/>.</t>
+              <t>For further examples, see <xref target="vcard-prop-jsprop-examples"/>.</t>
               <sourcecode name="" type="vcard"><![CDATA[
 JSPROP;JSPTR="example.com:foo":"bar"
 ]]></sourcecode>
