@@ -396,283 +396,8 @@ TEL;PROP-ID=xyz;VALUE=uri:tel:+1-555-555-5555;ext=5555
           <t>The VALUE parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.2" sectionFormat="of"/>) does not convert to an IANA-registered property in JSContact.  To preserve properties with experimental values, see Sections <xref target="jscontact-prop-vcard" format="counter"/> and <xref target="jscontact-prop-vcard" format="counter"/>.</t>
         </section>
       </section>
-      <section>
-        <name>General Properties</name>
-        <section>
-          <name>BEGIN and END</name>
-          <t>The BEGIN and END properties do not convert to IANA-registered properties in JSContact.</t>
-        </section>
-        <section anchor="vcard-prop-kind">
-          <name>KIND</name>
-          <t>The KIND property (<xref target="RFC6350" derivedContent="RFC6350" section="6.1.4" sectionFormat="of"/>) converts to the kind property (<xref target="kind_conversion"/>).  Allowed values are those described in <xref target="RFC6350" sectionFormat="of" section="6.1.4"/> and extended with the values declared in <xref target="RFC6473"/> and <xref target="RFC6869"/>.</t>
-          <figure anchor="kind_conversion">
-            <name>KIND Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-KIND:individual
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"kind": "individual"
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-source">
-          <name>SOURCE</name>
-          <t>The SOURCE property (<xref target="RFC6350" derivedContent="RFC6350" section="6.1.3" sectionFormat="of"/>) converts to a Directory object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.2" sectionFormat="of"/>) in the Card object's directories property (<xref target="source_conversion"/>).  The Directory object's kind property is set to "entry".  The uri property is set to the SOURCE property value.</t>
-          <t>The PREF and MEDIATYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="source_conversion">
-            <name>SOURCE Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-SOURCE:https://dir.example.com/addrbook/jdoe/Jean%20Dupont.vcf
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"directories": {
-   "ENTRY-1": {
-     "kind": "entry",
-     "uri": "https://dir.example.com/addrbook/jdoe/Jean%20Dupont.vcf"
-   }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-xml">
-          <name>XML</name>
-          <t>The XML property (<xref target="RFC6350" derivedContent="RFC6350" section="6.1.5" sectionFormat="of"/>) does not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert it to the "properties" property of the VCard object (<xref target="jscontact-prop-vcard"/>).</t>
-        </section>
-      </section>
-      <section>
-        <name>Identification Properties</name>
-        <section anchor="vcard-prop-anniversary">
-          <name>ANNIVERSARY, BDAY, BIRTHPLACE, DEATHDATE, and DEATHPLACE</name>
-          <t>The following properties all convert to Anniversary objects in the Card object's anniversaries property (<xref target="anniversary_conversion"/>):</t>
-          <ul spacing="compact">
-            <li>ANNIVERSARY (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.6" sectionFormat="of"/>)</li>
-            <li>BDAY (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.5" sectionFormat="of"/>)</li>
-            <li>BIRTHPLACE (<xref target="RFC6474" derivedContent="RFC6474" section="2.1" sectionFormat="of"/>)</li>
-            <li>DEATHDATE (<xref target="RFC6474" derivedContent="RFC6474" section="2.3" sectionFormat="of"/>)</li>
-            <li>DEATHPLACE (<xref target="RFC6474" derivedContent="RFC6474" section="2.2" sectionFormat="of"/>)</li>
-          </ul>
-          <t>BDAY and BIRTHPLACE convert to an Anniversary object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.1" sectionFormat="of"/>) having the date and place properties set.  The kind property is set to "birth".
-            </t>
-          <t>DEATHDATE and DEATHPLACE convert to an Anniversary object having the date and place properties set.  The Anniversary object's kind property is set to "death".
-            </t>
-          <t>ANNIVERSARY converts to the Anniversary object's date property.  The Anniversary object's kind property is set to "wedding".</t>
-          <t>If the BIRTHPLACE or DEATHPLACE property value is of type URI using the "geo:" URI scheme, then it converts to the Address object's coordinates property.  If the value type is TEXT then it converts to the Address object's full property.  Otherwise it does not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert it to the "properties" property of the VCard object (<xref target="jscontact-prop-vcard"/>).</t>
-          <t>The ALTID and LANGUAGE parameters of both the BIRTHPLACE and DEATHPLACE properties convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="anniversary_conversion">
-            <name>BDAY, BIRTHPLACE, DEATHDATE, DEATHPLACE, and ANNIVERSARY Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-BDAY:19531015T231000Z
-BIRTHPLACE:
- 123 Main Street\nAny Town, CA 91921-1234\nU.S.A.
-DEATHDATE:19960415
-DEATHPLACE:
- 5 Court Street\nNew England, ND 58647\nU.S.A.
-ANNIVERSARY:19860201
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"anniversaries": {
-  "ANNIVERSARY-1" : {
-    "kind": "birth",
-    "date": {
-      "@type": "Timestamp",
-      "utc": "1953-10-15T23:10:00Z"
-    },
-    "place": {
-      "full":
-         "123 Main Street\nAny Town, CA 91921-1234\nU.S.A."
-    }
-  },
-  "ANNIVERSARY-2" : {
-    "kind": "death",
-    "date": {
-      "year": 1996,
-      "month": 4,
-      "year": 15
-    },
-    "place": {
-      "full": "5 Court Street\nNew England, ND 58647\nU.S.A."
-    }
-  },
-  "ANNIVERSARY-3" : {
-    "kind": "wedding",
-    "date": {
-      "year": 1986,
-      "month": 2,
-      "day": 1
-    }
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-fn">
-          <name>FN</name>
-          <t>The FN property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.1" sectionFormat="of"/>) converts to the Name object's full property (<xref target="fn_conversion"/>).  If the LANGUAGE parameter is set, then the FN property converts as outlined in <xref target="vcard-param-language"/>.  In the unexpected case where the vCard contains more than one FN property without the LANGUAGE parameter, convert the FN property that has the least parameters.  If multiple such FN properties are present, choose any of them.</t>
-          <t>All other FN properties do not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert them to the "properties" property of the VCard object (<xref target="jscontact-prop-vcard"/>).</t>
-          <figure anchor="fn_conversion">
-            <name>FN Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-FN:John Q. Public, Esq.
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"name": {
-  "full": "John Q. Public, Esq."
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-gender">
-          <name>GENDER</name>
-          <t>The GENDER property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.7" sectionFormat="of"/>) does not convert to an IANA-registered property in JSContact.  To convert this property, see <xref target="jscontact-prop-vcard"/>.  Alternatively, the Card object's speakToAs property defines how to address and refer to an individual represented by the Card, as do the newly defined vCard GRAMGENDER and PRONOUNS properties of <xref target="RFC9554"/>.</t>
-        </section>
-        <section anchor="vcard-prop-gramgender">
-          <name>GRAMGENDER and PRONOUNS</name>
-          <t>The GRAMGENDER property (<xref target="RFC9554" derivedContent="RFC9554" section="3.2" sectionFormat="of"/>) converts to the SpeakToAs object's grammaticalGender property (<xref target="grammatical_gender_pronouns_conversion"/>).</t>
-          <t>The PRONOUNS property (<xref target="RFC9554" derivedContent="RFC9554" section="3.4" sectionFormat="of"/>) converts to the SpeakToAs object's pronouns property (<xref target="grammatical_gender_pronouns_conversion"/>).</t>
-          <figure anchor="grammatical_gender_pronouns_conversion">
-            <name>GRAMGENDER and PRONOUNS Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-GRAMGENDER:NEUTER
-PRONOUNS;PREF=2:they/them
-PRONOUNS;PREF=1:xe/xir
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"speakToAs": {
-  "grammaticalGender": "neuter",
-  "pronouns": {
-    "PRONOUNS-1": {
-      "pronouns": "they/them",
-      "pref": 2
-    },
-    "PRONOUNS-2": {
-      "pronouns": "xe/xir",
-      "pref": 1
-    }
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-n">
-          <name>N</name>
-          <t>The N property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.2" sectionFormat="of"/>) converts to a Name object (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.1" sectionFormat="of"/>) in the Card object's name property.
-	  Each component in the N property structured value converts to a NameComponent in the Name object's components property.  The following table shows this relation:</t>
-          <table anchor="n_kind_conversion">
-            <name>N Components Conversion</name>
-            <thead>
-              <tr>
-                <th align="left">N component</th>
-                <th align="left">NameComponent kind</th>
-                <th align="left">Remarks</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td align="left">Family name</td>
-                <td align="left">surname</td>
-                <td align="left">To vCard: add any "surname2" NameComponent to the Family name component, after all "surname" values.<br/>From vCard: ignore any value that also occurs in the Secondary surname component.</td>
-              </tr>
-              <tr>
-                <td align="left">Given name</td>
-                <td align="left">given</td>
-                <td align="left"/>
-              </tr>
-              <tr>
-                <td align="left">Additional name</td>
-                <td align="left">given2</td>
-                <td align="left"/>
-              </tr>
-              <tr>
-                <td align="left">Honorific prefix</td>
-                <td align="left">title</td>
-                <td align="left"/>
-              </tr>
-              <tr>
-                <td align="left">Honorific suffix</td>
-                <td align="left">credential</td>
-                <td align="left">To vCard: add any "generation" NameComponent to the Honorific suffix component.<br/>From vCard: ignore any value that also occurs in the Generation component.</td>
-              </tr>
-              <tr>
-                <td align="left">Secondary surname</td>
-                <td align="left">surname2</td>
-                <td align="left"/>
-              </tr>
-              <tr>
-                <td align="left">Generation</td>
-                <td align="left">generation</td>
-                <td align="left"/>
-              </tr>
-            </tbody>
-          </table>
-          <t>If the <xref target="vcard-param-jscomps">JSCOMPS</xref> parameter is set, then the Name object's isOrdered property value is "true", and the defaultSeparator property and any "separator" NameComponent objects are set according to the parameter value.  The order in the components property <bcp14>MUST</bcp14> adhere to the order of the JSCOMPS parameter value.</t>
-          <t>If the JSCOMPS parameter is not set, then the Name object's isOrdered property value is "false", and the defaultSeparator property <bcp14>MUST NOT</bcp14> be set.  The order in the components property <bcp14>MUST</bcp14> follow the order of values in the N structured value when read from left to right.</t>
-          <t>If the SORT-AS parameter is set, then its structured value converts to the Name object's sortAs property according to <xref target="n_kind_conversion"/>.  An empty or non-existent component value indicates that no sort is defined for this kind.</t>
-          <figure anchor="n_conversion">
-            <name>N Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-N;SORT-AS="Stevenson,John Philip":Stevenson;John;Philip,Paul;Dr.;Jr.,M.D.,A.C.P.;;Jr.
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"name": {
-  "components":[
-    { "kind": "surname", "value": "Stevenson" },
-    { "kind": "given", "value": "John" },
-    { "kind": "given2", "value": "Philip" },
-    { "kind": "given2", "value": "Paul" },
-    { "kind": "title", "value": "Dr." },
-    { "kind": "credential", "value": "M.D." },
-    { "kind": "credential", "value": "A.C.P." },
-    { "kind": "generation", "value": "Jr." }
-  ],
-  "sortAs": {
-    "surname": "Stevenson",
-    "given": "John Philip"
-  }
-}
-]]></sourcecode>
-          </figure>
-          <t>See <xref target="vcard-param-jscomps-examples"/> for examples of using the JSCOMPS parameter for vCard-structured property values.</t>
-        </section>
-        <section anchor="vcard-prop-nickname">
-          <name>NICKNAME</name>
-          <t>The NICKNAME property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.3" sectionFormat="of"/>) converts to a Nickname object (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.2" sectionFormat="of"/>) in the Card object's nicknames property (<xref target="nickname_conversion"/>).  The name property is set to the NICKNAME property value.</t>
-          <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="nickname_conversion">
-            <name>NICKNAME Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-NICKNAME:Johnny
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"nicknames": {
-   "NICK-1": {
-    "name": "Johnny"
-   }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-photo">
-          <name>PHOTO</name>
-          <t>The PHOTO property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.4" sectionFormat="of"/>) converts to a Media object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.4" sectionFormat="of"/>) in the Card object's media property (<xref target="photo_conversion"/>).  The Media object's kind property is set to "photo" and the uri property is set to the PHOTO value.</t>
-          <t>The PREF and MEDIATYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="photo_conversion">
-            <name>PHOTO Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-PHOTO:https://www.example.com/pub/photos/jqpublic.gif
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"media": {
-   "PHOTO-1": {
-     "kind": "photo",
-     "uri": "https://www.example.com/pub/photos/jqpublic.gif"
-   }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-      </section>
-      <section>
-        <name>Delivery Addressing Properties</name>
+      <section anchor="vcard-props">
+        <name>vCard Properties</name>
         <section anchor="vcard-prop-adr">
           <name>ADR</name>
           <t>The ADR property (<xref target="RFC6350" derivedContent="RFC6350" section="6.3.1" sectionFormat="of"/>) converts to an Address object (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>) in the Card object's addresses property.  Each component in the ADR-structured property value converts to an AddressComponent in the Address object's components property.</t>
@@ -825,9 +550,167 @@ ADR;TYPE=work;CC=US:;;54321 Oak St;Reston;VA;20190;USA;;;;54321;Oak St;;;;;;
           </figure>
           <t>See <xref target="vcard-param-jscomps-examples"/> for examples of using the JSCOMPS parameter for vCard-structured property values.</t>
         </section>
-      </section>
-      <section>
-        <name>Communications Properties</name>
+        <section anchor="vcard-prop-anniversary">
+          <name>ANNIVERSARY</name>
+          <t>The ANNIVERSARY property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.6" sectionFormat="of"/>) converts to an Anniversary object in the Card object's anniversaries property (<xref target="anniversary_conversion"/>). The Anniversary kind is "wedding".</t>
+          <figure anchor="anniversary_conversion">
+            <name>ANNIVERSARY Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+ANNIVERSARY:19860201
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"anniversaries": {
+  "ANNIVERSARY-1" : {
+    "kind": "wedding",
+    "date": {
+      "year": 1986,
+      "month": 2,
+      "day": 1
+    }
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-bday">
+          <name>BDAY</name>
+          <t>The BDAY property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.5" sectionFormat="of"/>) converts to an Anniversary object in the Card object's anniversaries property (<xref target="anniversary_conversion"/>). Its value converts to the Anniversary date property. The Anniversary kind is "birth".</t>
+          <t>A BDAY property and the BIRTHPLACE property (see <xref target="vcard-prop-birthplace"/>) convert to the same Anniversary object if their ALTID parameter values match or are not set on either property.</t>
+          <figure anchor="bday_conversion">
+            <name>BDAY Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+BDAY:19531015T231000Z
+BIRTHPLACE:
+ 123 Main Street\nAny Town, CA 91921-1234\nU.S.A.
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"anniversaries": {
+  "ANNIVERSARY-1" : {
+    "kind": "birth",
+    "date": {
+      "@type": "Timestamp",
+      "utc": "1953-10-15T23:10:00Z"
+    },
+    "place": {
+      "full":
+         "123 Main Street\nAny Town, CA 91921-1234\nU.S.A."
+    }
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-birthplace">
+          <name>BIRTHPLACE</name>
+          <t>The BIRTHPLACE property (<xref target="RFC6474" derivedContent="RFC6474" section="2.1" sectionFormat="of"/>) converts to an Anniversary object in the Card object's anniversaries property (<xref target="anniversary_conversion"/>). Its value converts to an Address object in the Anniversary place property. The Anniversary kind is "birth".</t>
+          <t>A property value of type TEXT converts to the Address object's full property. A property value of type URI using the "geo:" URI scheme converts to the Address object's coordinates property. A property having any other value type does not convert to an Anniversary object.</t>
+          <t>See <xref target="vcard-prop-bday"/> for an example and how to convert a BIRTHPLACE property together with a BDAY property.</t>
+        </section>
+        <section anchor="vcard-prop-caladruri">
+          <name>CALADRURI</name>
+          <t>The CALADRURI property (<xref target="RFC6350" derivedContent="RFC6350" section="6.9.2" sectionFormat="of"/>) converts to a SchedulingAddress object (<xref target="RFC9553" derivedContent="RFC9553" section="2.4.2" sectionFormat="of"/>) in the Card object's schedulingAddresses property (<xref target="caladruri_conversion"/>).  The SchedulingAddress object's uri property is set to the CALADRURI value.</t>
+          <t>The PREF parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.3" sectionFormat="of"/>) converts according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="caladruri_conversion">
+            <name>CALADRURI Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+CALADRURI;PREF=1:mailto:janedoe@example.com
+CALADRURI:https://example.com/calendar/jdoe
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"schedulingAddresses": {
+  "SCHEDULING-1": {
+    "uri": "mailto:janedoe@example.com",
+    "pref": 1
+  },
+  "SCHEDULING-2": {
+    "uri": "https://example.com/calendar/jdoe"
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-caluri">
+          <name>CALURI</name>
+          <t>The CALURI property (<xref target="RFC6350" derivedContent="RFC6350" section="6.9.3" sectionFormat="of"/>) converts to a Calendar object (<xref target="RFC9553" derivedContent="RFC9553" section="2.4.1" sectionFormat="of"/>) in the Card object's calendars property (<xref target="caluri_conversion"/>).  The Calendar object's kind property is set to "calendar" and the uri property is set to the CALURI value.</t>
+          <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="caluri_conversion">
+            <name>CALURI Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+CALURI;PREF=1:https://cal.example.com/calA
+CALURI;MEDIATYPE=text/calendar:https://ftp.example.com/calA.ics
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"calendars": {
+  "CAL-1": {
+    "kind": "calendar",
+    "uri": "https://cal.example.com/calA",
+    "pref": 1
+  },
+  "CAL-2": {
+    "kind": "calendar",
+    "uri": "https://ftp.example.com/calA.ics",
+    "mediaType": "text/calendar"
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-categories">
+          <name>CATEGORIES</name>
+          <t>The CATEGORIES property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.1" sectionFormat="of"/>) converts to a set of entries of the Card object's keywords property (<xref target="categories_conversion"/>).  The keys are the comma-separated text values of the CATEGORIES property.</t>
+          <t>In this case, the PREF parameter does not have a JSContact counterpart; however, the implementors <bcp14>MAY</bcp14> insert the entries by order of preference.</t>
+          <figure anchor="categories_conversion">
+            <name>CATEGORIES Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+CATEGORIES:internet,IETF,Industry,Information Technology
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"keywords": {
+  "internet": true,
+  "IETF": true,
+  "Industry": true,
+  "Information Technology": true
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-clientpidmap">
+          <name>CLIENTPIDMAP</name>
+          <t>The CLIENTPIDMAP property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.7" sectionFormat="of"/>) does not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert it to the "properties" property of the VCard object (<xref target="jscontact-prop-vcard"/>).</t>
+        </section>
+        <section anchor="vcard-prop-contact-uri">
+          <name>CONTACT-URI</name>
+          <t>The CONTACT-URI property (<xref target="RFC8605" derivedContent="RFC8605" section="2.1" sectionFormat="of"/>) converts to a Link object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.3" sectionFormat="of"/>) in the Card object's links property (<xref target="contact_uri_conversion"/>).  The Link object's kind property is set to "contact" and the uri property is set to the CONTACT-URI property value.</t>
+          <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="contact_uri_conversion">
+            <name>CONTACT-URI Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+CONTACT-URI;PREF=1:mailto:contact@example.com
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"links": {
+  "CONTACT-1": {
+    "kind": "contact",
+    "uri": "mailto:contact@example.com",
+    "pref": 1
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-created">
+          <name>CREATED</name>
+          <t>The CREATED property (<xref target="RFC9554" derivedContent="RFC9554" section="3.1" sectionFormat="of"/>) converts to the Card object's created property (<xref target="created_conversion"/>).</t>
+          <figure anchor="created_conversion">
+            <name>CREATED Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+CREATED:19940930T143510Z
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"created": "1994-09-30T14:35:10Z"
+]]></sourcecode>
+          </figure>
+        </section>
         <section anchor="vcard-prop-email">
           <name>EMAIL</name>
           <t>The EMAIL property (<xref target="RFC6350" derivedContent="RFC6350" section="6.4.2" sectionFormat="of"/>) converts to an EmailAddress object (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.1" sectionFormat="of"/>) in the Card object's emails property (<xref target="email_conversion"/>).  The EmailAddress object's address property is set to the EMAIL value.</t>
@@ -847,6 +730,161 @@ EMAIL;PREF=1:jane_doe@example.com
   "EMAIL-2": {
     "address": "jane_doe@example.com",
     "pref": 1
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-deathdate">
+          <name>DEATHDATE</name>
+          <t>The DEATHDATE property (<xref target="RFC6474" derivedContent="RFC6474" section="2.3" sectionFormat="of"/>) converts to an Anniversary object in the Card object's anniversaries property (<xref target="anniversary_conversion"/>). Its value converts to the Anniversary date property. The Anniversary kind is "death".</t>
+          <t>A DEATHDATE property and the DEATHPLACE property (see <xref target="vcard-prop-deathplace"/>) convert to the same Anniversary object if their ALTID parameter values match or are not set on either property.</t>
+          <figure anchor="deathdate_conversion">
+            <name>DEATHDATE Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+DEATHDATE:19960415
+DEATHPLACE:
+ 5 Court Street\nNew England, ND 58647\nU.S.A.
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"anniversaries": {
+  "ANNIVERSARY-2" : {
+    "kind": "death",
+    "date": {
+      "year": 1996,
+      "month": 4,
+      "year": 15
+    },
+    "place": {
+      "full": "5 Court Street\nNew England, ND 58647\nU.S.A."
+    }
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-deathplace">
+          <name>DEATHPLACE</name>
+          <t>The DEATHPLACE property (<xref target="RFC6474" derivedContent="RFC6474" section="2.2" sectionFormat="of"/>) converts to an Anniversary object in the Card object's anniversaries property (<xref target="anniversary_conversion"/>). Its value converts to an Address object in the Anniversary place property. The Anniversary kind is "de3ath".</t>
+          <t>A property value of type TEXT converts to the Address object's full property. A property value of type URI using the "geo:" URI scheme converts to the Address object's coordinates property. A property having any other value type does not convert to an Anniversary object.</t>
+          <t>See <xref target="vcard-prop-deathdate"/> for an example and how to convert a DEATHPLACE property together with a DEATHDATE property.</t>
+        </section>
+        <section anchor="vcard-prop-expertise">
+          <name>EXPERTISE</name>
+          <t>The EXPERTISE property (<xref target="RFC6715" derivedContent="RFC6715" section="2.1" sectionFormat="of"/>) converts to a PersonalInfo object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.4" sectionFormat="of"/>) in the Card object's personalInfo property (<xref target="expertise_conversion"/>).  The PersonalInfo object's kind property is set to "expertise".</t>
+          <t>The INDEX and LEVEL parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="expertise_conversion">
+            <name>EXPERTISE Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+EXPERTISE;LEVEL=beginner;INDEX=2:Chinese literature
+EXPERTISE;INDEX=1;LEVEL=expert:chemistry
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"personalInfo": {
+  "PERSINFO-1" : {
+    "kind": "expertise",
+    "value": "Chinese literature",
+     "level": "low",
+     "listAs": 2
+  },
+  "PERSINFO-2" : {
+    "kind": "expertise",
+    "value": "chemistry",
+    "level": "high",
+    "listAs": 1
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-fburl">
+          <name>FBURL</name>
+          <t>The FBURL property (<xref target="RFC6350" derivedContent="RFC6350" section="6.9.1" sectionFormat="of"/>) converts to a Calendar object (<xref target="RFC9553" derivedContent="RFC9553" section="2.4.1" sectionFormat="of"/>) in the Card object's calendars property (<xref target="fburl_conversion"/>).  The Calendar object's kind property is set to "freeBusy" and the uri property is set to the FBURL value.</t>
+          <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="fburl_conversion">
+            <name>FBURL Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+FBURL;PREF=1:https://www.example.com/busy/janedoe
+FBURL;MEDIATYPE=text/calendar:https://example.com/busy/project-a.ifb
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"calendars": {
+  "FBURL-1": {
+    "kind": "freeBusy",
+    "uri": "https://www.example.com/busy/janedoe",
+    "pref": 1
+  },
+  "FBURL-2": {
+    "kind": "freeBusy",
+    "uri": "https://example.com/busy/project-a.ifb",
+    "mediaType": "text/calendar"
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-fn">
+          <name>FN</name>
+          <t>The FN property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.1" sectionFormat="of"/>) converts to the Name object's full property (<xref target="fn_conversion"/>).  If the LANGUAGE parameter is set, then the FN property converts as outlined in <xref target="vcard-param-language"/>.  In the unexpected case where the vCard contains more than one FN property without the LANGUAGE parameter, convert the FN property that has the least parameters.  If multiple such FN properties are present, choose any of them.</t>
+          <t>All other FN properties do not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert them to the "properties" property of the VCard object (<xref target="jscontact-prop-vcard"/>).</t>
+          <figure anchor="fn_conversion">
+            <name>FN Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+FN:John Q. Public, Esq.
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"name": {
+  "full": "John Q. Public, Esq."
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-gender">
+          <name>GENDER</name>
+          <t>The GENDER property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.7" sectionFormat="of"/>) does not convert to an IANA-registered property in JSContact.  To convert this property, see <xref target="jscontact-prop-vcard"/>.  Alternatively, the Card object's speakToAs property defines how to address and refer to an individual represented by the Card, as do the newly defined vCard GRAMGENDER and PRONOUNS properties of <xref target="RFC9554"/>.</t>
+        </section>
+        <section anchor="vcard-prop-geo">
+          <name>GEO</name>
+          <t>The GEO property (<xref target="RFC6350" derivedContent="RFC6350" section="6.5.2" sectionFormat="of"/>) converts to the Address object's coordinates property (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>).  Also see <xref target="combine-geo-props"/> to determine which Address object instance to convert to.</t>
+        </section>
+        <section anchor="vcard-prop-gramgender">
+          <name>GRAMGENDER</name>
+          <t>The GRAMGENDER property (<xref target="RFC9554" derivedContent="RFC9554" section="3.2" sectionFormat="of"/>) converts to the SpeakToAs object's grammaticalGender property (<xref target="gramgender_conversion"/>).</t>
+          <figure anchor="gramgender_conversion">
+            <name>GRAMGENDER Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+GRAMGENDER:NEUTER
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"speakToAs": {
+  "grammaticalGender": "neuter"
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-hobby">
+          <name>HOBBY</name>
+          <t>The HOBBY property (<xref target="RFC6715" derivedContent="RFC6715" section="2.2" sectionFormat="of"/>) converts to a PersonalInfo object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.4" sectionFormat="of"/>) in the Card object's personalInfo property (<xref target="hobby_conversion"/>).  The PersonalInfo object's kind property is set to "hobby".</t>
+          <t>The INDEX and LEVEL parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="hobby_conversion">
+            <name>HOBBY Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+HOBBY;INDEX=1;LEVEL=high:reading
+HOBBY;INDEX=2;LEVEL=high:sewing
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"personalInfo": {
+  "PERSINFO-1" : {
+    "kind": "hobby",
+    "value": "reading",
+    "level": "high",
+    "listAs": 1
+  },
+  "PERSINFO-2" : {
+    "kind": "hobby",
+    "value": "sewing",
+    "level": "high",
+    "listAs": 2
   }
 }
 ]]></sourcecode>
@@ -876,6 +914,65 @@ IMPP;PREF=1:xmpp:alice@example.com
     }
   }
 }
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-interest">
+          <name>INTEREST</name>
+          <t>The INTEREST property (<xref target="RFC6715" derivedContent="RFC6715" section="2.3" sectionFormat="of"/>) converts to a PersonalInfo object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.4" sectionFormat="of"/>) in the Card object's personalInfo property (<xref target="interest_conversion"/>).  The PersonalInfo object's kind property is set to "interest".</t>
+          <t>The INDEX and LEVEL parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="interest_conversion">
+            <name>INTEREST Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+INTEREST;INDEX=1;LEVEL=medium:r&b music
+INTEREST;INDEX=2;LEVEL=high:rock&roll music
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"personalInfo": {
+  "PERSINFO-1" : {
+    "kind": "interest",
+    "value": "r&b music",
+    "level": "medium",
+    "listAs": 1
+  },
+  "PERSINFO-2" : {
+    "kind": "interest",
+    "value": "rock&roll music",
+    "level": "high",
+    "listAs": 2
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-key">
+          <name>KEY</name>
+          <t>The KEY property (<xref target="RFC6350" derivedContent="RFC6350" section="6.8.1" sectionFormat="of"/>) converts to a CryptoKey object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.1" sectionFormat="of"/>) in the Card object's cryptoKeys property (<xref target="key_conversion"/>).  The CryptoKey object's uri property is set to the KEY property value.</t>
+          <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="key_conversion">
+            <name>KEY Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+KEY:https://www.example.com/keys/jdoe.cer
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"cryptoKeys": {
+  "KEY-1": {
+    "uri": "https://www.example.com/keys/jdoe.cer"
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-kind">
+          <name>KIND</name>
+          <t>The KIND property (<xref target="RFC6350" derivedContent="RFC6350" section="6.1.4" sectionFormat="of"/>) converts to the kind property (<xref target="kind_conversion"/>).  Allowed values are those described in <xref target="RFC6350" sectionFormat="of" section="6.1.4"/> and extended with the values declared in <xref target="RFC6473"/> and <xref target="RFC6869"/>.</t>
+          <figure anchor="kind_conversion">
+            <name>KIND Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+KIND:individual
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"kind": "individual"
 ]]></sourcecode>
           </figure>
         </section>
@@ -923,6 +1020,348 @@ LANGUAGE:de-AT
 ]]></sourcecode>
           </figure>
         </section>
+        <section anchor="vcard-prop-logo">
+          <name>LOGO</name>
+          <t>The LOGO property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.3" sectionFormat="of"/>) converts to a Media object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.4" sectionFormat="of"/>) in the Card object's media property (<xref target="logo_conversion"/>).  The Media object's kind property is set to "logo" and the uri property is set to the LOGO property value.</t>
+          <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="logo_conversion">
+            <name>LOGO Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+LOGO:https://www.example.com/pub/logos/abccorp.jpg
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"media": {
+  "LOGO-1": {
+    "kind": "logo",
+    "uri": "https://www.example.com/pub/logos/abccorp.jpg"
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-member">
+          <name>MEMBER</name>
+          <t>The MEMBER property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.5" sectionFormat="of"/>) converts to the Card object's members property (<xref target="group_example"/>).  Each MEMBER property value is a key in the members property.  The PREF parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.3" sectionFormat="of"/>) does not convert to JSContact.</t>
+          <figure anchor="group_example">
+            <name>Group Example</name>
+            <sourcecode type="vcard"><![CDATA[
+KIND:group
+FN:The Doe family
+MEMBER:urn:uuid:03a0e51f-d1aa-4385-8a53-e29025acd8af
+MEMBER:urn:uuid:b8767877-b4a1-4c70-9acc-505d3819e519
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"kind": "group",
+"name": {
+  "full": "The Doe family"
+},
+"uid": "urn:uuid:ab4310aa-fa43-11e9-8f0b-362b9e155667",
+"members": {
+  "urn:uuid:03a0e51f-d1aa-4385-8a53-e29025acd8af": true,
+  "urn:uuid:b8767877-b4a1-4c70-9acc-505d3819e519": true
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-n">
+          <name>N</name>
+          <t>The N property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.2" sectionFormat="of"/>) converts to a Name object (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.1" sectionFormat="of"/>) in the Card object's name property.
+	  Each component in the N property structured value converts to a NameComponent in the Name object's components property.  The following table shows this relation:</t>
+          <table anchor="n_kind_conversion">
+            <name>N Components Conversion</name>
+            <thead>
+              <tr>
+                <th align="left">N component</th>
+                <th align="left">NameComponent kind</th>
+                <th align="left">Remarks</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="left">Family name</td>
+                <td align="left">surname</td>
+                <td align="left">To vCard: add any "surname2" NameComponent to the Family name component, after all "surname" values.<br/>From vCard: ignore any value that also occurs in the Secondary surname component.</td>
+              </tr>
+              <tr>
+                <td align="left">Given name</td>
+                <td align="left">given</td>
+                <td align="left"/>
+              </tr>
+              <tr>
+                <td align="left">Additional name</td>
+                <td align="left">given2</td>
+                <td align="left"/>
+              </tr>
+              <tr>
+                <td align="left">Honorific prefix</td>
+                <td align="left">title</td>
+                <td align="left"/>
+              </tr>
+              <tr>
+                <td align="left">Honorific suffix</td>
+                <td align="left">credential</td>
+                <td align="left">To vCard: add any "generation" NameComponent to the Honorific suffix component.<br/>From vCard: ignore any value that also occurs in the Generation component.</td>
+              </tr>
+              <tr>
+                <td align="left">Secondary surname</td>
+                <td align="left">surname2</td>
+                <td align="left"/>
+              </tr>
+              <tr>
+                <td align="left">Generation</td>
+                <td align="left">generation</td>
+                <td align="left"/>
+              </tr>
+            </tbody>
+          </table>
+          <t>If the <xref target="vcard-param-jscomps">JSCOMPS</xref> parameter is set, then the Name object's isOrdered property value is "true", and the defaultSeparator property and any "separator" NameComponent objects are set according to the parameter value.  The order in the components property <bcp14>MUST</bcp14> adhere to the order of the JSCOMPS parameter value.</t>
+          <t>If the JSCOMPS parameter is not set, then the Name object's isOrdered property value is "false", and the defaultSeparator property <bcp14>MUST NOT</bcp14> be set.  The order in the components property <bcp14>MUST</bcp14> follow the order of values in the N structured value when read from left to right.</t>
+          <t>If the SORT-AS parameter is set, then its structured value converts to the Name object's sortAs property according to <xref target="n_kind_conversion"/>.  An empty or non-existent component value indicates that no sort is defined for this kind.</t>
+          <figure anchor="n_conversion">
+            <name>N Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+N;SORT-AS="Stevenson,John Philip":Stevenson;John;Philip,Paul;Dr.;Jr.,M.D.,A.C.P.;;Jr.
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"name": {
+  "components":[
+    { "kind": "surname", "value": "Stevenson" },
+    { "kind": "given", "value": "John" },
+    { "kind": "given2", "value": "Philip" },
+    { "kind": "given2", "value": "Paul" },
+    { "kind": "title", "value": "Dr." },
+    { "kind": "credential", "value": "M.D." },
+    { "kind": "credential", "value": "A.C.P." },
+    { "kind": "generation", "value": "Jr." }
+  ],
+  "sortAs": {
+    "surname": "Stevenson",
+    "given": "John Philip"
+  }
+}
+]]></sourcecode>
+          </figure>
+          <t>See <xref target="vcard-param-jscomps-examples"/> for examples of using the JSCOMPS parameter for vCard-structured property values.</t>
+        </section>
+        <section anchor="vcard-prop-nickname">
+          <name>NICKNAME</name>
+          <t>The NICKNAME property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.3" sectionFormat="of"/>) converts to a Nickname object (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.2" sectionFormat="of"/>) in the Card object's nicknames property (<xref target="nickname_conversion"/>).  The name property is set to the NICKNAME property value.</t>
+          <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="nickname_conversion">
+            <name>NICKNAME Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+NICKNAME:Johnny
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"nicknames": {
+   "NICK-1": {
+    "name": "Johnny"
+   }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-note">
+          <name>NOTE</name>
+          <t>The NOTE property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.2" sectionFormat="of"/>) converts to a Note object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.3" sectionFormat="of"/>) in the Card object's notes property (<xref target="notes_conversion"/>).</t>
+          <t>The ALTID and LANGUAGE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="notes_conversion">
+            <name>NOTE Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+NOTE;CREATED=20221123T150132Z;AUTHOR-NAME="John":
+  Office hours are from 0800 to 1715 EST\, Mon-Fri.
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"notes": {
+  "NOTE-1" : {
+     "note": "Office hours are from 0800 to 1715 EST, Mon-Fri.",
+     "created": "2022-11-23T15:01:32Z",
+     "author": {
+       "name": "John"
+     }
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-org">
+          <name>ORG</name>
+          <t>The ORG property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.4" sectionFormat="of"/>) converts to an Organization object (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.3" sectionFormat="of"/>) in the Card object's organizations property (<xref target="org_conversion"/>).  The Organization object's name property is set to the ORG property organizational name component.  The Organization object's units property is an array of OrgUnit objects that each contain an organizational unit name component value of the ORG property value.</t>
+          <t>Implementations <bcp14>MAY</bcp14> allow representation of organizational units without the organizational name.  In this case, the first component of the ORG value <bcp14>MUST</bcp14> be an empty string (e.g.,  ORG:;DepartmentA).</t>
+          <t>The ALTID and LANGUAGE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <t>The first item of the comma-separated SORT-AS parameter value converts to the sortAs property of the Organization object.  The subsequent items convert to the sortAs property of the corresponding OrgUnit object.</t>
+          <t>The TYPE parameter converts according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="org_conversion">
+            <name>ORG Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+ORG;SORT-AS="ABC":ABC\, Inc.;North American Division;Marketing
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"organizations": {
+  "ORG-1": {
+    "name": "ABC, Inc.",
+    "units":[
+      { "name": "North American Division" },
+      { "name": "Marketing" }
+    ],
+    "sortAs": "ABC"
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-org-directory">
+          <name>ORG-DIRECTORY</name>
+          <t>The ORG-DIRECTORY property (<xref target="RFC6715" derivedContent="RFC6715" section="2.4" sectionFormat="of"/>) <xref target="RFC6715"/> converts to a Directory object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.2" sectionFormat="of"/>) in the Card object's directories property (<xref target="org_directory_conversion"/>).  The Directory object's kind property is set to "directory".  The uri property is set to the ORG-DIRECTORY property value.</t>
+          <t>The INDEX, PREF, and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="org_directory_conversion">
+            <name>ORG-DIRECTORY Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+ORG-DIRECTORY;INDEX=1:https://directory.mycompany.example.com
+ORG-DIRECTORY;PREF=1:ldap://ldap.tech.example/o=Tech,ou=Engineering
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"directories": {
+  "DIRECTORY-1": {
+    "kind": "directory",
+    "uri": "https://directory.mycompany.example.com",
+    "listAs": 1
+  },
+  "DIRECTORY-2": {
+    "kind": "directory",
+    "uri": "ldap://ldap.tech.example/o=Tech,ou=Engineering",
+    "pref": 1
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-photo">
+          <name>PHOTO</name>
+          <t>The PHOTO property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.4" sectionFormat="of"/>) converts to a Media object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.4" sectionFormat="of"/>) in the Card object's media property (<xref target="photo_conversion"/>).  The Media object's kind property is set to "photo" and the uri property is set to the PHOTO value.</t>
+          <t>The PREF and MEDIATYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="photo_conversion">
+            <name>PHOTO Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+PHOTO:https://www.example.com/pub/photos/jqpublic.gif
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"media": {
+   "PHOTO-1": {
+     "kind": "photo",
+     "uri": "https://www.example.com/pub/photos/jqpublic.gif"
+   }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-prodid">
+          <name>PRODID</name>
+          <t>The PRODID property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.3" sectionFormat="of"/>) converts to the Card object's prodId property (<xref target="prodid_conversion"/>).</t>
+          <figure anchor="prodid_conversion">
+            <name>PRODID Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+PRODID:ACME Contacts App version 1.23.5
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"prodId": "ACME Contacts App version 1.23.5"
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-pronouns">
+          <name>PRONOUNS</name>
+          <t>The PRONOUNS property (<xref target="RFC9554" derivedContent="RFC9554" section="3.4" sectionFormat="of"/>) converts to the SpeakToAs object's pronouns property (<xref target="pronouns_conversion"/>).</t>
+          <figure anchor="pronouns_conversion">
+            <name>PRONOUNS Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+PRONOUNS;PREF=2:they/them
+PRONOUNS;PREF=1:xe/xir
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"speakToAs": {
+  "pronouns": {
+    "PRONOUNS-1": {
+      "pronouns": "they/them",
+      "pref": 2
+    },
+    "PRONOUNS-2": {
+      "pronouns": "xe/xir",
+      "pref": 1
+    }
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-related">
+          <name>RELATED</name>
+          <t>The RELATED property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.6" sectionFormat="of"/>) converts to the Card object's relatedTo property (<xref target="related_conversion"/>).  The property value converts to the key in the relatedTo property.  The TYPE parameters convert to the Relation object's relation property (<xref target="RFC9553" derivedContent="RFC9553" section="2.1.8" sectionFormat="of"/>).  Any other parameters convert as defined in <xref target="jscontact-prop-vcard"/>.</t>
+          <figure anchor="related_conversion">
+            <name>RELATED Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+RELATED;TYPE=friend:urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+RELATED;TYPE=contact:https://example.com/directory/john.vcf
+RELATED;VALUE=text:Please contact my deputy John for any inquiries.
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"relatedTo" : {
+  "urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6" : {
+    "relation" : {
+      "friend" : true
+    }
+  },
+  "https://example.com/directory/john.vcf" : {
+    "relation" : {
+      "contact" : true
+    }
+  },
+  "Please contact my deputy John for any inquiries." : {
+    "relation" : { }
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-rev">
+          <name>REV</name>
+          <t>The REV property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.4" sectionFormat="of"/>) converts to the Card object's updated property (<xref target="rev_conversion"/>).</t>
+          <figure anchor="rev_conversion">
+            <name>REV Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+REV:19951031T222710Z
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"updated": "1995-10-31T22:27:10Z"
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-role">
+          <name>ROLE</name>
+          <t>The ROLE property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.2" sectionFormat="of"/>) converts to a Title object (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.5" sectionFormat="of"/>) in the Card object's titles property (<xref target="role_conversion"/>).  The Title object kind is "role". The ROLE property value converts to the Title object name property.</t>
+          <t>If the vCard contains an ORG property and either the ROLE and ORG property are not part of a vCard property group, or they are both in the same group, then the Title organizationId property is set to the identifier to which the ORG property converts in the Card object's organizations property.</t>
+          <t>The ALTID and LANGUAGE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="role_conversion">
+            <name>ROLE Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+group1.ROLE:Project Leader
+group1.ORG:ABC, Inc.
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"titles": {
+  "ROLE-1": {
+    "kind": "role",
+    "name": "Project Leader",
+    "organizationId": "ORG-1"
+  }
+},
+"organizations": {
+  "ORG-1": {
+    "name": "ABC, Inc."
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
         <section anchor="vcard-prop-socialprofile">
           <name>SOCIALPROFILE</name>
           <t>The SOCIALPROFILE property (<xref target="RFC9554" derivedContent="RFC9554" section="3.5" sectionFormat="of"/>) converts to an OnlineService object (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>) in the Card object's onlineServices property (<xref target="socialprofile_conversion"/>). If the SOCIALPROFILE property value is of type URI, then the "uri" property is set, otherwise, the "user" property is set.</t>
@@ -940,6 +1379,45 @@ SOCIALPROFILE;SERVICE-TYPE=Mastodon:https://example.com/@foo
     "service": "Mastodon",
     "uri": "https://example.com/@foo"
   }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-sound">
+          <name>SOUND</name>
+          <t>The SOUND property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.5" sectionFormat="of"/>) converts to a Media object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.4" sectionFormat="of"/>) in the Card object's media property (<xref target="sound_conversion"/>).  The Media object's kind property is set to "sound" and the uri property is set to the SOUND value.</t>
+          <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="sound_conversion">
+            <name>SOUND Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+SOUND:CID:JOHNQPUBLIC.19960229T080000.xyzMail@example.com
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"media": {
+  ...
+  "SOUND-1": {
+    "kind": "sound",
+    "uri": "CID:JOHNQPUBLIC.19960229T080000.xyzMail@example.com"
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="vcard-prop-source">
+          <name>SOURCE</name>
+          <t>The SOURCE property (<xref target="RFC6350" derivedContent="RFC6350" section="6.1.3" sectionFormat="of"/>) converts to a Directory object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.2" sectionFormat="of"/>) in the Card object's directories property (<xref target="source_conversion"/>).  The Directory object's kind property is set to "entry".  The uri property is set to the SOURCE property value.</t>
+          <t>The PREF and MEDIATYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="source_conversion">
+            <name>SOURCE Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+SOURCE:https://dir.example.com/addrbook/jdoe/Jean%20Dupont.vcf
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"directories": {
+   "ENTRY-1": {
+     "kind": "entry",
+     "uri": "https://dir.example.com/addrbook/jdoe/Jean%20Dupont.vcf"
+   }
 }
 ]]></sourcecode>
           </figure>
@@ -1015,12 +1493,24 @@ TEL;VALUE=uri;TYPE=home:tel:+33-01-23-45-67
 ]]></sourcecode>
           </figure>
         </section>
-      </section>
-      <section>
-        <name>Geographical Properties</name>
-        <section anchor="vcard-prop-geo">
-          <name>GEO</name>
-          <t>The GEO property (<xref target="RFC6350" derivedContent="RFC6350" section="6.5.2" sectionFormat="of"/>) converts to the Address object's coordinates property (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>).  Also see <xref target="combine-geo-props"/> to determine which Address object instance to convert to.</t>
+        <section anchor="vcard-prop-title">
+          <name>TITLE</name>
+          <t>The TITLE property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.1" sectionFormat="of"/>) converts to a Title object (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.5" sectionFormat="of"/>) in the Card object's titles property (<xref target="title_conversion"/>). The TITLE property value converts to the Title object name property.</t>
+          <t>The ALTID and LANGUAGE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <figure anchor="title_conversion">
+            <name>TITLE Conversion Example</name>
+            <sourcecode type="vcard"><![CDATA[
+TITLE:Research Scientist
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"titles": {
+  "TITLE-1": {
+    "kind": "title",
+    "name": "Research Scientist"
+  }
+}
+]]></sourcecode>
+          </figure>
         </section>
         <section anchor="vcard-prop-tz">
           <name>TZ</name>
@@ -1033,388 +1523,6 @@ TEL;VALUE=uri;TYPE=home:tel:+33-01-23-45-67
           </ul>
           <t>For such property values, also see <xref target="combine-geo-props"/> to determine which Address object instance to convert to.</t>
           <t>Any other value of type UTC-OFFSET or URI does not convert to an IANA-registered property in JSContact.  To convert such property, see <xref target="jscontact-prop-vcard"/>.</t>
-        </section>
-        <section anchor="combine-geo-props">
-          <name>Combining Geographical Properties</name>
-          <t>In vCard, the properties ADR, GEO, and TZ occur independently of each other.  In JSContact, they all convert to properties of an Address object.  It is implementation-specific if these vCard properties convert to <em>separate</em> address instances in JSContact or if some or all of them convert to the <em>same</em> address.  That being said, implementations <bcp14>MUST</bcp14> convert the properties to the <em>same</em> address for the following cases:</t>
-          <ul>
-            <li>The GROUP parameter values of the properties match.</li>
-            <li>The GROUP parameters are not set, but they are set on any other ADR, GEO, and TZ properties.</li>
-          </ul>
-        </section>
-      </section>
-      <section>
-        <name>Organizational Properties</name>
-        <section anchor="vcard-prop-contact-uri">
-          <name>CONTACT-URI</name>
-          <t>The CONTACT-URI property (<xref target="RFC8605" derivedContent="RFC8605" section="2.1" sectionFormat="of"/>) converts to a Link object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.3" sectionFormat="of"/>) in the Card object's links property (<xref target="contact_uri_conversion"/>).  The Link object's kind property is set to "contact" and the uri property is set to the CONTACT-URI property value.</t>
-          <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="contact_uri_conversion">
-            <name>CONTACT-URI Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-CONTACT-URI;PREF=1:mailto:contact@example.com
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"links": {
-  "CONTACT-1": {
-    "kind": "contact",
-    "uri": "mailto:contact@example.com",
-    "pref": 1
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-logo">
-          <name>LOGO</name>
-          <t>The LOGO property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.3" sectionFormat="of"/>) converts to a Media object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.4" sectionFormat="of"/>) in the Card object's media property (<xref target="logo_conversion"/>).  The Media object's kind property is set to "logo" and the uri property is set to the LOGO property value.</t>
-          <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="logo_conversion">
-            <name>LOGO Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-LOGO:https://www.example.com/pub/logos/abccorp.jpg
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"media": {
-  "LOGO-1": {
-    "kind": "logo",
-    "uri": "https://www.example.com/pub/logos/abccorp.jpg"
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-member">
-          <name>MEMBER</name>
-          <t>The MEMBER property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.5" sectionFormat="of"/>) converts to the Card object's members property (<xref target="group_example"/>).  Each MEMBER property value is a key in the members property.  The PREF parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.3" sectionFormat="of"/>) does not convert to JSContact.</t>
-          <figure anchor="group_example">
-            <name>Group Example</name>
-            <sourcecode type="vcard"><![CDATA[
-KIND:group
-FN:The Doe family
-MEMBER:urn:uuid:03a0e51f-d1aa-4385-8a53-e29025acd8af
-MEMBER:urn:uuid:b8767877-b4a1-4c70-9acc-505d3819e519
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"kind": "group",
-"name": {
-  "full": "The Doe family"
-},
-"uid": "urn:uuid:ab4310aa-fa43-11e9-8f0b-362b9e155667",
-"members": {
-  "urn:uuid:03a0e51f-d1aa-4385-8a53-e29025acd8af": true,
-  "urn:uuid:b8767877-b4a1-4c70-9acc-505d3819e519": true
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-org">
-          <name>ORG</name>
-          <t>The ORG property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.4" sectionFormat="of"/>) converts to an Organization object (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.3" sectionFormat="of"/>) in the Card object's organizations property (<xref target="org_conversion"/>).  The Organization object's name property is set to the ORG property organizational name component.  The Organization object's units property is an array of OrgUnit objects that each contain an organizational unit name component value of the ORG property value.</t>
-          <t>Implementations <bcp14>MAY</bcp14> allow representation of organizational units without the organizational name.  In this case, the first component of the ORG value <bcp14>MUST</bcp14> be an empty string (e.g.,  ORG:;DepartmentA).</t>
-          <t>The ALTID and LANGUAGE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <t>The first item of the comma-separated SORT-AS parameter value converts to the sortAs property of the Organization object.  The subsequent items convert to the sortAs property of the corresponding OrgUnit object.</t>
-          <t>The TYPE parameter converts according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="org_conversion">
-            <name>ORG Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-ORG;SORT-AS="ABC":ABC\, Inc.;North American Division;Marketing
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"organizations": {
-  "ORG-1": {
-    "name": "ABC, Inc.",
-    "units":[
-      { "name": "North American Division" },
-      { "name": "Marketing" }
-    ],
-    "sortAs": "ABC"
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-related">
-          <name>RELATED</name>
-          <t>The RELATED property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.6" sectionFormat="of"/>) converts to the Card object's relatedTo property (<xref target="related_conversion"/>).  The property value converts to the key in the relatedTo property.  The TYPE parameters convert to the Relation object's relation property (<xref target="RFC9553" derivedContent="RFC9553" section="2.1.8" sectionFormat="of"/>).  Any other parameters convert as defined in <xref target="jscontact-prop-vcard"/>.</t>
-          <figure anchor="related_conversion">
-            <name>RELATED Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-RELATED;TYPE=friend:urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6
-RELATED;TYPE=contact:https://example.com/directory/john.vcf
-RELATED;VALUE=text:Please contact my deputy John for any inquiries.
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"relatedTo" : {
-  "urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6" : {
-    "relation" : {
-      "friend" : true
-    }
-  },
-  "https://example.com/directory/john.vcf" : {
-    "relation" : {
-      "contact" : true
-    }
-  },
-  "Please contact my deputy John for any inquiries." : {
-    "relation" : { }
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-title">
-          <name>TITLE and ROLE</name>
-          <t>The TITLE (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.1" sectionFormat="of"/>) and ROLE (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.2" sectionFormat="of"/>) properties convert to a Title object (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.5" sectionFormat="of"/>) in the Card object's titles property (<xref target="title_role_conversion"/>).  The Title object's kind property is set to "title" or "role" for the TITLE and ROLE vCard properties, respectively.  The name property is set to the vCard property value.</t>
-          <t>The value of the organizationId property can be derived if the TITLE or ROLE property is a member of a vCard property group and if exactly one other ORG property is also a part of that group.</t>
-          <t>The ALTID and LANGUAGE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="title_role_conversion">
-            <name>TITLE and ROLE Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-TITLE:Research Scientist
-group1.ROLE:Project Leader
-group1.ORG:ABC, Inc.
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"titles": {
-  "TITLE-1": {
-    "kind": "title",
-    "name": "Research Scientist"
-  },
-  "TITLE-2": {
-    "kind": "role",
-    "name": "Project Leader",
-    "organizationId": "ORG-1"
-  }
-},
-"organizations": {
-  "ORG-1": {
-    "name": "ABC, Inc."
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-      </section>
-      <section>
-        <name>Personal Information Properties</name>
-        <section anchor="vcard-prop-expertise">
-          <name>EXPERTISE</name>
-          <t>The EXPERTISE property (<xref target="RFC6715" derivedContent="RFC6715" section="2.1" sectionFormat="of"/>) converts to a PersonalInfo object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.4" sectionFormat="of"/>) in the Card object's personalInfo property (<xref target="expertise_conversion"/>).  The PersonalInfo object's kind property is set to "expertise".</t>
-          <t>The INDEX and LEVEL parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="expertise_conversion">
-            <name>EXPERTISE Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-EXPERTISE;LEVEL=beginner;INDEX=2:Chinese literature
-EXPERTISE;INDEX=1;LEVEL=expert:chemistry
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"personalInfo": {
-  "PERSINFO-1" : {
-    "kind": "expertise",
-    "value": "Chinese literature",
-     "level": "low",
-     "listAs": 2
-  },
-  "PERSINFO-2" : {
-    "kind": "expertise",
-    "value": "chemistry",
-    "level": "high",
-    "listAs": 1
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-hobby">
-          <name>HOBBY</name>
-          <t>The HOBBY property (<xref target="RFC6715" derivedContent="RFC6715" section="2.2" sectionFormat="of"/>) converts to a PersonalInfo object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.4" sectionFormat="of"/>) in the Card object's personalInfo property (<xref target="hobby_conversion"/>).  The PersonalInfo object's kind property is set to "hobby".</t>
-          <t>The INDEX and LEVEL parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="hobby_conversion">
-            <name>HOBBY Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-HOBBY;INDEX=1;LEVEL=high:reading
-HOBBY;INDEX=2;LEVEL=high:sewing
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"personalInfo": {
-  "PERSINFO-1" : {
-    "kind": "hobby",
-    "value": "reading",
-    "level": "high",
-    "listAs": 1
-  },
-  "PERSINFO-2" : {
-    "kind": "hobby",
-    "value": "sewing",
-    "level": "high",
-    "listAs": 2
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-interest">
-          <name>INTEREST</name>
-          <t>The INTEREST property (<xref target="RFC6715" derivedContent="RFC6715" section="2.3" sectionFormat="of"/>) converts to a PersonalInfo object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.4" sectionFormat="of"/>) in the Card object's personalInfo property (<xref target="interest_conversion"/>).  The PersonalInfo object's kind property is set to "interest".</t>
-          <t>The INDEX and LEVEL parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="interest_conversion">
-            <name>INTEREST Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-INTEREST;INDEX=1;LEVEL=medium:r&b music
-INTEREST;INDEX=2;LEVEL=high:rock&roll music
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"personalInfo": {
-  "PERSINFO-1" : {
-    "kind": "interest",
-    "value": "r&b music",
-    "level": "medium",
-    "listAs": 1
-  },
-  "PERSINFO-2" : {
-    "kind": "interest",
-    "value": "rock&roll music",
-    "level": "high",
-    "listAs": 2
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-org-directory">
-          <name>ORG-DIRECTORY</name>
-          <t>The ORG-DIRECTORY property (<xref target="RFC6715" derivedContent="RFC6715" section="2.4" sectionFormat="of"/>) <xref target="RFC6715"/> converts to a Directory object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.2" sectionFormat="of"/>) in the Card object's directories property (<xref target="org_directory_conversion"/>).  The Directory object's kind property is set to "directory".  The uri property is set to the ORG-DIRECTORY property value.</t>
-          <t>The INDEX, PREF, and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="org_directory_conversion">
-            <name>ORG-DIRECTORY Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-ORG-DIRECTORY;INDEX=1:https://directory.mycompany.example.com
-ORG-DIRECTORY;PREF=1:ldap://ldap.tech.example/o=Tech,ou=Engineering
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"directories": {
-  "DIRECTORY-1": {
-    "kind": "directory",
-    "uri": "https://directory.mycompany.example.com",
-    "listAs": 1
-  },
-  "DIRECTORY-2": {
-    "kind": "directory",
-    "uri": "ldap://ldap.tech.example/o=Tech,ou=Engineering",
-    "pref": 1
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-      </section>
-      <section>
-        <name>Explanatory Properties</name>
-        <section anchor="vcard-prop-categories">
-          <name>CATEGORIES</name>
-          <t>The CATEGORIES property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.1" sectionFormat="of"/>) converts to a set of entries of the Card object's keywords property (<xref target="categories_conversion"/>).  The keys are the comma-separated text values of the CATEGORIES property.</t>
-          <t>In this case, the PREF parameter does not have a JSContact counterpart; however, the implementors <bcp14>MAY</bcp14> insert the entries by order of preference.</t>
-          <figure anchor="categories_conversion">
-            <name>CATEGORIES Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-CATEGORIES:internet,IETF,Industry,Information Technology
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"keywords": {
-  "internet": true,
-  "IETF": true,
-  "Industry": true,
-  "Information Technology": true
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-clientpidmap">
-          <name>CLIENTPIDMAP</name>
-          <t>The CLIENTPIDMAP property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.7" sectionFormat="of"/>) does not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert it to the "properties" property of the VCard object (<xref target="jscontact-prop-vcard"/>).</t>
-        </section>
-        <section anchor="vcard-prop-created">
-          <name>CREATED</name>
-          <t>The CREATED property (<xref target="RFC9554" derivedContent="RFC9554" section="3.1" sectionFormat="of"/>) converts to the Card object's created property (<xref target="created_conversion"/>).</t>
-          <figure anchor="created_conversion">
-            <name>CREATED Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-CREATED:19940930T143510Z
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"created": "1994-09-30T14:35:10Z"
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-note">
-          <name>NOTE</name>
-          <t>The NOTE property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.2" sectionFormat="of"/>) converts to a Note object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.3" sectionFormat="of"/>) in the Card object's notes property (<xref target="notes_conversion"/>).</t>
-          <t>The ALTID and LANGUAGE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="notes_conversion">
-            <name>NOTE Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-NOTE;CREATED=20221123T150132Z;AUTHOR-NAME="John":
-  Office hours are from 0800 to 1715 EST\, Mon-Fri.
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"notes": {
-  "NOTE-1" : {
-     "note": "Office hours are from 0800 to 1715 EST, Mon-Fri.",
-     "created": "2022-11-23T15:01:32Z",
-     "author": {
-       "name": "John"
-     }
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-prodid">
-          <name>PRODID</name>
-          <t>The PRODID property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.3" sectionFormat="of"/>) converts to the Card object's prodId property (<xref target="prodid_conversion"/>).</t>
-          <figure anchor="prodid_conversion">
-            <name>PRODID Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-PRODID:ACME Contacts App version 1.23.5
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"prodId": "ACME Contacts App version 1.23.5"
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-rev">
-          <name>REV</name>
-          <t>The REV property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.4" sectionFormat="of"/>) converts to the Card object's updated property (<xref target="rev_conversion"/>).</t>
-          <figure anchor="rev_conversion">
-            <name>REV Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-REV:19951031T222710Z
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"updated": "1995-10-31T22:27:10Z"
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-sound">
-          <name>SOUND</name>
-          <t>The SOUND property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.5" sectionFormat="of"/>) converts to a Media object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.4" sectionFormat="of"/>) in the Card object's media property (<xref target="sound_conversion"/>).  The Media object's kind property is set to "sound" and the uri property is set to the SOUND value.</t>
-          <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="sound_conversion">
-            <name>SOUND Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-SOUND:CID:JOHNQPUBLIC.19960229T080000.xyzMail@example.com
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"media": {
-  ...
-  "SOUND-1": {
-    "kind": "sound",
-    "uri": "CID:JOHNQPUBLIC.19960229T080000.xyzMail@example.com"
-  }
-}
-]]></sourcecode>
-          </figure>
         </section>
         <section anchor="vcard-prop-uid">
           <name>UID</name>
@@ -1472,105 +1580,18 @@ item1.X-ABLabel:foo
 ]]></sourcecode>
           </figure>
         </section>
-      </section>
-      <section>
-        <name>Security Properties</name>
-        <section anchor="vcard-prop-key">
-          <name>KEY</name>
-          <t>The KEY property (<xref target="RFC6350" derivedContent="RFC6350" section="6.8.1" sectionFormat="of"/>) converts to a CryptoKey object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.1" sectionFormat="of"/>) in the Card object's cryptoKeys property (<xref target="key_conversion"/>).  The CryptoKey object's uri property is set to the KEY property value.</t>
-          <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="key_conversion">
-            <name>KEY Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-KEY:https://www.example.com/keys/jdoe.cer
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"cryptoKeys": {
-  "KEY-1": {
-    "uri": "https://www.example.com/keys/jdoe.cer"
-  }
-}
-]]></sourcecode>
-          </figure>
+        <section anchor="vcard-prop-xml">
+          <name>XML</name>
+          <t>The XML property (<xref target="RFC6350" derivedContent="RFC6350" section="6.1.5" sectionFormat="of"/>) does not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert it to the "properties" property of the VCard object (<xref target="jscontact-prop-vcard"/>).</t>
         </section>
       </section>
-      <section>
-        <name>Calendar Properties</name>
-        <section anchor="vcard-prop-caladruri">
-          <name>CALADRURI</name>
-          <t>The CALADRURI property (<xref target="RFC6350" derivedContent="RFC6350" section="6.9.2" sectionFormat="of"/>) converts to a SchedulingAddress object (<xref target="RFC9553" derivedContent="RFC9553" section="2.4.2" sectionFormat="of"/>) in the Card object's schedulingAddresses property (<xref target="caladruri_conversion"/>).  The SchedulingAddress object's uri property is set to the CALADRURI value.</t>
-          <t>The PREF parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.3" sectionFormat="of"/>) converts according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="caladruri_conversion">
-            <name>CALADRURI Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-CALADRURI;PREF=1:mailto:janedoe@example.com
-CALADRURI:https://example.com/calendar/jdoe
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"schedulingAddresses": {
-  "SCHEDULING-1": {
-    "uri": "mailto:janedoe@example.com",
-    "pref": 1
-  },
-  "SCHEDULING-2": {
-    "uri": "https://example.com/calendar/jdoe"
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-caluri">
-          <name>CALURI</name>
-          <t>The CALURI property (<xref target="RFC6350" derivedContent="RFC6350" section="6.9.3" sectionFormat="of"/>) converts to a Calendar object (<xref target="RFC9553" derivedContent="RFC9553" section="2.4.1" sectionFormat="of"/>) in the Card object's calendars property (<xref target="caluri_conversion"/>).  The Calendar object's kind property is set to "calendar" and the uri property is set to the CALURI value.</t>
-          <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="caluri_conversion">
-            <name>CALURI Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-CALURI;PREF=1:https://cal.example.com/calA
-CALURI;MEDIATYPE=text/calendar:https://ftp.example.com/calA.ics
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"calendars": {
-  "CAL-1": {
-    "kind": "calendar",
-    "uri": "https://cal.example.com/calA",
-    "pref": 1
-  },
-  "CAL-2": {
-    "kind": "calendar",
-    "uri": "https://ftp.example.com/calA.ics",
-    "mediaType": "text/calendar"
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-        <section anchor="vcard-prop-fburl">
-          <name>FBURL</name>
-          <t>The FBURL property (<xref target="RFC6350" derivedContent="RFC6350" section="6.9.1" sectionFormat="of"/>) converts to a Calendar object (<xref target="RFC9553" derivedContent="RFC9553" section="2.4.1" sectionFormat="of"/>) in the Card object's calendars property (<xref target="fburl_conversion"/>).  The Calendar object's kind property is set to "freeBusy" and the uri property is set to the FBURL value.</t>
-          <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <figure anchor="fburl_conversion">
-            <name>FBURL Conversion Example</name>
-            <sourcecode type="vcard"><![CDATA[
-FBURL;PREF=1:https://www.example.com/busy/janedoe
-FBURL;MEDIATYPE=text/calendar:https://example.com/busy/project-a.ifb
-]]></sourcecode>
-            <sourcecode type="json"><![CDATA[
-"calendars": {
-  "FBURL-1": {
-    "kind": "freeBusy",
-    "uri": "https://www.example.com/busy/janedoe",
-    "pref": 1
-  },
-  "FBURL-2": {
-    "kind": "freeBusy",
-    "uri": "https://example.com/busy/project-a.ifb",
-    "mediaType": "text/calendar"
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
+      <section anchor="combine-geo-props">
+        <name>Combining Geographical Properties</name>
+        <t>In vCard, the properties ADR, GEO, and TZ occur independently of each other.  In JSContact, they all convert to properties of an Address object.  It is implementation-specific if these vCard properties convert to <em>separate</em> address instances in JSContact or if some or all of them convert to the <em>same</em> address.  That being said, implementations <bcp14>MUST</bcp14> convert the properties to the <em>same</em> address for the following cases:</t>
+        <ul>
+          <li>The GROUP parameter values of the properties match.</li>
+          <li>The GROUP parameters are not set, but they are set on any other ADR, GEO, and TZ properties.</li>
+        </ul>
       </section>
       <section anchor="vcard-extended">
         <name>Extended Properties and Parameters</name>
