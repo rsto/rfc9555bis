@@ -95,49 +95,6 @@
           <t>vCards may contain elements for which no IANA-registered JSContact property is defined, such as extended properties and parameters (see <xref target="RFC6350" sectionFormat="of" section="6.10"/>). <xref target="jscontact-prop-vcard"/> defines the "vCard" property to represent arbitrary vCard elements in JSContact.</t>
         </section>
       </section>
-      <section anchor="vcard-types">
-        <name>vCard Value Data Types</name>
-        <section>
-          <name>BOOLEAN</name>
-          <t>The BOOLEAN type (<xref target="RFC6350" derivedContent="RFC6350" section="4.4" sectionFormat="of"/>) converts to the JSContact Boolean type (<xref target="RFC9553" derivedContent="RFC9553" section="1.3.2" sectionFormat="of"/>).</t>
-        </section>
-        <section anchor="vcard-type-datetime">
-          <name>DATE, TIME, DATE-TIME, DATE-AND-OR-TIME, and TIMESTAMP</name>
-          <t>The TIMESTAMP type (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.5" sectionFormat="of"/>) converts to the UTCDateTime type (<xref target="RFC9553" derivedContent="RFC9553" section="1.4.5" sectionFormat="of"/>), unless for anniversaries. For anniversaries, it converts to the Timestamp type (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.1" sectionFormat="of"/>).</t>
-          <t>The DATE type (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.1" sectionFormat="of"/>) converts to a PartialDate object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.1" sectionFormat="of"/>) when used for an anniversary, unless the DATE value only contains a month or a day (but not both).</t>
-          <t>The following temporal types do not convert to a JSContact datetime type.  Instead, vCard properties or parameters having such value types convert as defined in <xref target="updates-to-jscontact"/>.</t>
-          <ul>
-            <li>TIME (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.2" sectionFormat="of"/>)</li>
-            <li>DATE-TIME (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.3" sectionFormat="of"/>)</li>
-            <li>DATE-AND-OR-TIME (<xref target="RFC6350" derivedContent="RFC6350" section="4.3.4" sectionFormat="of"/>)</li>
-            <li>DATE type values that only define a month or day (but not both)</li>
-          </ul>
-        </section>
-        <section>
-          <name>INTEGER</name>
-          <t>The INTEGER type (<xref target="RFC6350" derivedContent="RFC6350" section="4.5" sectionFormat="of"/>) converts to the JSContact Int and UnsignedInt types (<xref target="RFC9553" derivedContent="RFC9553" section="1.4.2" sectionFormat="of"/>).</t>
-        </section>
-        <section>
-          <name>FLOAT</name>
-          <t>The FLOAT type (<xref target="RFC6350" derivedContent="RFC6350" section="4.6" sectionFormat="of"/>) converts to the JSContact Number type (<xref target="RFC9553" derivedContent="RFC9553" section="1.3.2" sectionFormat="of"/>).</t>
-        </section>
-        <section>
-          <name>LANGUAGE-TAG</name>
-          <t>The LANGUAGE-TAG type (<xref target="RFC6350" derivedContent="RFC6350" section="4.8" sectionFormat="of"/>) converts to the JSContact String type (<xref target="RFC9553" derivedContent="RFC9553" section="1.3.2" sectionFormat="of"/>).  The value <bcp14>MUST</bcp14> be a language tag as defined in <xref target="RFC5646"/>.</t>
-        </section>
-        <section>
-          <name>TEXT</name>
-          <t>The TEXT type (<xref target="RFC6350" derivedContent="RFC6350" section="4.1" sectionFormat="of"/>) converts to the JSContact String type (<xref target="RFC9553" derivedContent="RFC9553" section="1.3.2" sectionFormat="of"/>).</t>
-        </section>
-        <section>
-          <name>URI</name>
-          <t>The URI type (<xref target="RFC6350" derivedContent="RFC6350" section="4.2" sectionFormat="of"/>) converts to the JSContact String type (<xref target="RFC9553" derivedContent="RFC9553" section="1.3.2" sectionFormat="of"/>).  The value <bcp14>MUST</bcp14> be a URI as defined in <xref target="RFC3986" sectionFormat="of" section="3"/></t>
-        </section>
-        <section>
-          <name>UTC-OFFSET</name>
-          <t>The UTC-OFFSET type (<xref target="RFC6350" derivedContent="RFC6350" section="4.7" sectionFormat="of"/>) either converts to a String value containing an IANA Time Zone Database entry name (see <xref target="vcard-prop-tz"/>) or does not convert to any JSContact type.  For the latter, vCard properties or parameters having such values convert as defined in <xref target="updates-to-jscontact"/>. </t>
-        </section>
-      </section>
       <section anchor="vcard-parameters">
         <name>vCard Parameters</name>
         <t>This section contains the conversion rules for vCard parameters.  A rule typically applies only for specific vCard properties.  To convert a vCard parameter on an arbitrary vCard property, see <xref target="jscontact-prop-vcard"/>.</t>
@@ -558,6 +515,7 @@ ADR;TYPE=work;CC=US:;;54321 Oak St;Reston;VA;20190;USA;;;;54321;Oak St;;;;;;
         <section anchor="vcard-prop-anniversary">
           <name>ANNIVERSARY</name>
           <t>The ANNIVERSARY property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.6" sectionFormat="of"/>) converts to an Anniversary object in the Card object's anniversaries property (<xref target="anniversary_conversion"/>). The Anniversary kind is "wedding".</t>
+          <t>See <xref target="vcard-prop-bday"/> how to convert property values of type TIMESTAMP and DATE.</t>
           <figure anchor="anniversary_conversion">
             <name>ANNIVERSARY Conversion Example</name>
             <sourcecode type="vcard"><![CDATA[
@@ -580,6 +538,7 @@ ANNIVERSARY:19860201
         <section anchor="vcard-prop-bday">
           <name>BDAY</name>
           <t>The BDAY property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.5" sectionFormat="of"/>) converts to an Anniversary object in the Card object's anniversaries property (<xref target="anniversary_conversion"/>). Its value converts to the Anniversary date property. The Anniversary kind is "birth".</t>
+          <t>If the property value type is <xref target="RFC6350" derivedContent="RFC6350" section="4.3.5" sectionFormat="parens">DATE</xref> and defines at least a year or a month and day, then the value converts to a PartialDate object. If the property value type is <xref target="RFC6350" derivedContent="RFC6350" section="4.3.5" sectionFormat="parens">TIMESTAMP</xref> then the value converts to the utc property of the Timestamp object. Otherwise it does not convert to a standard JSContact element.</t>
           <t>A BDAY property and the BIRTHPLACE property (see <xref target="vcard-prop-birthplace"/>) convert to the same Anniversary object if their ALTID parameter values match or are not set on either property.</t>
           <figure anchor="bday_conversion">
             <name>BDAY Conversion Example</name>
@@ -743,6 +702,7 @@ EMAIL;PREF=1:jane_doe@example.com
         <section anchor="vcard-prop-deathdate">
           <name>DEATHDATE</name>
           <t>The DEATHDATE property (<xref target="RFC6474" derivedContent="RFC6474" section="2.3" sectionFormat="of"/>) converts to an Anniversary object in the Card object's anniversaries property (<xref target="anniversary_conversion"/>). Its value converts to the Anniversary date property. The Anniversary kind is "death".</t>
+          <t>See <xref target="vcard-prop-bday"/> how to convert property values of type TIMESTAMP and DATE.</t>
           <t>A DEATHDATE property and the DEATHPLACE property (see <xref target="vcard-prop-deathplace"/>) convert to the same Anniversary object if their ALTID parameter values match or are not set on either property.</t>
           <figure anchor="deathdate_conversion">
             <name>DEATHDATE Conversion Example</name>
@@ -2016,9 +1976,7 @@ JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
           <seriesInfo name="DOI" value="10.17487/RFC9554"/>
         </reference>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
-        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.3986.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5234.xml"/>
-        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5646.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6350.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6473.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6474.xml"/>
@@ -2963,21 +2921,21 @@ JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
             <td>PartialDate</td>
             <td>day</td>
             <td>
-              <xref target="vcard-type-datetime"/>
+              <xref target="vcard-prop-bday"/>
             </td>
           </tr>
           <tr>
             <td>PartialDate</td>
             <td>month</td>
             <td>
-              <xref target="vcard-type-datetime"/>
+              <xref target="vcard-prop-bday"/>
             </td>
           </tr>
           <tr>
             <td>PartialDate</td>
             <td>year</td>
             <td>
-              <xref target="vcard-type-datetime"/>
+              <xref target="vcard-prop-bday"/>
             </td>
           </tr>
           <tr>
@@ -3177,7 +3135,7 @@ JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
             <td>Timestamp</td>
             <td>utc</td>
             <td>
-              <xref target="vcard-type-datetime"/>
+              <xref target="vcard-prop-bday"/>
             </td>
           </tr>
           <tr>
