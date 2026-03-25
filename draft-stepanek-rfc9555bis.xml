@@ -90,6 +90,10 @@
           <name>Choosing Identifiers</name>
           <t>Multivalued properties in JSContact are typically represented as a JSON object where the object keys are of the Id type (<xref target="RFC9553" derivedContent="RFC9553" section="1.4.1" sectionFormat="of"/>) and the object values are the converted vCard property.  In the absence of the JSID parameter (see <xref target="vcard-param-jsid"/>), implementations are free to choose any identifier as key for such entries.  Whatever identifier generation scheme implementations use, they <bcp14>MUST</bcp14> generate values that are valid according to the definition of the Id type in <xref target="RFC9553"/>.  For example, this could be an incrementing number across all identifier keys in the Card object or only unique within one JSON object.</t>
         </section>
+        <section anchor="vcard-unknown">
+          <name>Converting Unknown Elements</name>
+          <t>vCards may contain elements for which no IANA-registered JSContact property is defined, such as extended properties and parameters (see <xref target="RFC6350" sectionFormat="of" section="6.10"/>). <xref target="jscontact-prop-vcard"/> defines the "vCard" property to represent arbitrary vCard elements in JSContact.</t>
+        </section>
       </section>
       <section anchor="vcard-types">
         <name>vCard Value Data Types</name>
@@ -401,6 +405,7 @@ TEL;PROP-ID=xyz;VALUE=uri:tel:+1-555-555-5555;ext=5555
         <section anchor="vcard-prop-adr">
           <name>ADR</name>
           <t>The ADR property (<xref target="RFC6350" derivedContent="RFC6350" section="6.3.1" sectionFormat="of"/>) converts to an Address object (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>) in the Card object's addresses property.  Each component in the ADR-structured property value converts to an AddressComponent in the Address object's components property.</t>
+          <t>The ADR property converts to the same Address object as the <xref target="vcard-prop-geo">GEO property</xref> and <xref target="vcard-prop-tz">TZ property</xref> if either they are members of the same vCard property group, or if they are part of no group but other ADR, GEO or TZ properties are grouped.</t>
           <t><xref target="RFC9554"/> defines new components for the ADR property.  Implementations <bcp14>SHOULD</bcp14> set these new components, even if all their values are the empty string.</t>
           <t>The following table shows how the ADR component and AddressComponent kind relate:</t>
           <table anchor="adr_kind_conversion">
@@ -845,7 +850,8 @@ FN:John Q. Public, Esq.
         </section>
         <section anchor="vcard-prop-geo">
           <name>GEO</name>
-          <t>The GEO property (<xref target="RFC6350" derivedContent="RFC6350" section="6.5.2" sectionFormat="of"/>) converts to the Address object's coordinates property (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>).  Also see <xref target="combine-geo-props"/> to determine which Address object instance to convert to.</t>
+          <t>The GEO property (<xref target="RFC6350" derivedContent="RFC6350" section="6.5.2" sectionFormat="of"/>) converts to the Address object's coordinates property (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>).</t>
+          <t>See <xref target="vcard-prop-adr"/> how to convert the GEO property together with the ADR and TZ property.</t>
         </section>
         <section anchor="vcard-prop-gramgender">
           <name>GRAMGENDER</name>
@@ -1521,7 +1527,7 @@ TITLE:Research Scientist
             <li>If the hour offset is zero, use the time zone name "Etc/UTC".</li>
             <li>Otherwise, construct the time zone name with "Etc/GMT" suffixed with the string representation of the reversed sign hour offset, including the sign but excluding leading zeros and minutes.  For example, the UTC offset value "-0500" converts to "Etc/GMT+5".</li>
           </ul>
-          <t>For such property values, also see <xref target="combine-geo-props"/> to determine which Address object instance to convert to.</t>
+          <t>See <xref target="vcard-prop-adr"/> how to convert the TZ property together with the ADR and GEO property.</t>
           <t>Any other value of type UTC-OFFSET or URI does not convert to an IANA-registered property in JSContact.  To convert such property, see <xref target="jscontact-prop-vcard"/>.</t>
         </section>
         <section anchor="vcard-prop-uid">
@@ -1584,22 +1590,6 @@ item1.X-ABLabel:foo
           <name>XML</name>
           <t>The XML property (<xref target="RFC6350" derivedContent="RFC6350" section="6.1.5" sectionFormat="of"/>) does not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert it to the "properties" property of the VCard object (<xref target="jscontact-prop-vcard"/>).</t>
         </section>
-      </section>
-      <section anchor="combine-geo-props">
-        <name>Combining Geographical Properties</name>
-        <t>In vCard, the properties ADR, GEO, and TZ occur independently of each other.  In JSContact, they all convert to properties of an Address object.  It is implementation-specific if these vCard properties convert to <em>separate</em> address instances in JSContact or if some or all of them convert to the <em>same</em> address.  That being said, implementations <bcp14>MUST</bcp14> convert the properties to the <em>same</em> address for the following cases:</t>
-        <ul>
-          <li>The GROUP parameter values of the properties match.</li>
-          <li>The GROUP parameters are not set, but they are set on any other ADR, GEO, and TZ properties.</li>
-        </ul>
-      </section>
-      <section anchor="vcard-extended">
-        <name>Extended Properties and Parameters</name>
-        <t>Extended properties and parameters convert as specified in <xref target="updates-to-jscontact"/>.</t>
-      </section>
-      <section anchor="vcard-unknown">
-        <name>Unknown Properties and Parameters</name>
-        <t>vCards may contain properties or parameters for which no IANA-registered JSContact property is defined.  For example, a vCard may contain properties and parameters of which the semantics or purposes are unknown to the implementation; see <xref target="RFC6350" sectionFormat="of" section="6.10"/>. <xref target="jscontact-prop-vcard"/> defines the "vCard" property to represent such vCard elements in JSContact.</t>
       </section>
     </section>
     <section anchor="convert-jscontact-to-vcard">
