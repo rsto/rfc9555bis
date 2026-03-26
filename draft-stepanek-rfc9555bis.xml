@@ -336,7 +336,7 @@ TEL;PROP-ID=xyz;VALUE=uri:tel:+1-555-555-5555;ext=5555
           <name>SERVICE-TYPE</name>
           <t>The SERVICE-TYPE parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.9" sectionFormat="of"/>) converts to the OnlineService object's service property (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>).</t>
         </section>
-        <section anchor="vcard-param-sortas">
+        <section anchor="vcard-param-sort-as">
           <name>SORT-AS</name>
           <t>The SORT-AS parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.9" sectionFormat="of"/>) converts to the Name, Organization, and OrgUnit objects' sortAs properties.</t>
         </section>
@@ -361,10 +361,8 @@ TEL;PROP-ID=xyz;VALUE=uri:tel:+1-555-555-5555;ext=5555
         <name>vCard Properties</name>
         <section anchor="vcard-prop-adr">
           <name>ADR</name>
-          <t>The ADR property (<xref target="RFC6350" derivedContent="RFC6350" section="6.3.1" sectionFormat="of"/>) converts to an Address object (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>) in the Card object's addresses property.  Each component in the ADR-structured property value converts to an AddressComponent in the Address object's components property.</t>
-          <t>The ADR property converts to the same Address object as the <xref target="vcard-prop-geo">GEO property</xref> and <xref target="vcard-prop-tz">TZ property</xref> if either they are members of the same vCard property group, or if they are part of no group but other ADR, GEO or TZ properties are grouped.</t>
-          <t><xref target="RFC9554"/> defines new components for the ADR property.  Implementations <bcp14>SHOULD</bcp14> set these new components, even if all their values are the empty string.</t>
-          <t>The following table shows how the ADR component and AddressComponent kind relate:</t>
+          <t>The ADR property (<xref target="RFC6350" derivedContent="RFC6350" section="6.3.1" sectionFormat="of"/>) converts to an Address object (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>) in the Card object's addresses property.</t>
+          <t>Each component in the structured value of the ADR property converts to an AddressComponent in the Address components property. The component value converts to the AddressComponent value property, the component position determines the value of the AddressComponent kind property as follows:</t>
           <table anchor="adr_kind_conversion">
             <name>ADR Components Conversion</name>
             <thead>
@@ -384,31 +382,14 @@ TEL;PROP-ID=xyz;VALUE=uri:tel:+1-555-555-5555;ext=5555
                 <td align="left">extended address</td>
                 <td align="left">apartment</td>
                 <td align="left">
-                  <t>To vCard: set the values of the following components:</t>
-                  <ul>
-                    <li>room</li>
-                    <li>floor</li>
-                    <li>apartment</li>
-                    <li>building</li>
-                  </ul>
-                  <t>From vCard: ignore if the ADR structured value is of the format defined in <xref target="RFC9554"/>.  Otherwise, convert to "apartment".</t>
+                  <t>Do not convert if the ADR property value includes extended ADR components defined in <xref target="RFC9554"/>.</t>
                 </td>
               </tr>
               <tr>
                 <td align="left">street address</td>
                 <td align="left">name</td>
                 <td align="left">
-                  <t>To vCard: set the values of the following components:</t>
-                  <ul>
-                    <li>number</li>
-                    <li>name</li>
-                    <li>block</li>
-                    <li>direction</li>
-                    <li>landmark</li>
-                    <li>subdistrict</li>
-                    <li>district</li>
-                  </ul>
-                  <t>From vCard: ignore if the ADR structured value is of the format defined in <xref target="RFC9554"/>.  Otherwise, convert to "name".</t>
+                  <t>Do not convert if the ADR property value includes extended ADR components defined in <xref target="RFC9554"/>.</t>
                 </td>
               </tr>
               <tr>
@@ -424,6 +405,11 @@ TEL;PROP-ID=xyz;VALUE=uri:tel:+1-555-555-5555;ext=5555
               <tr>
                 <td align="left">postal code</td>
                 <td align="left">postcode</td>
+                <td align="left"/>
+              </tr>
+              <tr>
+                <td align="left">country</td>
+                <td align="left">country</td>
                 <td align="left"/>
               </tr>
               <tr>
@@ -478,7 +464,7 @@ TEL;PROP-ID=xyz;VALUE=uri:tel:+1-555-555-5555;ext=5555
               </tr>
             </tbody>
           </table>
-          <t>If the <xref target="vcard-param-jscomps">JSCOMPS</xref> parameter is set, then the Address object's isOrdered property value is "true", and the defaultSeparator property and any separator name components are set according to the parameter value.  The order in the components property <bcp14>MUST</bcp14> adhere to the order of the JSCOMPS parameter value.</t>
+          <t>If the <xref target="vcard-param-jscomps">JSCOMPS</xref> parameter is set and valid, then the Address object's isOrdered property value is "true", and the defaultSeparator property and any separator name components are set according to the parameter value.  The order in the components property <bcp14>MUST</bcp14> adhere to the order of the JSCOMPS parameter value.</t>
           <t>If the JSCOMPS parameter is not set, then the Address object's isOrdered property value is "false", and the defaultSeparator property <bcp14>MUST NOT</bcp14> be set.  The order in the components property <bcp14>MUST</bcp14> follow the order of values in the ADR structured value when read from left to right.</t>
           <ul empty="true">
             <li>The LABEL parameter converts to the Address object's full property.</li>
@@ -486,6 +472,7 @@ TEL;PROP-ID=xyz;VALUE=uri:tel:+1-555-555-5555;ext=5555
             <li>The TZ parameter converts to the Address object's timeZone property.</li>
             <li>The CC parameter converts to the Address object's countryCode property.</li>
           </ul>
+          <t>The ADR property converts to the same Address object as the <xref target="vcard-prop-geo">GEO property</xref> and <xref target="vcard-prop-tz">TZ property</xref> if either they are members of the same vCard property group, or if they are part of no group but other ADR, GEO or TZ properties are grouped.</t>
           <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.  The ADR-specific values of the TYPE parameter defined in Sections <xref target="RFC9554" sectionFormat="bare" section="5.1"/> and <xref target="RFC9554" sectionFormat="bare" section="5.2"/> of <xref target="RFC9554"/> convert to the corresponding entries of the contexts property as defined in <xref target="RFC9553" sectionFormat="of" section="2.5.1"/>.</t>
           <t>The ALTID and LANGUAGE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.  Each possible language-dependent alternative converts to an entry of the PatchObject where the key references the full property.</t>
           <figure anchor="adr_conversion">
@@ -1031,8 +1018,8 @@ MEMBER:urn:uuid:b8767877-b4a1-4c70-9acc-505d3819e519
         </section>
         <section anchor="vcard-prop-n">
           <name>N</name>
-          <t>The N property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.2" sectionFormat="of"/>) converts to a Name object (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.1" sectionFormat="of"/>) in the Card object's name property.
-	  Each component in the N property structured value converts to a NameComponent in the Name object's components property.  The following table shows this relation:</t>
+          <t>The N property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.2" sectionFormat="of"/>) converts to a Name object (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.1" sectionFormat="of"/>) in the Card object's name property.</t>
+          <t>Each component in the structured value of the N property converts to an NameComponent in the Name components property. The component value converts to the NameComponent value property, the component position determines the value of the NameComponent kind property as follows:</t>
           <table anchor="n_kind_conversion">
             <name>N Components Conversion</name>
             <thead>
@@ -1046,7 +1033,7 @@ MEMBER:urn:uuid:b8767877-b4a1-4c70-9acc-505d3819e519
               <tr>
                 <td align="left">Family name</td>
                 <td align="left">surname</td>
-                <td align="left">To vCard: add any "surname2" NameComponent to the Family name component, after all "surname" values.<br/>From vCard: ignore any value that also occurs in the Secondary surname component.</td>
+                <td align="left">Ignore any value that also occurs in the Secondary surname component.</td>
               </tr>
               <tr>
                 <td align="left">Given name</td>
@@ -1066,7 +1053,7 @@ MEMBER:urn:uuid:b8767877-b4a1-4c70-9acc-505d3819e519
               <tr>
                 <td align="left">Honorific suffix</td>
                 <td align="left">credential</td>
-                <td align="left">To vCard: add any "generation" NameComponent to the Honorific suffix component.<br/>From vCard: ignore any value that also occurs in the Generation component.</td>
+                <td align="left">Ignore any value that also occurs in the Generation component.</td>
               </tr>
               <tr>
                 <td align="left">Secondary surname</td>
@@ -1462,6 +1449,7 @@ TEL;VALUE=uri;TYPE=home:tel:+33-01-23-45-67
         <section anchor="vcard-prop-title">
           <name>TITLE</name>
           <t>The TITLE property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.1" sectionFormat="of"/>) converts to a Title object (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.5" sectionFormat="of"/>) in the Card object's titles property (<xref target="title_conversion"/>). The TITLE property value converts to the Title object name property.</t>
+          <t>The same rules as in <xref target="vcard-prop-role"/> apply for setting the organizationId property of the Title object.</t>
           <t>The ALTID and LANGUAGE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <figure anchor="title_conversion">
             <name>TITLE Conversion Example</name>
@@ -1554,26 +1542,1457 @@ item1.X-ABLabel:foo
     </section>
     <section anchor="convert-jscontact-to-vcard">
       <name>Converting JSContact to vCard</name>
-      <section>
-        <name>Conversion Rules</name>
-        <t>A Card object converts to vCard by applying the reverse rules of converting vCard to JSContact.  In addition to those listed in <xref target="convert_jscontact_to_vcard-reverse-rules"/>, the following rules apply:</t>
+      <t>This section defines the conversion rules for each JSContact object type. Each subsection lists the properties of one object type and the relevant document sections for their conversion to vCard.</t>
+      <section anchor="convert-jscontact-to-vcard-new-address">
+        <name>Address</name>
+        <t>The Address object converts to the ADR property. Each AddressComponent object in the <xref target="RFC9553" section="2.5.1.1" sectionFormat="parens">components property</xref> converts to a component in the structured value of the ADR property.
+</t>
+        <table anchor="address_component_conversion">
+          <name>AddressComponent conversion</name>
+          <thead>
+            <tr>
+              <th align="left">AddressComponent kind</th>
+              <th align="left">ADR component</th>
+              <th align="left">Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td align="left">apartment</td>
+              <td align="left">apartment</td>
+              <td align="left"><xref target="vcard-prop-adr"/>, and remarks below</td>
+            </tr>
+            <tr>
+              <td align="left">block</td>
+              <td align="left">block</td>
+              <td align="left"><xref target="vcard-prop-adr"/>, and remarks below</td>
+            </tr>
+            <tr>
+              <td align="left">building</td>
+              <td align="left">building</td>
+              <td align="left"><xref target="vcard-prop-adr"/>, and remarks below</td>
+            </tr>
+            <tr>
+              <td align="left">country</td>
+              <td align="left">country</td>
+              <td align="left">
+                <xref target="vcard-prop-adr"/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left">direction</td>
+              <td align="left">direction</td>
+              <td align="left"><xref target="vcard-prop-adr"/>, and remarks below</td>
+            </tr>
+            <tr>
+              <td align="left">district</td>
+              <td align="left">district</td>
+              <td align="left"><xref target="vcard-prop-adr"/>, and remarks below</td>
+            </tr>
+            <tr>
+              <td align="left">floor</td>
+              <td align="left">floor</td>
+              <td align="left"><xref target="vcard-prop-adr"/>, and remarks below</td>
+            </tr>
+            <tr>
+              <td align="left">landmark</td>
+              <td align="left">landmark</td>
+              <td align="left"><xref target="vcard-prop-adr"/>, and remarks below</td>
+            </tr>
+            <tr>
+              <td align="left">locality</td>
+              <td align="left">locality</td>
+              <td align="left">
+                <xref target="vcard-prop-adr"/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left">name</td>
+              <td align="left">street address</td>
+              <td align="left"><xref target="vcard-prop-adr"/>, and remarks below</td>
+            </tr>
+            <tr>
+              <td align="left">number</td>
+              <td align="left">street number</td>
+              <td align="left"><xref target="vcard-prop-adr"/>, and remarks below</td>
+            </tr>
+            <tr>
+              <td align="left">postcode</td>
+              <td align="left">postal code</td>
+              <td align="left">
+                <xref target="vcard-prop-adr"/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left">postOfficeBox</td>
+              <td align="left">post office box</td>
+              <td align="left">
+                <xref target="vcard-prop-adr"/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left">region</td>
+              <td align="left">region</td>
+              <td align="left">
+                <xref target="vcard-prop-adr"/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left">room</td>
+              <td align="left">room</td>
+              <td align="left"><xref target="vcard-prop-adr"/>, and remarks below</td>
+            </tr>
+            <tr>
+              <td align="left">subdistrict</td>
+              <td align="left">subdistrict</td>
+              <td align="left"><xref target="vcard-prop-adr"/>, and remarks below</td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Remarks:</t>
         <ul>
-          <li>Multivalued JSContact properties convert to separate instances of their equivalent vCard property, and each of the PROP-ID parameters <bcp14>MUST</bcp14> be set to the Id-typed key of the converted value (see <xref target="vcard-param-propid"/>).</li>
-          <li>
-            <t>The full property of the name property in JSContact is optional, but the FN property is mandatory in vCard.  The following rules apply:</t>
-            <ul>
-              <li>If the Name object's full property is set, then implementations <bcp14>MUST</bcp14> use its value for the vCard FN property.</li>
-              <li>If the Name object's full property is not set, then implementations <bcp14>SHOULD</bcp14> derive the full name from the Name object's components property values.  If the isOrdered property is "true", then this can be done by concatenating the name component values.  Otherwise, or alternatively, an implementation can choose any other heuristic to generate the full name from its components such as <xref target="CLDRPersonName"/>.  Implementations <bcp14>MUST</bcp14> set the DERIVED parameter on the FN property.</li>
-              <li>Otherwise, the FN property <bcp14>MUST</bcp14> be set to the empty value.</li>
-            </ul>
-          </li>
-          <li>Vendor-specific and unknown properties convert to vCard as outlined in <xref target="jscontact-convert-unknown"/>.</li>
+          <li>In addition to setting the "block", "direction", "district", "landmark", "name", "number", and "subdistrict" components, implementations <bcp14>MAY</bcp14> combine these values to set the "street address" component in the ADR property value.</li>
+          <li>In addition to setting the "apartment", "building", "floor" and "room" components, implementations <bcp14>MAY</bcp14> combine these values to set the "extended address" component in the ADR property value.</li>
         </ul>
-        <section anchor="jscontact-convert-unknown">
-          <name>Converting Unknown Properties</name>
-          <t>JSContact objects may contain properties for which no IANA-registered vCard property is defined.  For example, a JSContact object may contain vendor-specific properties of which the semantics or purpose are unknown.</t>
-          <t>This specification defines the new <xref target="vcard-prop-jsprop">JSPROP</xref> vCard property and <xref target="vcard-param-jsptr">JSPTR</xref> vCard parameter by which such JSContact properties <bcp14>MAY</bcp14> be represented in vCard.  Implementations <bcp14>MAY</bcp14> choose to convert differently if they deem that more appropriate.</t>
-        </section>
+        <t>The other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-address">
+          <name>Properties of the Address object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>contexts</td>
+              <td>
+                <xref target="RFC9553" section="2.5.1.1" sectionFormat="comma"/>
+              </td>
+              <td>TYPE</td>
+              <td>
+                <xref target="vcard-param-type"/>
+              </td>
+            </tr>
+            <tr>
+              <td>coordinates</td>
+              <td>
+                <xref target="RFC9553" section="2.5.1.1" sectionFormat="comma"/>
+              </td>
+              <td>GEO</td>
+              <td>Sections <xref target="vcard-param-geo" format="counter"/> and <xref target="vcard-prop-geo" format="counter"/>, and remarks below</td>
+            </tr>
+            <tr>
+              <td>countryCode</td>
+              <td>
+                <xref target="RFC9553" section="2.5.1.1" sectionFormat="comma"/>
+              </td>
+              <td>CC</td>
+              <td>
+                <xref target="vcard-param-cc"/>
+              </td>
+            </tr>
+            <tr>
+              <td>defaultSeparator</td>
+              <td>
+                <xref target="RFC9553" section="2.5.1.1" sectionFormat="comma"/>
+              </td>
+              <td>JSCOMPS</td>
+              <td>
+                <xref target="vcard-param-jscomps"/>
+              </td>
+            </tr>
+            <tr>
+              <td>full</td>
+              <td>
+                <xref target="RFC9553" section="2.5.1.1" sectionFormat="comma"/>
+              </td>
+              <td>LABEL</td>
+              <td>
+                <xref target="vcard-param-label"/>
+              </td>
+            </tr>
+            <tr>
+              <td>isOrdered</td>
+              <td>
+                <xref target="RFC9553" section="2.5.1.1" sectionFormat="comma"/>
+              </td>
+              <td>JSCOMPS</td>
+              <td>
+                <xref target="vcard-param-jscomps"/>
+              </td>
+            </tr>
+            <tr>
+              <td>phoneticScript</td>
+              <td>
+                <xref target="RFC9553" section="2.5.1.1" sectionFormat="comma"/>
+              </td>
+              <td>SCRIPT</td>
+              <td>
+                <xref target="vcard-param-script"/>
+              </td>
+            </tr>
+            <tr>
+              <td>phoneticSystem</td>
+              <td>
+                <xref target="RFC9553" section="2.5.1.1" sectionFormat="comma"/>
+              </td>
+              <td>PHONETIC</td>
+              <td>
+                <xref target="vcard-param-phonetic"/>
+              </td>
+            </tr>
+            <tr>
+              <td>pref</td>
+              <td>
+                <xref target="RFC9553" section="2.5.1.1" sectionFormat="comma"/>
+              </td>
+              <td>PREF</td>
+              <td>
+                <xref target="vcard-param-pref"/>
+              </td>
+            </tr>
+            <tr>
+              <td>timeZone</td>
+              <td>
+                <xref target="RFC9553" section="2.5.1.1" sectionFormat="comma"/>
+              </td>
+              <td>TZ</td>
+              <td>Sections <xref target="vcard-param-tz" format="counter"/> and <xref target="vcard-prop-tz" format="counter"/>, and remarks below</td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Remarks:</t>
+        <ul>
+          <li>The "coordinates" and "timeZone" properties <bcp14>SHOULD</bcp14> convert to the GEO and TZ parameters, but implementations <bcp14>MAY</bcp14> alternatively convert them to the same-named properties e.g. to preserve original vCard data.</li>
+        </ul>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-anniversary">
+        <name>Anniversary</name>
+        <t>The Anniversary object converts to one of the following properties, determined by the Anniversary kind property value:</t>
+        <ul>
+          <li>If the kind is "wedding" and the Anniversary date property is set, then it converts to the <xref target="vcard-prop-anniversary">ANNIVERSARY</xref> property. How to convert the place property is implementation-specific.</li>
+          <li>If the kind is "birth", then the date property value converts to the <xref target="vcard-prop-bday">BDAY</xref> property and the place property converts to the <xref target="vcard-prop-birthplace">BIRTHPLACE</xref> property.</li>
+          <li>If the kind is "death", then the date property value converts to the <xref target="vcard-prop-deathdate">DEATHDATE</xref> property and the place property converts to the <xref target="vcard-prop-deathplace">DEATHPLACE</xref> property.</li>
+        </ul>
+        <t>A date property value of type PartialDate converts to the DATE property value type. The calendarScale property converts to the CALSCALE parameter. A date property value of type Timestamp converts to the TIMESTAMP property value type by converting the "utc" property. How to convert a place property value having any Address property other than the "full" property set is implementation-specific.</t>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-calendar">
+        <name>Calendar</name>
+        <t>The Calendar object converts to one of the following properties, determined by the Calendar kind property value. If the kind is "calendar" then it converts to the <xref target="vcard-prop-caluri">CALURI</xref> property. If the kind is "freeBusy" then it converts to the <xref target="vcard-prop-fburl">FBURL</xref> property.</t>
+        <t>Its uri property converts to the property value. Its other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-calendar">
+          <name>Properties of the Calendar object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>contexts</td>
+              <td>
+                <xref target="RFC9553" section="2.4.1" sectionFormat="comma"/>
+              </td>
+              <td>TYPE</td>
+              <td>
+                <xref target="vcard-param-type"/>
+              </td>
+            </tr>
+            <tr>
+              <td>label</td>
+              <td>
+                <xref target="RFC9553" section="2.4.1" sectionFormat="comma"/>
+              </td>
+              <td>X-ABLabel (Property)</td>
+              <td>
+                <xref target="vcard-prop-xablabel"/>
+              </td>
+            </tr>
+            <tr>
+              <td>mediaType</td>
+              <td>
+                <xref target="RFC9553" section="2.4.1" sectionFormat="comma"/>
+              </td>
+              <td>MEDIATYPE</td>
+              <td>
+                <xref target="vcard-param-mediatype"/>
+              </td>
+            </tr>
+            <tr>
+              <td>pref</td>
+              <td>
+                <xref target="RFC9553" section="2.4.1" sectionFormat="comma"/>
+              </td>
+              <td>PREF</td>
+              <td>
+                <xref target="vcard-param-pref"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-card">
+        <name>Card</name>
+        <t>The Card object converts to a <xref target="RFC6350">vCard</xref>.</t>
+        <t>Its properties other than the localizations property convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-card">
+          <name>Properties of the Card object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Property (or Parameter)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>addresses</td>
+              <td>
+                <xref target="RFC9553" section="2.5.1.1" sectionFormat="comma"/>
+              </td>
+              <td>ADR</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-address">Address object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>anniversaries</td>
+              <td>
+                <xref target="RFC9553" section="2.8.1" sectionFormat="comma"/>
+              </td>
+              <td>ANNIVERSARY</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-anniversary">Anniversary object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>calendars</td>
+              <td>
+                <xref target="RFC9553" section="2.4.1" sectionFormat="comma"/>
+              </td>
+              <td>CALURI, FBURL</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-calendar">Calendar object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>created</td>
+              <td>
+                <xref target="RFC9553" section="2.1.3" sectionFormat="comma"/>
+              </td>
+              <td>CREATED</td>
+              <td>
+                <xref target="vcard-prop-created"/>
+              </td>
+            </tr>
+            <tr>
+              <td>directories</td>
+              <td>
+                <xref target="RFC9553" section="2.6.2" sectionFormat="comma"/>
+              </td>
+              <td>SOURCE, ORG-DIRECTORY</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-directory">Directory object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>emails</td>
+              <td>
+                <xref target="RFC9553" section="2.3.1" sectionFormat="comma"/>
+              </td>
+              <td>EMAIL</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-email-address">EmailAddress object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>keywords</td>
+              <td>
+                <xref target="RFC9553" section="2.8.2" sectionFormat="comma"/>
+              </td>
+              <td>CATEGORIES</td>
+              <td>
+                <xref target="vcard-prop-categories"/>
+              </td>
+            </tr>
+            <tr>
+              <td>kind</td>
+              <td>
+                <xref target="RFC9553" section="2.1.4" sectionFormat="comma"/>
+              </td>
+              <td>KIND</td>
+              <td>
+                <xref target="vcard-prop-kind"/>
+              </td>
+            </tr>
+            <tr>
+              <td>language</td>
+              <td>
+                <xref target="RFC9553" section="2.1.5" sectionFormat="comma"/>
+              </td>
+              <td>LANGUAGE</td>
+              <td>
+                <xref target="vcard-prop-language"/>
+              </td>
+            </tr>
+            <tr>
+              <td>links</td>
+              <td>
+                <xref target="RFC9553" section="2.6.3" sectionFormat="comma"/>
+              </td>
+              <td>CONTACT-URI, URL</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-link">Link object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>media</td>
+              <td>
+                <xref target="RFC9553" section="2.6.4" sectionFormat="comma"/>
+              </td>
+              <td>PHOTO, LOGO, SOUND</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-media">Media object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>members</td>
+              <td>
+                <xref target="RFC9553" section="2.1.6" sectionFormat="comma"/>
+              </td>
+              <td>MEMBER</td>
+              <td>
+                <xref target="vcard-prop-member"/>
+              </td>
+            </tr>
+            <tr>
+              <td>name</td>
+              <td>
+                <xref target="RFC9553" section="2.2.1.1" sectionFormat="comma"/>
+              </td>
+              <td>N</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-name">Name object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>nicknames</td>
+              <td>
+                <xref target="RFC9553" section="2.2.2" sectionFormat="comma"/>
+              </td>
+              <td>NICKNAME</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-nickname">Nickname object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>notes</td>
+              <td>
+                <xref target="RFC9553" section="2.8.3" sectionFormat="comma"/>
+              </td>
+              <td>NOTE</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-note">Note object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>onlineServices</td>
+              <td>
+                <xref target="RFC9553" section="2.3.2" sectionFormat="comma"/>
+              </td>
+              <td>IMPP, SOCIALPROFILE</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-online-service">OnlineService object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>organizations</td>
+              <td>
+                <xref target="RFC9553" section="2.2.3" sectionFormat="comma"/>
+              </td>
+              <td>ORG</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-organization">Organization object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>personalInfo</td>
+              <td>
+                <xref target="RFC9553" section="2.8.4" sectionFormat="comma"/>
+              </td>
+              <td>EXPERTISE, HOBBY, INTEREST</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-personal-info">PersonalInfo object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>phones</td>
+              <td>
+                <xref target="RFC9553" section="2.3.3" sectionFormat="comma"/>
+              </td>
+              <td>TEL</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-phone">Phone object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>preferredLanguages</td>
+              <td>
+                <xref target="RFC9553" section="2.3.4" sectionFormat="comma"/>
+              </td>
+              <td>LANG</td>
+              <td>
+                <xref target="vcard-prop-lang"/>
+              </td>
+            </tr>
+            <tr>
+              <td>prodId</td>
+              <td>
+                <xref target="RFC9553" section="2.1.7" sectionFormat="comma"/>
+              </td>
+              <td>PRODID</td>
+              <td>
+                <xref target="vcard-prop-prodid"/>
+              </td>
+            </tr>
+            <tr>
+              <td>relatedTo</td>
+              <td>
+                <xref target="RFC9553" section="2.1.8" sectionFormat="comma"/>
+              </td>
+              <td>RELATED</td>
+              <td>
+                <xref target="vcard-prop-related"/>
+              </td>
+            </tr>
+            <tr>
+              <td>schedulingAddresses</td>
+              <td>
+                <xref target="RFC9553" section="2.4.2" sectionFormat="comma"/>
+              </td>
+              <td>CALADRURI</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-scheduling-address">SchedulingAddress object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>speakToAs</td>
+              <td>
+                <xref target="RFC9553" section="2.2.4" sectionFormat="comma"/>
+              </td>
+              <td>GRAMGENDER, PRONOUNS</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-speak-to-as">SpeakToAs object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>titles</td>
+              <td>
+                <xref target="RFC9553" section="2.2.5" sectionFormat="comma"/>
+              </td>
+              <td>TITLE</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-title">Title object</xref>
+              </td>
+            </tr>
+            <tr>
+              <td>uid</td>
+              <td>
+                <xref target="RFC9553" section="2.1.9" sectionFormat="comma"/>
+              </td>
+              <td>UID</td>
+              <td>
+                <xref target="vcard-prop-uid"/>
+              </td>
+            </tr>
+            <tr>
+              <td>updated</td>
+              <td>
+                <xref target="RFC9553" section="2.1.10" sectionFormat="comma"/>
+              </td>
+              <td>REV</td>
+              <td>
+                <xref target="vcard-prop-rev"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>The localizations property converts by converting the properties in the PatchObject using the same rules as outlined in <xref target="jscontact-to-vcard-props-card"/>. The <xref target="vcard-param-language">LANGUAGE parameter</xref> <bcp14>MUST</bcp14> be set on each resulting property with the parameter value being the language key of the localizations property. The <xref target="vcard-param-altid">ALTID parameter</xref> <bcp14>MUST</bcp14> be set and its value be equal for all properties having the same JSON pointer path in the localizations property and the non-localized Card.</t>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-crypto-key">
+        <name>CryptoKey</name>
+        <t>The CryptoKey object converts to the <xref target="vcard-prop-key">KEY property</xref>.</t>
+        <t>Its uri property converts to the property value. Its other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-crypto-key">
+          <name>Properties of the CryptoKey object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>contexts</td>
+              <td>
+                <xref target="RFC9553" section="2.6.1" sectionFormat="comma"/>
+              </td>
+              <td>TYPE</td>
+              <td>
+                <xref target="vcard-param-type"/>
+              </td>
+            </tr>
+            <tr>
+              <td>label</td>
+              <td>
+                <xref target="RFC9553" section="2.6.1" sectionFormat="comma"/>
+              </td>
+              <td>X-ABLabel (Property)</td>
+              <td>
+                <xref target="vcard-prop-xablabel"/>
+              </td>
+            </tr>
+            <tr>
+              <td>mediaType</td>
+              <td>
+                <xref target="RFC9553" section="2.6.1" sectionFormat="comma"/>
+              </td>
+              <td>MEDIATYPE</td>
+              <td>
+                <xref target="vcard-param-mediatype"/>
+              </td>
+            </tr>
+            <tr>
+              <td>pref</td>
+              <td>
+                <xref target="RFC9553" section="2.6.1" sectionFormat="comma"/>
+              </td>
+              <td>PREF</td>
+              <td>
+                <xref target="vcard-param-pref"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-directory">
+        <name>Directory</name>
+        <t>The Directory object converts to one of the following properties, determined by the Directory kind property value. If the kind is "entry" then it converts to the <xref target="vcard-prop-source">SOURCE</xref> property. If the kind is "directory" then it converts to the <xref target="vcard-prop-org-directory">ORG-DIRECTORY</xref> property.</t>
+        <t>Its uri property converts to the property value. Its other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-directory">
+          <name>Properties of the Directory object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>contexts</td>
+              <td>
+                <xref target="RFC9553" section="2.6.2" sectionFormat="comma"/>
+              </td>
+              <td>TYPE</td>
+              <td>
+                <xref target="vcard-param-type"/>
+              </td>
+            </tr>
+            <tr>
+              <td>label</td>
+              <td>
+                <xref target="RFC9553" section="2.6.2" sectionFormat="comma"/>
+              </td>
+              <td>X-ABLabel (Property)</td>
+              <td>
+                <xref target="vcard-prop-xablabel"/>
+              </td>
+            </tr>
+            <tr>
+              <td>listAs</td>
+              <td>
+                <xref target="RFC9553" section="2.6.2" sectionFormat="comma"/>
+              </td>
+              <td>INDEX</td>
+              <td>
+                <xref target="vcard-param-index"/>
+              </td>
+            </tr>
+            <tr>
+              <td>mediaType</td>
+              <td>
+                <xref target="RFC9553" section="2.6.2" sectionFormat="comma"/>
+              </td>
+              <td>MEDIATYPE</td>
+              <td>
+                <xref target="vcard-param-mediatype"/>
+              </td>
+            </tr>
+            <tr>
+              <td>pref</td>
+              <td>
+                <xref target="RFC9553" section="2.6.2" sectionFormat="comma"/>
+              </td>
+              <td>PREF</td>
+              <td>
+                <xref target="vcard-param-pref"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-email-address">
+        <name>EmailAddress</name>
+        <t>The EmailAddress object converts to the <xref target="vcard-prop-email">EMAIL</xref> property.</t>
+        <t>Its address property converts to the property value. Its other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-email-address">
+          <name>Properties of the EmailAddress object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>contexts</td>
+              <td>
+                <xref target="RFC9553" section="2.3.1" sectionFormat="comma"/>
+              </td>
+              <td>TYPE</td>
+              <td>
+                <xref target="vcard-param-type"/>
+              </td>
+            </tr>
+            <tr>
+              <td>label</td>
+              <td>
+                <xref target="RFC9553" section="2.3.1" sectionFormat="comma"/>
+              </td>
+              <td>X-ABLabel (Property)</td>
+              <td>
+                <xref target="vcard-prop-xablabel"/>
+              </td>
+            </tr>
+            <tr>
+              <td>pref</td>
+              <td>
+                <xref target="RFC9553" section="2.3.1" sectionFormat="comma"/>
+              </td>
+              <td>PREF</td>
+              <td>
+                <xref target="vcard-param-pref"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-language-pref">
+        <name>LanguagePref</name>
+        <t>The LanguagePref object converts to the <xref target="vcard-prop-lang">LANG property</xref>.</t>
+        <t>Its language property converts to the property value. Its other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-language-pref">
+          <name>Properties of the LanguagePref object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>contexts</td>
+              <td>
+                <xref target="RFC9553" section="2.3.4" sectionFormat="comma"/>
+              </td>
+              <td>TYPE</td>
+              <td>
+                <xref target="vcard-param-type"/>
+              </td>
+            </tr>
+            <tr>
+              <td>pref</td>
+              <td>
+                <xref target="RFC9553" section="2.3.4" sectionFormat="comma"/>
+              </td>
+              <td>PREF</td>
+              <td>
+                <xref target="vcard-param-pref"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-link">
+        <name>Link</name>
+        <t>The Link object converts to one of the following properties, determined by the Link kind property value. If the kind property is not set then it converts to the <xref target="vcard-prop-url">URL property.</xref>. If the kind is "contact" then it converts to the <xref target="vcard-prop-contact-uri">CONTACT-URI</xref> property.</t>
+        <t>Its uri property converts to the property value. Its other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-link">
+          <name>Properties of the Link object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>contexts</td>
+              <td>
+                <xref target="RFC9553" section="2.6.3" sectionFormat="comma"/>
+              </td>
+              <td>TYPE</td>
+              <td>
+                <xref target="vcard-param-type"/>
+              </td>
+            </tr>
+            <tr>
+              <td>label</td>
+              <td>
+                <xref target="RFC9553" section="2.6.3" sectionFormat="comma"/>
+              </td>
+              <td>X-ABLabel (Property)</td>
+              <td>
+                <xref target="vcard-prop-xablabel"/>
+              </td>
+            </tr>
+            <tr>
+              <td>mediaType</td>
+              <td>
+                <xref target="RFC9553" section="2.6.3" sectionFormat="comma"/>
+              </td>
+              <td>MEDIATYPE</td>
+              <td>
+                <xref target="vcard-param-mediatype"/>
+              </td>
+            </tr>
+            <tr>
+              <td>pref</td>
+              <td>
+                <xref target="RFC9553" section="2.6.3" sectionFormat="comma"/>
+              </td>
+              <td>PREF</td>
+              <td>
+                <xref target="vcard-param-pref"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-media">
+        <name>Media</name>
+        <t>The Media object converts to one of the following properties, determined by the Media kind property value. If the kind is "photo" then it converts to the <xref target="vcard-prop-photo">PHOTO property.</xref>. If the kind is "logo" then it converts to the <xref target="vcard-prop-logo">LOGO property</xref>. If the kind is "sound" then it converts to the "<xref target="vcard-prop-sound">SOUND property</xref>.</t>
+        <t>Its uri property converts to the property value. Its other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-media">
+          <name>Properties of the Media object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>contexts</td>
+              <td>
+                <xref target="RFC9553" section="2.6.4" sectionFormat="comma"/>
+              </td>
+              <td>TYPE</td>
+              <td>
+                <xref target="vcard-param-type"/>
+              </td>
+            </tr>
+            <tr>
+              <td>label</td>
+              <td>
+                <xref target="RFC9553" section="2.6.4" sectionFormat="comma"/>
+              </td>
+              <td>X-ABLabel (Property)</td>
+              <td>
+                <xref target="vcard-prop-xablabel"/>
+              </td>
+            </tr>
+            <tr>
+              <td>mediaType</td>
+              <td>
+                <xref target="RFC9553" section="2.6.4" sectionFormat="comma"/>
+              </td>
+              <td>MEDIATYPE</td>
+              <td>
+                <xref target="vcard-param-mediatype"/>
+              </td>
+            </tr>
+            <tr>
+              <td>pref</td>
+              <td>
+                <xref target="RFC9553" section="2.6.4" sectionFormat="comma"/>
+              </td>
+              <td>PREF</td>
+              <td>
+                <xref target="vcard-param-pref"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-name">
+        <name>Name</name>
+        <t>The Name object converts to the <xref target="vcard-prop-n">N property</xref>. Each NameComponent object in the <xref target="RFC9553" section="2.2.1.1" sectionFormat="parens">components property</xref> converts to a component in the structured value of the N property.</t>
+        <table anchor="name_component_conversion">
+          <name>NameComponent conversion</name>
+          <thead>
+            <tr>
+              <th align="left">NameComponent kind</th>
+              <th align="left">N component</th>
+              <th align="left">Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td align="left">credential</td>
+              <td align="left">Honorific suffix</td>
+              <td align="left">
+                <xref target="vcard-prop-n"/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left">generation</td>
+              <td align="left">Generation</td>
+              <td align="left"><xref target="vcard-prop-n"/>, and remarks below</td>
+            </tr>
+            <tr>
+              <td align="left">given</td>
+              <td align="left">Given name</td>
+              <td align="left">
+                <xref target="vcard-prop-n"/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left">given2</td>
+              <td align="left">Additional name</td>
+              <td align="left">
+                <xref target="vcard-prop-n"/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left">surname</td>
+              <td align="left">Family name</td>
+              <td align="left">
+                <xref target="vcard-prop-n"/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left">surname2</td>
+              <td align="left">Secondary surname</td>
+              <td align="left"><xref target="vcard-prop-n"/>, and remarks below</td>
+            </tr>
+            <tr>
+              <td align="left">title</td>
+              <td align="left">Honorific prefix</td>
+              <td align="left">
+                <xref target="vcard-prop-n"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Remarks:</t>
+        <ul>
+          <li>In addition to converting the "generation" kind to the "Generation" component, implementations <bcp14>MAY</bcp14> also append the value to the "Honorifix Suffixes" component of the N property value.</li>
+          <li>In addition to converting the "surname2" kind to the "Secondary surname" component, implementations <bcp14>MAY</bcp14> also append the value to the "Surname" component of the N property value.</li>
+        </ul>
+        <t>The full property converts to the <xref target="vcard-prop-fn">FN property</xref>.</t>
+        <t>The full property is optional, but the FN property is defined to be mandatory in <xref target="RFC6350"/>. How to set the FN property if the full property is not set is implementation-specific. Implementations <bcp14>MAY</bcp14> derive the full name from the NameComponents objects.  If the isOrdered property value is "true", then this can be done by concatenating the name component values.  Alternatively, an implementation can choose any other heuristic to generate the full name from its components such as <xref target="CLDRPersonName"/>. If the FN property value is derived, implementations <bcp14>SHOULD</bcp14> set the <xref target="RFC9554" section="4.4" sectionFormat="parens">DERIVED parameter</xref>.</t>
+        <t>The other properties convert  as follows:</t>
+        <table anchor="jscontact-to-vcard-props-name">
+          <name>Properties of the Name object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>defaultSeparator</td>
+              <td>
+                <xref target="RFC9553" section="2.2.1.1" sectionFormat="comma"/>
+              </td>
+              <td>JSCOMPS</td>
+              <td>
+                <xref target="vcard-param-jscomps"/>
+              </td>
+            </tr>
+            <tr>
+              <td>phoneticScript</td>
+              <td>
+                <xref target="RFC9553" section="2.2.1.1" sectionFormat="comma"/>
+              </td>
+              <td>SCRIPT</td>
+              <td>
+                <xref target="vcard-param-script"/>
+              </td>
+            </tr>
+            <tr>
+              <td>phoneticSystem</td>
+              <td>
+                <xref target="RFC9553" section="2.2.1.1" sectionFormat="comma"/>
+              </td>
+              <td>PHONETIC</td>
+              <td>
+                <xref target="vcard-param-phonetic"/>
+              </td>
+            </tr>
+            <tr>
+              <td>isOrdered</td>
+              <td>
+                <xref target="RFC9553" section="2.2.1.1" sectionFormat="comma"/>
+              </td>
+              <td>JSCOMPS</td>
+              <td>
+                <xref target="vcard-param-jscomps"/>
+              </td>
+            </tr>
+            <tr>
+              <td>sortAs</td>
+              <td>
+                <xref target="RFC9553" section="2.2.1.1" sectionFormat="comma"/>
+              </td>
+              <td>SORT-AS</td>
+              <td>
+                <xref target="vcard-param-sort-as"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-nickname">
+        <name>Nickname</name>
+        <t>The Nickname object converts to <xref target="vcard-prop-nickname">NICKNAME property</xref>.</t>
+        <t>Its name property converts to the property value. Its other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-nickname">
+          <name>Properties of the Nickname object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>contexts</td>
+              <td>
+                <xref target="RFC9553" section="2.2.2" sectionFormat="comma"/>
+              </td>
+              <td>TYPE</td>
+              <td>
+                <xref target="vcard-param-type"/>
+              </td>
+            </tr>
+            <tr>
+              <td>pref</td>
+              <td>
+                <xref target="RFC9553" section="2.2.2" sectionFormat="comma"/>
+              </td>
+              <td>PREF</td>
+              <td>
+                <xref target="vcard-param-pref"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-note">
+        <name>Note</name>
+        <t>The Note object converts to the <xref target="vcard-prop-note">NOTE property</xref>.</t>
+        <t>Its note property converts to the property value.</t>
+        <t>The Author object set as the value of its author property converts as follows:</t>
+        <table anchor="jscontact-to-vcard-props-author">
+          <name>Properties of the Author object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>name</td>
+              <td>
+                <xref target="RFC9553" section="2.8.3" sectionFormat="comma"/>
+              </td>
+              <td>AUTHOR-NAME</td>
+              <td>
+                <xref target="vcard-param-author-name"/>
+              </td>
+            </tr>
+            <tr>
+              <td>uri</td>
+              <td>
+                <xref target="RFC9553" section="2.8.3" sectionFormat="comma"/>
+              </td>
+              <td>AUTHOR</td>
+              <td>
+                <xref target="vcard-param-author"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Its other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-note">
+          <name>Properties of the Note object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>created</td>
+              <td>
+                <xref target="RFC9553" section="2.8.3" sectionFormat="comma"/>
+              </td>
+              <td>CREATED</td>
+              <td>
+                <xref target="vcard-param-created"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-online-service">
+        <name>OnlineService</name>
+        <t>The OnlineService object converts to the <xref target="vcard-prop-impp">IMPP property</xref> or <xref target="vcard-prop-socialprofile">SOCIALPROFILE property</xref>. Which property to convert to is implementation-specific. Implementations <bcp14>SHOULD</bcp14> preserve the property name indicated in the <xref target="jscontact-prop-vcard">vCard property</xref>.</t>
+        <t>If its uri property is set, but neither the user or service properties are set, then implementations <bcp14>SHOULD</bcp14> choose IMPP if the uri property value is a URI with scheme "xmpp".</t>
+        <t>It other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-online-service">
+          <name>Properties of the OnlineService object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>contexts</td>
+              <td>
+                <xref target="RFC9553" section="2.3.2" sectionFormat="comma"/>
+              </td>
+              <td>TYPE</td>
+              <td>
+                <xref target="vcard-param-type"/>
+              </td>
+            </tr>
+            <tr>
+              <td>label</td>
+              <td>
+                <xref target="RFC9553" section="2.3.2" sectionFormat="comma"/>
+              </td>
+              <td>X-ABLabel (Property)</td>
+              <td>
+                <xref target="vcard-prop-xablabel"/>
+              </td>
+            </tr>
+            <tr>
+              <td>pref</td>
+              <td>
+                <xref target="RFC9553" section="2.3.2" sectionFormat="comma"/>
+              </td>
+              <td>PREF</td>
+              <td>
+                <xref target="vcard-param-pref"/>
+              </td>
+            </tr>
+            <tr>
+              <td>service</td>
+              <td>
+                <xref target="RFC9553" section="2.3.2" sectionFormat="comma"/>
+              </td>
+              <td>SERVICE-TYPE</td>
+              <td>
+                <xref target="vcard-param-service-type"/>
+              </td>
+            </tr>
+            <tr>
+              <td>user</td>
+              <td>
+                <xref target="RFC9553" section="2.3.2" sectionFormat="comma"/>
+              </td>
+              <td>USERNAME</td>
+              <td>
+                <xref target="vcard-param-username"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-organization">
+        <name>Organization</name>
+        <t>The Organization object converts to the <xref target="vcard-prop-org">ORG property.</xref></t>
+        <t>Its name property converts the first component in the structured property value. The name property of any OrgUnit object in its units property converts to additional components in the structured property value, in order to appearance.</t>
+        <t>Its sortAs property converts the first component in the structured value of the <xref target="vcard-param-sort-as">SORT-AS parameter</xref>. The sortAs property of any OrgUnit object in its units property converts to additional components in the structured parameter value, in order to appearance.</t>
+        <t>Its other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-organization">
+          <name>Properties of the Organization object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>contexts</td>
+              <td>
+                <xref target="RFC9553" section="2.2.3" sectionFormat="comma"/>
+              </td>
+              <td>TYPE</td>
+              <td>
+                <xref target="vcard-param-type"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-personal-info">
+        <name>PersonalInfo</name>
+        <t>The PersonalInfo object converts to one of the following properties, determined by the PersonalInfo kind property value. If the kind is "expertise" then it converts to the <xref target="vcard-prop-expertise">EXPERTISE property.</xref>. If the kind is "hobby" then it converts to the <xref target="vcard-prop-hobby">HOBBY property</xref>. If the kind is "interest" then it converts to the "<xref target="vcard-prop-interest">INTEREST property</xref>.</t>
+        <t>Its value property converts to the property value. Its other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-personal-info">
+          <name>Properties of the PersonalInfo object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>listAs</td>
+              <td>
+                <xref target="RFC9553" section="2.8.4" sectionFormat="comma"/>
+              </td>
+              <td>INDEX</td>
+              <td>
+                <xref target="vcard-param-index"/>
+              </td>
+            </tr>
+            <tr>
+              <td>level</td>
+              <td>
+                <xref target="RFC9553" section="2.8.4" sectionFormat="comma"/>
+              </td>
+              <td>LEVEL</td>
+              <td>
+                <xref target="vcard-param-level"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-phone">
+        <name>Phone</name>
+        <t>The Phone object converts to the <xref target="vcard-prop-tel">TEL property</xref></t>
+        <t>Its number property converts to the property value. Its other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-phone">
+          <name>Properties of the Phone object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>contexts</td>
+              <td>
+                <xref target="RFC9553" section="2.3.3" sectionFormat="comma"/>
+              </td>
+              <td>TYPE</td>
+              <td>
+                <xref target="vcard-param-type"/>
+              </td>
+            </tr>
+            <tr>
+              <td>features</td>
+              <td>
+                <xref target="RFC9553" section="2.3.3" sectionFormat="comma"/>
+              </td>
+              <td>TYPE</td>
+              <td>
+                <xref target="vcard-prop-tel"/>
+              </td>
+            </tr>
+            <tr>
+              <td>label</td>
+              <td>
+                <xref target="RFC9553" section="2.3.3" sectionFormat="comma"/>
+              </td>
+              <td>X-ABLabel (Property)</td>
+              <td>
+                <xref target="vcard-prop-xablabel"/>
+              </td>
+            </tr>
+            <tr>
+              <td>pref</td>
+              <td>
+                <xref target="RFC9553" section="2.3.3" sectionFormat="comma"/>
+              </td>
+              <td>PREF</td>
+              <td>
+                <xref target="vcard-param-pref"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-scheduling-address">
+        <name>SchedulingAddress</name>
+        <t>The SchedulingAddress object converts to the <xref target="vcard-prop-caladruri">CALADRURI property</xref>.</t>
+        <t>Its uri property converts to the property value. Its other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-scheduling-address">
+          <name>Properties of the SchedulingAddress object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>contexts</td>
+              <td>
+                <xref target="RFC9553" section="2.4.2" sectionFormat="comma"/>
+              </td>
+              <td>TYPE</td>
+              <td>
+                <xref target="vcard-param-type"/>
+              </td>
+            </tr>
+            <tr>
+              <td>label</td>
+              <td>
+                <xref target="RFC9553" section="2.4.2" sectionFormat="comma"/>
+              </td>
+              <td>X-ABLabel (Property)</td>
+              <td>
+                <xref target="vcard-prop-xablabel"/>
+              </td>
+            </tr>
+            <tr>
+              <td>pref</td>
+              <td>
+                <xref target="RFC9553" section="2.4.2" sectionFormat="comma"/>
+              </td>
+              <td>PREF</td>
+              <td>
+                <xref target="vcard-param-pref"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-speak-to-as">
+        <name>SpeakToAs</name>
+        <t>The SpeakToAs object converts to the <xref target="vcard-prop-gramgender">GRAMGENDER property</xref> and <xref target="vcard-prop-pronouns">PRONOUNS property.</xref>.</t>
+        <t>Its grammaticalGender property converts to the property value of the GRAMGENDER property.</t>
+        <t>Its pronouns property converts to PRONOUNS properties, one for each entry. The pronouns property of the Pronouns object converts the property value. Its other properties convert as follows:</t>
+        <table anchor="jscontact-to-vcard-props-pronouns">
+          <name>Properties of the Pronouns object</name>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Parameter (or other)</th>
+              <th>See</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>contexts</td>
+              <td>
+                <xref target="RFC9553" section="2.2.4" sectionFormat="comma"/>
+              </td>
+              <td>TYPE</td>
+              <td>
+                <xref target="vcard-param-type"/>
+              </td>
+            </tr>
+            <tr>
+              <td>pref</td>
+              <td>
+                <xref target="RFC9553" section="2.2.4" sectionFormat="comma"/>
+              </td>
+              <td>PREF</td>
+              <td>
+                <xref target="vcard-param-pref"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
+      </section>
+      <section anchor="convert-jscontact-to-vcard-new-title">
+        <name>Title</name>
+        <t>The Title object converts to one of the following properties, determined by the Title kind property value. If the kind is "title" or not set then it converts to the <xref target="vcard-prop-title">TITLE property.</xref>. If the kind is "role" then it converts to the <xref target="vcard-prop-role">ROLE property</xref>.</t>
+        <t>Its name property converts the property value. Its organizationId property converts by assigning the TITLE property and the ORG property to the same vCard property group (see <xref target="vcard-prop-role"/>).</t>
+        <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
       </section>
       <section>
         <name>New vCard Parameters</name>
@@ -2037,1136 +3456,6 @@ JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
         </reference>
       </references>
     </references>
-    <section anchor="convert_jscontact_to_vcard-reverse-rules">
-      <name>Reverse Rules of Converting a vCard to a JSContact Card</name>
-      <t><xref target="table_convert_jscontact_to_vcard"/> lists the relevant document sections for each JSContact type and property.</t>
-      <table anchor="table_convert_jscontact_to_vcard">
-        <name>Conversion Rules for JSContact Types and Properties</name>
-        <thead>
-          <tr>
-            <th align="left">JSContact Type</th>
-            <th align="left">Property Name</th>
-            <th align="left">Relevant Section(s)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Address</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>components</td>
-            <td>Sections <xref target="vcard-prop-adr" format="counter"/> and
-              <xref target="vcard-param-jscomps" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>contexts</td>
-            <td>
-              <xref target="vcard-param-type"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>coordinates</td>
-            <td>Sections <xref target="vcard-param-geo" format="counter"/> and <xref target="vcard-prop-geo" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>country</td>
-            <td>
-              <xref target="vcard-prop-adr"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>countryCode</td>
-            <td>
-              <xref target="vcard-prop-adr"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>defaultSeparator</td>
-            <td>Sections <xref target="vcard-prop-adr" format="counter"/> and
-              <xref target="vcard-param-jscomps" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>full</td>
-            <td>
-              <xref target="vcard-prop-adr"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>isOrdered</td>
-            <td>Sections <xref target="vcard-prop-adr" format="counter"/> and
-              <xref target="vcard-param-jscomps" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>locality</td>
-            <td>
-              <xref target="vcard-prop-adr"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>phoneticScript</td>
-            <td>Sections 
-<xref target="vcard-param-phonetic" format="counter"/> and
-<xref target="vcard-param-script" format="counter"/>
-</td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>phoneticSystem</td>
-            <td>
-              <xref target="vcard-param-phonetic"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>postcode</td>
-            <td>
-              <xref target="vcard-prop-adr"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>pref</td>
-            <td>
-              <xref target="vcard-param-pref"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>region</td>
-            <td>
-              <xref target="vcard-prop-adr"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>timeZone</td>
-            <td>Sections <xref target="vcard-param-tz" format="counter"/> and <xref target="vcard-prop-tz" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>AddressComponent</td>
-            <td>phonetic</td>
-            <td>
-              <xref target="vcard-param-phonetic"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Anniversary</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Anniversary</td>
-            <td>date</td>
-            <td>
-              <xref target="vcard-prop-anniversary"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Anniversary</td>
-            <td>kind</td>
-            <td>
-              <xref target="vcard-prop-anniversary"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Anniversary</td>
-            <td>place</td>
-            <td>
-              <xref target="vcard-prop-anniversary"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Author</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Author</td>
-            <td>name</td>
-            <td>
-              <xref target="vcard-param-author-name"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Author</td>
-            <td>uri</td>
-            <td>
-              <xref target="vcard-param-author"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Calendar</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Calendar</td>
-            <td>contexts</td>
-            <td>
-              <xref target="vcard-param-type"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Calendar</td>
-            <td>kind</td>
-            <td>Sections <xref target="vcard-prop-caluri" format="counter"/> and <xref target="vcard-prop-fburl" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Calendar</td>
-            <td>label</td>
-            <td>
-              <xref target="vcard-prop-xablabel"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Calendar</td>
-            <td>mediaType</td>
-            <td>
-              <xref target="vcard-param-mediatype"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Calendar</td>
-            <td>pref</td>
-            <td>
-              <xref target="vcard-param-pref"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Calendar</td>
-            <td>uri</td>
-            <td>Sections <xref target="vcard-prop-caluri" format="counter"/> and <xref target="vcard-prop-fburl" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>@version</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>addresses</td>
-            <td>
-              <xref target="vcard-prop-adr"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>anniversaries</td>
-            <td>
-              <xref target="vcard-prop-anniversary"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>calendars</td>
-            <td>Sections <xref target="vcard-prop-caluri"/> and <xref target="vcard-prop-fburl" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>created</td>
-            <td>
-              <xref target="vcard-prop-created"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>directories</td>
-            <td>Sections <xref target="vcard-prop-source"/> and <xref target="vcard-prop-org-directory"/></td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>emails</td>
-            <td>
-              <xref target="vcard-prop-email"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>keywords</td>
-            <td>
-              <xref target="vcard-prop-categories"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>kind</td>
-            <td>
-              <xref target="vcard-prop-kind"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>language</td>
-            <td>
-              <xref target="vcard-prop-language"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>links</td>
-            <td>Sections <xref target="vcard-prop-contact-uri" format="counter"/> and <xref target="vcard-prop-url" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>localizations</td>
-            <td>
-              <xref target="vcard-param-language"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>media</td>
-            <td>Sections <xref target="vcard-prop-photo" format="counter"/>, <xref target="vcard-prop-logo" format="counter"/>, and <xref target="vcard-prop-sound" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>members</td>
-            <td>
-              <xref target="vcard-prop-member"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>name</td>
-            <td>
-              <xref target="vcard-prop-n"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>nicknames</td>
-            <td>
-              <xref target="vcard-prop-nickname"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>notes</td>
-            <td>
-              <xref target="vcard-prop-note"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>onlineServices</td>
-            <td>
-              <xref target="vcard-prop-impp"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>organizations</td>
-            <td>
-              <xref target="vcard-prop-org"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>personalInfo</td>
-            <td>Sections <xref target="vcard-prop-expertise" format="counter"/>, <xref target="vcard-prop-hobby" format="counter"/>, and <xref target="vcard-prop-interest" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>phones</td>
-            <td>
-              <xref target="vcard-prop-tel"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>preferredLanguages</td>
-            <td>
-              <xref target="vcard-prop-lang"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>prodId</td>
-            <td>
-              <xref target="vcard-prop-prodid"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>relatedTo</td>
-            <td>
-              <xref target="vcard-prop-related"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>schedulingAddresses</td>
-            <td>
-              <xref target="vcard-prop-caladruri"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>speakToAs</td>
-            <td>
-              <xref target="vcard-prop-gramgender"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>titles</td>
-            <td>
-              <xref target="vcard-prop-title"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>uid</td>
-            <td>
-              <xref target="vcard-prop-uid"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td>updated</td>
-            <td>
-              <xref target="vcard-prop-rev"/>
-            </td>
-          </tr>
-          <tr>
-            <td>CryptoKey</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>CryptoKey</td>
-            <td>contexts</td>
-            <td>
-              <xref target="vcard-param-type"/>
-            </td>
-          </tr>
-          <tr>
-            <td>CryptoKey</td>
-            <td>kind</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>CryptoKey</td>
-            <td>label</td>
-            <td>
-              <xref target="vcard-prop-xablabel"/>
-            </td>
-          </tr>
-          <tr>
-            <td>CryptoKey</td>
-            <td>mediaType</td>
-            <td>
-              <xref target="vcard-param-mediatype"/>
-            </td>
-          </tr>
-          <tr>
-            <td>CryptoKey</td>
-            <td>pref</td>
-            <td>
-              <xref target="vcard-param-pref"/>
-            </td>
-          </tr>
-          <tr>
-            <td>CryptoKey</td>
-            <td>uri</td>
-            <td>
-              <xref target="vcard-prop-key"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Directory</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Directory</td>
-            <td>contexts</td>
-            <td>
-              <xref target="vcard-param-type"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Directory</td>
-            <td>kind</td>
-            <td>Sections <xref target="vcard-prop-source" format="counter"/> and <xref target="vcard-prop-org-directory" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Directory</td>
-            <td>label</td>
-            <td>
-              <xref target="vcard-prop-xablabel"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Directory</td>
-            <td>listAs</td>
-            <td>
-              <xref target="vcard-param-index"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Directory</td>
-            <td>mediaType</td>
-            <td>
-              <xref target="vcard-param-mediatype"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Directory</td>
-            <td>pref</td>
-            <td>
-              <xref target="vcard-param-pref"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Directory</td>
-            <td>uri</td>
-            <td>Sections <xref target="vcard-prop-source" format="counter"/> and <xref target="vcard-prop-org-directory" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>EmailAddress</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>EmailAddress</td>
-            <td>address</td>
-            <td>
-              <xref target="vcard-prop-email"/>
-            </td>
-          </tr>
-          <tr>
-            <td>EmailAddress</td>
-            <td>contexts</td>
-            <td>
-              <xref target="vcard-param-type"/>
-            </td>
-          </tr>
-          <tr>
-            <td>EmailAddress</td>
-            <td>label</td>
-            <td>
-              <xref target="vcard-prop-xablabel"/>
-            </td>
-          </tr>
-          <tr>
-            <td>EmailAddress</td>
-            <td>pref</td>
-            <td>
-              <xref target="vcard-param-pref"/>
-            </td>
-          </tr>
-          <tr>
-            <td>LanguagePref</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>LanguagePref</td>
-            <td>contexts</td>
-            <td>
-              <xref target="vcard-param-type"/>
-            </td>
-          </tr>
-          <tr>
-            <td>LanguagePref</td>
-            <td>pref</td>
-            <td>
-              <xref target="vcard-param-pref"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Link</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Link</td>
-            <td>contexts</td>
-            <td>
-              <xref target="vcard-param-type"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Link</td>
-            <td>kind</td>
-            <td>
-              <xref target="vcard-prop-contact-uri"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Link</td>
-            <td>label</td>
-            <td>
-              <xref target="vcard-prop-xablabel"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Link</td>
-            <td>mediaType</td>
-            <td>
-              <xref target="vcard-param-mediatype"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Link</td>
-            <td>pref</td>
-            <td>
-              <xref target="vcard-param-pref"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Link</td>
-            <td>uri</td>
-            <td>Sections <xref target="vcard-prop-contact-uri" format="counter"/> and <xref target="vcard-prop-url" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Media</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Media</td>
-            <td>contexts</td>
-            <td>
-              <xref target="vcard-param-type"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Media</td>
-            <td>kind</td>
-            <td>Sections <xref target="vcard-prop-photo" format="counter"/>, <xref target="vcard-prop-logo" format="counter"/>, and <xref target="vcard-prop-sound" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Media</td>
-            <td>label</td>
-            <td>
-              <xref target="vcard-prop-xablabel"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Media</td>
-            <td>mediaType</td>
-            <td>
-              <xref target="vcard-param-mediatype"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Media</td>
-            <td>pref</td>
-            <td>
-              <xref target="vcard-param-pref"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Media</td>
-            <td>uri</td>
-            <td>Sections <xref target="vcard-prop-photo" format="counter"/>, <xref target="vcard-prop-logo" format="counter"/>, and <xref target="vcard-prop-sound" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Name</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Name</td>
-            <td>components</td>
-            <td>Sections <xref target="vcard-prop-n" format="counter"/> and
-              <xref target="vcard-param-jscomps" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Name</td>
-            <td>defaultSeparator</td>
-            <td>Sections <xref target="vcard-prop-n" format="counter"/> and
-              <xref target="vcard-param-jscomps" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Name</td>
-            <td>full</td>
-            <td>
-              <xref target="vcard-prop-fn"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Name</td>
-            <td>phoneticScript</td>
-            <td>Sections
-<xref target="vcard-param-phonetic" format="counter"/> and
-<xref target="vcard-param-script" format="counter"/>
-</td>
-          </tr>
-          <tr>
-            <td>Name</td>
-            <td>phoneticSystem</td>
-            <td>
-              <xref target="vcard-param-phonetic"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Name</td>
-            <td>isOrdered</td>
-            <td>Sections <xref target="vcard-prop-n" format="counter"/> and
-              <xref target="vcard-param-jscomps" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Name</td>
-            <td>sortAs</td>
-            <td>
-              <xref target="vcard-param-sortas"/>
-            </td>
-          </tr>
-          <tr>
-            <td>NameComponent</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>NameComponent</td>
-            <td>kind</td>
-            <td>
-              <xref target="vcard-prop-n"/>
-            </td>
-          </tr>
-          <tr>
-            <td>NameComponent</td>
-            <td>phonetic</td>
-            <td>
-              <xref target="vcard-param-phonetic"/>
-            </td>
-          </tr>
-          <tr>
-            <td>NameComponent</td>
-            <td>value</td>
-            <td>
-              <xref target="vcard-prop-n"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Nickname</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Nickname</td>
-            <td>contexts</td>
-            <td>
-              <xref target="vcard-param-type"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Nickname</td>
-            <td>name</td>
-            <td>
-              <xref target="vcard-prop-n"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Nickname</td>
-            <td>pref</td>
-            <td>
-              <xref target="vcard-param-pref"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Note</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Note</td>
-            <td>author</td>
-            <td>Sections <xref target="vcard-param-author" format="counter"/> and <xref target="vcard-param-author-name" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Note</td>
-            <td>created</td>
-            <td>
-              <xref target="vcard-param-created"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Note</td>
-            <td>note</td>
-            <td>
-              <xref target="vcard-prop-note"/>
-            </td>
-          </tr>
-          <tr>
-            <td>OnlineService</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>OnlineService</td>
-            <td>contexts</td>
-            <td>
-              <xref target="vcard-param-type"/>
-            </td>
-          </tr>
-          <tr>
-            <td>OnlineService</td>
-            <td>label</td>
-            <td>
-              <xref target="vcard-prop-xablabel"/>
-            </td>
-          </tr>
-          <tr>
-            <td>OnlineService</td>
-            <td>pref</td>
-            <td>
-              <xref target="vcard-param-pref"/>
-            </td>
-          </tr>
-          <tr>
-            <td>OnlineService</td>
-            <td>service</td>
-            <td>
-              <xref target="vcard-param-service-type"/>
-            </td>
-          </tr>
-          <tr>
-            <td>OnlineService</td>
-            <td>uri</td>
-            <td>Sections <xref target="vcard-prop-impp" format="counter"/> and <xref target="vcard-prop-socialprofile" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>OnlineService</td>
-            <td>user</td>
-            <td>
-              <xref target="vcard-param-username"/>
-            </td>
-          </tr>
-          <tr>
-            <td>OrgUnit</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>OrgUnit</td>
-            <td>name</td>
-            <td>
-              <xref target="vcard-prop-org"/>
-            </td>
-          </tr>
-          <tr>
-            <td>OrgUnit</td>
-            <td>sortAs</td>
-            <td>
-              <xref target="vcard-param-sortas"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Organization</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Organization</td>
-            <td>contexts</td>
-            <td>
-              <xref target="vcard-param-type"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Organization</td>
-            <td>name</td>
-            <td>
-              <xref target="vcard-prop-org"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Organization</td>
-            <td>sortAs</td>
-            <td>
-              <xref target="vcard-param-sortas"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Organization</td>
-            <td>units</td>
-            <td>
-              <xref target="vcard-prop-org"/>
-            </td>
-          </tr>
-          <tr>
-            <td>PartialDate</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>PartialDate</td>
-            <td>calendarScale</td>
-            <td>
-              <xref target="vcard-param-calscale"/>
-            </td>
-          </tr>
-          <tr>
-            <td>PartialDate</td>
-            <td>day</td>
-            <td>
-              <xref target="vcard-prop-bday"/>
-            </td>
-          </tr>
-          <tr>
-            <td>PartialDate</td>
-            <td>month</td>
-            <td>
-              <xref target="vcard-prop-bday"/>
-            </td>
-          </tr>
-          <tr>
-            <td>PartialDate</td>
-            <td>year</td>
-            <td>
-              <xref target="vcard-prop-bday"/>
-            </td>
-          </tr>
-          <tr>
-            <td>PatchObject</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>PersonalInfo</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>PersonalInfo</td>
-            <td>kind</td>
-            <td>Sections <xref target="vcard-prop-expertise" format="counter"/>, <xref target="vcard-prop-hobby" format="counter"/>, and <xref target="vcard-prop-interest" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>PersonalInfo</td>
-            <td>listAs</td>
-            <td>
-              <xref target="vcard-param-index"/>
-            </td>
-          </tr>
-          <tr>
-            <td>PersonalInfo</td>
-            <td>level</td>
-            <td>
-              <xref target="vcard-param-level"/>
-            </td>
-          </tr>
-          <tr>
-            <td>PersonalInfo</td>
-            <td>value</td>
-            <td>Sections <xref target="vcard-prop-expertise" format="counter"/>, <xref target="vcard-prop-hobby" format="counter"/>, and <xref target="vcard-prop-interest" format="counter"/></td>
-          </tr>
-          <tr>
-            <td>Phone</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Phone</td>
-            <td>contexts</td>
-            <td>
-              <xref target="vcard-param-type"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Phone</td>
-            <td>features</td>
-            <td>
-              <xref target="vcard-prop-tel"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Phone</td>
-            <td>label</td>
-            <td>
-              <xref target="vcard-prop-xablabel"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Phone</td>
-            <td>number</td>
-            <td>
-              <xref target="vcard-prop-tel"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Phone</td>
-            <td>pref</td>
-            <td>
-              <xref target="vcard-param-pref"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Pronouns</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Pronouns</td>
-            <td>contexts</td>
-            <td>
-              <xref target="vcard-param-type"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Pronouns</td>
-            <td>pref</td>
-            <td>
-              <xref target="vcard-param-pref"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Pronouns</td>
-            <td>pronouns</td>
-            <td>
-              <xref target="vcard-prop-gramgender"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Relation</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Relation</td>
-            <td>relation</td>
-            <td>
-              <xref target="vcard-prop-related"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Resource</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>SchedulingAddress</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>SchedulingAddress</td>
-            <td>contexts</td>
-            <td>
-              <xref target="vcard-param-type"/>
-            </td>
-          </tr>
-          <tr>
-            <td>SchedulingAddress</td>
-            <td>label</td>
-            <td>
-              <xref target="vcard-prop-xablabel"/>
-            </td>
-          </tr>
-          <tr>
-            <td>SchedulingAddress</td>
-            <td>pref</td>
-            <td>
-              <xref target="vcard-param-pref"/>
-            </td>
-          </tr>
-          <tr>
-            <td>SchedulingAddress</td>
-            <td>uri</td>
-            <td>
-              <xref target="vcard-prop-caladruri"/>
-            </td>
-          </tr>
-          <tr>
-            <td>SpeakToAs</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>SpeakToAs</td>
-            <td>grammaticalGender</td>
-            <td>
-              <xref target="vcard-prop-gramgender"/>
-            </td>
-          </tr>
-          <tr>
-            <td>SpeakToAs</td>
-            <td>pronouns</td>
-            <td>
-              <xref target="vcard-prop-gramgender"/>
-            </td>
-          </tr>
-          <tr>
-            <td>AddressComponent</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>AddressComponent</td>
-            <td>kind</td>
-            <td>
-              <xref target="vcard-prop-adr"/>
-            </td>
-          </tr>
-          <tr>
-            <td>AddressComponent</td>
-            <td>value</td>
-            <td>
-              <xref target="vcard-prop-adr"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Timestamp</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Timestamp</td>
-            <td>utc</td>
-            <td>
-              <xref target="vcard-prop-bday"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Title</td>
-            <td>@type</td>
-            <td>not applicable</td>
-          </tr>
-          <tr>
-            <td>Title</td>
-            <td>kind</td>
-            <td>
-              <xref target="vcard-prop-title"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Title</td>
-            <td>name</td>
-            <td>
-              <xref target="vcard-prop-title"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Title</td>
-            <td>organizationId</td>
-            <td>
-              <xref target="vcard-prop-title"/>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
     <section anchor="differences-from-rfc9555">
       <name>Differences from RFC 9555</name>
       <t>This section documents all significant differences from RFC 9555. Insignificant differences, such as formatting, grammar or typos are not documented.</t>
