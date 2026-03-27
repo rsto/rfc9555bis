@@ -54,25 +54,104 @@
   <middle>
     <section>
       <name>Introduction</name>
-      <section>
-        <name>Motivation</name>
-        <t>The JSContact data model and format <xref target="RFC9553"/> aims to be an alternative to the widely used vCard standard <xref target="RFC6350"/> and jCard format <xref target="RFC7095"/>.</t>
-        <t>While applications might prefer JSContact to exchange contact card data with other systems, they are likely to interoperate with services and clients that only support vCard or jCard.  Similarly, existing contact data providers and consumers already using vCard or jCard might also want to represent their contact data in JSContact.</t>
-        <t>To achieve this, this document defines standard rules to convert contact data between JSContact and vCard (and consequently jCard). </t>
-      </section>
       <section anchor="notational-conventions" numbered="true" toc="default">
         <name>Notational Conventions</name>
         <t>The key words "<bcp14>MUST</bcp14>", "<bcp14>MUST NOT</bcp14>", "<bcp14>REQUIRED</bcp14>", "<bcp14>SHALL</bcp14>", "<bcp14>SHALL NOT</bcp14>", "<bcp14>SHOULD</bcp14>", "<bcp14>SHOULD NOT</bcp14>", "<bcp14>RECOMMENDED</bcp14>", "<bcp14>NOT RECOMMENDED</bcp14>", "<bcp14>MAY</bcp14>", and "<bcp14>OPTIONAL</bcp14>" in this document are to be interpreted as described in BCP 14 <xref target="RFC2119" format="default" sectionFormat="of" derivedContent="RFC2119"/> <xref target="RFC8174" format="default" sectionFormat="of" derivedContent="RFC8174"/> when, and only when, they appear in all capitals, as shown here.</t>
+        <t>The ABNF definitions in this document use the notations of <xref target="RFC5234"/>. ABNF rules not defined in this document are defined in either <xref target="RFC5234"/> (such as the ABNF for CRLF, WSP, DQUOTE, VCHAR, ALPHA, and DIGIT) or <xref target="RFC6350"/>.</t>
       </section>
-      <section anchor="relation-to-rfc9555">
-        <name>Relation to obsolete RFC 9555</name>
+      <section anchor="scope-and-goals">
+        <name>Scope and Goals</name>
+        <t>This document outlines how to convert between the <xref target="RFC6350">vCard</xref> and <xref target="RFC9553">JSContact</xref> data formats.  It describes which elements are common to both, but also highlights where the two formats differ. For each common element, it defines a conversion rule and includes an example of how to convert that element. All vCard and JSContact elements currently registered at IANA are in scope, but not all of these elements are common to both formats.</t>
+        <t>For elements that have no counterpart in the other format, it is the goal of this document to define how to preserve them during conversion, but in general it is not the goal to achieve this by defining new standard elements. Instead, this document updates <xref target="RFC6350"/> and <xref target="RFC9553"/> by defining vCard and JSContact elements to preserve elements that have no equivalent in the other format. These conversion-specific properties are defined in Section <xref target="vcard-prop-jsprop" format="counter"/> for vCard, and <xref target="jscontact-prop-vcard"/> for JSContact. </t>
         <t>This document obsoletes <xref target="RFC9555"/>. For contents that remain unchanged, it includes all verified errata for the obsoleted document. The conversion rules are updated for JSContact version "2.0", defined in <xref target="I-D.ietf-calext-jscontact-uid"/>.</t>
         <t><xref target="updates-to-jscontact"/> replaces the JSContact "vCardProps", "vCardParams" and "vCardParam" properties originally defined in <xref target="RFC9555"/> with the new "vCard" property. The new property allows for edge cases where the former elements were insufficient. For vCard, <xref target="updates-to-vcard"/> replaces the <xref target="RFC9554" section="4.7" sectionFormat="parens">PROP-ID</xref> parameter with the new JSID parameter. Both changes align the conversion-specific elements of vCard and JSContact with those defined for iCalendar and JSCalendar in <xref target="I-D.ietf-calext-jscalendar-icalendar"/>, allowing for code reuse for implementations that support these formats.</t>
       </section>
-      <section anchor="abnf-notations">
-        <name>ABNF Notations</name>
-        <t>The ABNF definitions in this document use the notations of <xref target="RFC5234"/>. ABNF rules not defined in this document are defined in either <xref target="RFC5234"/> (such as the ABNF for CRLF, WSP, DQUOTE, VCHAR, ALPHA, and DIGIT) or <xref target="RFC6350"/>.
-    </t>
+      <section>
+        <name>How to Read the Examples</name>
+        <t>Later sections contain examples that illustrate how to convert between the vCard and JSContact data formats.  The notation of these examples is such that their main points should be clear to the reader, but their contents can also be parsed for automated testing. The following sections define the notation for such examples.</t>
+        <section anchor="notation-vcard">
+          <name>vCard Examples</name>
+          <t>A vCard example contains either an extract or a complete representation of vCard data. The following rules apply:</t>
+          <ul>
+            <li>An example that only contains vCard properties implicitly represents a vCard (e.g. the <tt>BEGIN:VCARD</tt> and <tt>END:VCARD</tt> lines are implicit).</li>
+            <li>The vCard implicitly contains all mandatory properties with some value. If they are not included in the example, then their actual value is irrelevant for the example. The default value for the VERSION property is "4.0".</li>
+          </ul>
+          <t><xref target="example-notation-jscontact-implicit-explicit"/> contains three examples, all of which represent the same vCard data.  In the first example, the <tt>BEGIN</tt> and <tt>END</tt> lines and the mandatory properties are implicit. In the second exampl, only the begin and end of the vCard is implicit. The third example depicts a complete vCard, nothing is implicit.</t>
+          <figure anchor="example-notation-jscontact-implicit-explicit">
+            <name>Examples for implicit and explicit vCard notation</name>
+            <sourcecode type="text/calendar"><![CDATA[
+EMAIL:foo@example.com
+]]></sourcecode>
+            <sourcecode type="text/calendar"><![CDATA[
+VERSION:4.0
+FN:Foo
+EMAIL:foo@example.com
+]]></sourcecode>
+            <sourcecode type="text/calendar"><![CDATA[
+BEGIN:VCARD
+VERSION:4.0
+FN:Foo
+EMAIL:foo@example.com
+END:VCARD
+]]></sourcecode>
+          </figure>
+          <t>A line containing just the value <tt>...</tt> stands for any other properties that might be present in the vCard but are irrelevant for this example. <xref target="example-notation-jscontact-dotdotdot"/> illustrates this as an alternative representation for the examples of <xref target="example-notation-jscontact-implicit-explicit"/>.</t>
+          <figure anchor="example-notation-jscontact-dotdotdot">
+            <name>Example for additional properties represented by <tt>...</tt>
+            </name>
+            <sourcecode type="text/calendar"><![CDATA[
+BEGIN:VCARD
+...
+EMAIL:foo@example.com
+]]></sourcecode>
+          </figure>
+          <t>A line starting with a single space represents the continuation of a folded content line (<xref target="RFC6350" section="3.2"/>).  <xref target="example-notation-jscontact-folded"/> illustrates this.</t>
+          <figure anchor="example-notation-jscontact-folded">
+            <name>Example for a folded content line</name>
+            <sourcecode type="text/calendar"><![CDATA[
+FN:Joannes Chrysostomus Wolfg
+ angus Theophilus Mozart
+]]></sourcecode>
+          </figure>
+        </section>
+        <section anchor="notation-jscalendar">
+          <name>JSContact Examples</name>
+          <t>A JSContact example always represents a Card object, even if the example only depicts other JSContact objects and properties.</t>
+          <t>JSContact objects are depicted either explicitly or implicitly. An explicit JSContact object starts and ends with braces.  An implicit JSContact object omits braces, it only consists of JSON name/value pairs, separated by comma.</t>
+          <t>An implicit JSContact object is assumed to be of type Card, unless it contains the <tt>@type</tt> property with a different value.  It is assumed to contain all mandatory properties with some value; if they are not depicted, their actual value is irrelevant for the main point of the example. The default version of the Card is "2.0".</t>
+          <t><xref target="example-notation-jscalendar-implicit-explicit"/> illustrates this with multiple examples, all of which represent the same JSContact data.  The first example contains an implicit JSContact object of type Card.  The second example contains an explicit Name object but the Card object containing it is omitted.  The third example contains the full Card object, nothing is omitted.</t>
+          <figure anchor="example-notation-jscalendar-implicit-explicit">
+            <name>Examples for implicit and explicit JSContact object notation</name>
+            <sourcecode type="json"><![CDATA[
+"name": {
+  "full": "John Doe"
+}
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"@type": "Name",
+"full": "John Doe"
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+{
+  "@type": "Card",
+  "name": {
+    "full": "John Doe"
+  }
+}
+]]></sourcecode>
+          </figure>
+          <t>A property with name <tt>"..."</tt> and value <tt>""</tt> stands for additional properties that might be present in a JSContact object but are irrelevant for this example, including mandatory properties. <xref target="example-notation-jscalendar-dotdotdot"/> illustrates this as an alternative representation for the examples of <xref target="example-notation-jscalendar-implicit-explicit"/>.</t>
+          <figure anchor="example-notation-jscalendar-dotdotdot">
+            <name>Example for additional properties represented by <tt>...</tt>
+            </name>
+            <sourcecode type="json"><![CDATA[
+"name": {
+  "full": "John Doe",
+  "...": ""
+}
+]]></sourcecode>
+          </figure>
+        </section>
       </section>
     </section>
     <section anchor="vcard-jscontact-conversion">
