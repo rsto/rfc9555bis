@@ -134,6 +134,7 @@ FN:Joannes Chrysostomus Wolfg
             <sourcecode type="json"><![CDATA[
 {
   "@type": "Card",
+  "version": "2.0",
   "name": {
     "full": "John Doe"
   }
