@@ -76,7 +76,7 @@
             <li>An example that only contains vCard properties implicitly represents a vCard (e.g. the <tt>BEGIN:VCARD</tt> and <tt>END:VCARD</tt> lines are implicit).</li>
             <li>The vCard implicitly contains all mandatory properties with some value. If they are not included in the example, then their actual value is irrelevant for the example. The default value for the VERSION property is "4.0".</li>
           </ul>
-          <t><xref target="example-notation-jscontact-implicit-explicit"/> contains three examples, all of which represent the same vCard data.  In the first example, the <tt>BEGIN</tt> and <tt>END</tt> lines and the mandatory properties are implicit. In the second exampl, only the begin and end of the vCard is implicit. The third example depicts a complete vCard, nothing is implicit.</t>
+          <t><xref target="example-notation-jscontact-implicit-explicit"/> contains three examples, all of which represent the same vCard data.  In the first example, the <tt>BEGIN</tt> and <tt>END</tt> lines and the mandatory properties are implicit. In the second example, only the BEGIN and END lines of the vCard are implicit. The third example depicts a complete vCard, nothing is implicit.</t>
           <figure anchor="example-notation-jscontact-implicit-explicit">
             <name>Examples for implicit and explicit vCard notation</name>
             <sourcecode type="text/calendar"><![CDATA[
@@ -213,7 +213,7 @@ FN:Joannes Chrysostomus Wolfg
         <section anchor="vcard-param-group">
           <name>GROUP</name>
           <t>The GROUP parameter (<xref target="RFC7095" derivedContent="RFC7095" section="7.1" sectionFormat="of"/>) does not convert to JSContact.  It exclusively is for use in jCard and <bcp14>MUST NOT</bcp14> be set in a vCard.</t>
-          <t>Preserving the exact group name when converting from vCard to JSContact and back to vCard is not necessary.  Any group identifiers will do, as long as the resulting vCard groups its properties equally to the original vCard.  Implementations <bcp14>MAY</bcp14> preserve the original group name in the "parameters" property of the VCardProperty object (<xref target="jscontact-prop-vcard"/>.</t>
+          <t>Preserving the exact group name when converting from vCard to JSContact and back to vCard is not necessary.  Any group identifiers will do, as long as the resulting vCard groups its properties equally to the original vCard.  Implementations <bcp14>MAY</bcp14> preserve the original group name in the "parameters" property of the VCardProperty object (<xref target="jscontact-prop-vcard"/>).</t>
           <figure anchor="group_conversion_params">
             <name>Example of How to Preserve the Group Name for a Known Property</name>
             <sourcecode type="vcard"><![CDATA[
@@ -267,7 +267,7 @@ item2.X-FOO:bar
         </section>
         <section anchor="vcard-param-language">
           <name>LANGUAGE</name>
-          <t>The LANGUAGE parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.1" sectionFormat="of"/>) converts to an entry in the Card object's localizations property (<xref target="RFC9553" derivedContent="RFC9553" section="2.7.1" sectionFormat="of"/>) for that vCard property on which this parameter is set on.  The value of the LANGUAGE parameter defines the language tag key in the localizations property.</t>
+          <t>The LANGUAGE parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.1" sectionFormat="of"/>) converts to an entry in the Card object's localizations property (<xref target="RFC9553" derivedContent="RFC9553" section="2.7.1" sectionFormat="of"/>) for that vCard property on which this parameter is set.  The value of the LANGUAGE parameter defines the language tag key in the localizations property.</t>
           <t>This specification does not define a single standard conversion rule for how to convert the property values.  Instead, building the localizations value is implementation-specific.</t>
           <t>Two options to populate the localizations property are:</t>
           <ul>
@@ -383,7 +383,7 @@ N;ALTID=1;PHONETIC=jyut;
         </section>
         <section anchor="vcard-param-pid">
           <name>PID</name>
-          <t>The PID parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.5" sectionFormat="of"/>) does not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert it to the "parameters" property of the VCardProperty object (<xref target="jscontact-prop-vcard"/>.</t>
+          <t>The PID parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.5" sectionFormat="of"/>) does not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert it to the "parameters" property of the VCardProperty object (<xref target="jscontact-prop-vcard"/>).</t>
         </section>
         <section anchor="vcard-param-pref">
           <name>PREF</name>
@@ -401,7 +401,7 @@ TEL;PROP-ID=xyz;VALUE=uri:tel:+1-555-555-5555;ext=5555
             <sourcecode type="json"><![CDATA[
 "phones": {
   "xyz": {
-    "number": "tel:+1-555-555-5555;ext=5555",
+    "number": "tel:+1-555-555-5555;ext=5555"
   }
 }
 ]]></sourcecode>
@@ -434,7 +434,7 @@ TEL;PROP-ID=xyz;VALUE=uri:tel:+1-555-555-5555;ext=5555
         </section>
         <section anchor="vcard-param-value">
           <name>VALUE</name>
-          <t>The VALUE parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.2" sectionFormat="of"/>) does not convert to an IANA-registered property in JSContact.  To preserve properties with experimental values, see Sections <xref target="jscontact-prop-vcard" format="counter"/> and <xref target="jscontact-prop-vcard" format="counter"/>.</t>
+	  <t>The VALUE parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.2" sectionFormat="of"/>) does not convert to an IANA-registered property in JSContact.  To preserve properties with experimental values, see <xref target="jscontact-prop-vcard"/>.</t>
         </section>
       </section>
       <section anchor="vcard-props">
@@ -552,7 +552,7 @@ TEL;PROP-ID=xyz;VALUE=uri:tel:+1-555-555-5555;ext=5555
             <li>The TZ parameter converts to the Address object's timeZone property.</li>
             <li>The CC parameter converts to the Address object's countryCode property.</li>
           </ul>
-          <t>The ADR property converts to the same Address object as the <xref target="vcard-prop-geo">GEO property</xref> and <xref target="vcard-prop-tz">TZ property</xref> if either they are members of the same vCard property group, or if they are part of no group but other ADR, GEO or TZ properties are grouped.</t>
+          <t>The ADR property converts to the same Address object as the <xref target="vcard-prop-geo">GEO property</xref> and <xref target="vcard-prop-tz">TZ property</xref> if either they are members of the same vCard property group, or if they are part of no group.</t>
           <t>The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.  The ADR-specific values of the TYPE parameter defined in Sections <xref target="RFC9554" sectionFormat="bare" section="5.1"/> and <xref target="RFC9554" sectionFormat="bare" section="5.2"/> of <xref target="RFC9554"/> convert to the corresponding entries of the contexts property as defined in <xref target="RFC9553" sectionFormat="of" section="2.5.1"/>.</t>
           <t>The ALTID and LANGUAGE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.  Each possible language-dependent alternative converts to an entry of the PatchObject where the key references the full property.</t>
           <figure anchor="adr_conversion">
@@ -797,7 +797,7 @@ DEATHPLACE:
         </section>
         <section anchor="vcard-prop-deathplace">
           <name>DEATHPLACE</name>
-          <t>The DEATHPLACE property (<xref target="RFC6474" derivedContent="RFC6474" section="2.2" sectionFormat="of"/>) converts to an Anniversary object in the Card object's anniversaries property (<xref target="anniversary_conversion"/>). Its value converts to an Address object in the Anniversary place property. The Anniversary kind is "de3ath".</t>
+          <t>The DEATHPLACE property (<xref target="RFC6474" derivedContent="RFC6474" section="2.2" sectionFormat="of"/>) converts to an Anniversary object in the Card object's anniversaries property (<xref target="anniversary_conversion"/>). Its value converts to an Address object in the Anniversary place property. The Anniversary kind is "death".</t>
           <t>A property value of type TEXT converts to the Address object's full property. A property value of type URI using the "geo:" URI scheme converts to the Address object's coordinates property. A property having any other value type does not convert to an Anniversary object.</t>
           <t>See <xref target="vcard-prop-deathdate"/> for an example and how to convert a DEATHPLACE property together with a DEATHDATE property.</t>
         </section>
@@ -1099,7 +1099,7 @@ MEMBER:urn:uuid:b8767877-b4a1-4c70-9acc-505d3819e519
         <section anchor="vcard-prop-n">
           <name>N</name>
           <t>The N property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.2" sectionFormat="of"/>) converts to a Name object (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.1" sectionFormat="of"/>) in the Card object's name property.</t>
-          <t>Each component in the structured value of the N property converts to an NameComponent in the Name components property. The component value converts to the NameComponent value property, the component position determines the value of the NameComponent kind property as follows:</t>
+          <t>Each component in the structured value of the N property converts to a NameComponent in the Name components property. The component value converts to the NameComponent value property, the component position determines the value of the NameComponent kind property as follows:</t>
           <table anchor="n_kind_conversion">
             <name>N Components Conversion</name>
             <thead>
@@ -1548,7 +1548,7 @@ TITLE:Research Scientist
         </section>
         <section anchor="vcard-prop-tz">
           <name>TZ</name>
-          <t>The TZ property (<xref target="RFC6350" derivedContent="RFC6350" section="6.5.1" sectionFormat="of"/>) converts an Address object (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>) in the Card object's addresses property.</t>
+          <t>The TZ property (<xref target="RFC6350" derivedContent="RFC6350" section="6.5.1" sectionFormat="of"/>) converts to an Address object (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>) in the Card object's addresses property.</t>
           <t>A value of type TEXT converts to the Address object's timeZone property.</t>
           <t>A value of type UTC-OFFSET converts to the Address object's timeZone property if the offset has zero minutes and the hour offset is between -12 and +14, both inclusively. Note that:</t>
           <ul>
@@ -1591,7 +1591,7 @@ URL:https://example.org/restaurant.french/~chezchic.html
         </section>
         <section anchor="vcard-prop-version">
           <name>VERSION</name>
-          <t>The VERSION property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.9" sectionFormat="of"/>) does not convert to a standard JSContaact element. Implementations <bcp14>MAY</bcp14> convert it to the "properties" property of the VCard object (<xref target="jscontact-prop-vcard"/>).</t>
+          <t>The VERSION property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.9" sectionFormat="of"/>) does not convert to a standard JSContact element. Implementations <bcp14>MAY</bcp14> convert it to the "properties" property of the VCard object (<xref target="jscontact-prop-vcard"/>).</t>
         </section>
         <section anchor="vcard-prop-xablabel">
           <name>X-ABLabel</name>
@@ -2606,7 +2606,7 @@ item1.X-ABLabel:foo
         </table>
         <t>Remarks:</t>
         <ul>
-          <li>In addition to converting the "generation" kind to the "Generation" component, implementations <bcp14>MAY</bcp14> also append the value to the "Honorifix Suffixes" component of the N property value.</li>
+          <li>In addition to converting the "generation" kind to the "Generation" component, implementations <bcp14>MAY</bcp14> also append the value to the "Honorific Suffixes" component of the N property value.</li>
           <li>In addition to converting the "surname2" kind to the "Secondary surname" component, implementations <bcp14>MAY</bcp14> also append the value to the "Surname" component of the N property value.</li>
         </ul>
         <t>The full property converts to the <xref target="vcard-prop-fn">FN property</xref>.</t>
