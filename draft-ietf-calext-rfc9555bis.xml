@@ -5,10 +5,10 @@
 <!ENTITY nbhy "&#8209;">
 <!ENTITY wj "&#8288;">
 ]>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" submissionType="IETF" category="std" consensus="true" docName="draft-stepanek-rfc9555bis-00" ipr="pre5378Trust200902" tocInclude="true" tocDepth="4" sortRefs="true" symRefs="true" updates="6350" obsoletes="9555" xml:lang="en" version="3">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" submissionType="IETF" category="std" consensus="true" docName="draft-ietf-calext-rfc9555bis-00" ipr="pre5378Trust200902" tocInclude="true" tocDepth="4" sortRefs="true" symRefs="true" updates="6350" obsoletes="9555" xml:lang="en" version="3">
   <front>
     <title abbrev="JSContact: Converting vCard">JSContact: Converting from and to vCard</title>
-    <seriesInfo name="Internet-Draft" value="draft-stepanek-rfc9555bis-00"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-calext-rfc9555bis-00"/>
     <author fullname="Mario Loffredo" initials="M." surname="Loffredo">
       <organization>IIT-CNR/Registro.it</organization>
       <address>
@@ -37,7 +37,7 @@
         <uri>https://www.fastmail.com</uri>
       </address>
     </author>
-    <date year="2026" month="March" day="2"/>
+    <date year="2026" month="April" day="13"/>
     <area>art</area>
     <workgroup>calext</workgroup>
     <keyword>JSON</keyword>
