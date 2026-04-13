@@ -157,7 +157,7 @@ FN:Joannes Chrysostomus Wolfg
     </section>
     <section anchor="vcard-jscontact-conversion">
       <name>Converting vCard to JSContact</name>
-      <t>This section contains the conversion rules from the vCard to the JSContact Card.  It follows the same structure as vCard v4 <xref target="RFC6350"/>.  Properties and parameters of vCard extension RFCs, including those described in "vCard Format Extension for JSContact" <xref target="RFC9554"/>, have been added to the appropriate subsections.</t>
+      <t>This section contains the conversion rules from the vCard to the JSContact Card.</t>
       <section>
         <name>General Rules</name>
         <section anchor="convert-card-uid">
@@ -208,7 +208,7 @@ FN:Joannes Chrysostomus Wolfg
         </section>
         <section anchor="vcard-param-geo">
           <name>GEO</name>
-          <t>The GEO parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.10" sectionFormat="of"/>) set on an ADR property converts to the Address object's coordinates property (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1.1" sectionFormat="of"/>).</t>
+          <t>The GEO parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.10" sectionFormat="of"/>) set on an ADR property converts to the Address object's coordinates property (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1.1" sectionFormat="of"/>). Also see the conversion of the GEO property in <xref target="vcard-prop-geo"/>.</t>
         </section>
         <section anchor="vcard-param-group">
           <name>GROUP</name>
@@ -268,7 +268,7 @@ item2.X-FOO:bar
         <section anchor="vcard-param-language">
           <name>LANGUAGE</name>
           <t>The LANGUAGE parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.1" sectionFormat="of"/>) converts to an entry in the Card object's localizations property (<xref target="RFC9553" derivedContent="RFC9553" section="2.7.1" sectionFormat="of"/>) for that vCard property on which this parameter is set.  The value of the LANGUAGE parameter defines the language tag key in the localizations property.</t>
-          <t>This specification does not define a single standard conversion rule for how to convert the property values.  Instead, building the localizations value is implementation-specific.</t>
+	  <t>This specification does not define a single standard conversion rule for how to convert the property values.  Instead, building the localizations value is implementation-specific. Implementations that convert to a <xref target="I-D.ietf-calext-jscontact-profiles">JSContact profile</xref> <bcp14>MUST</bcp14> adhere to the profile-specific restrictions, if any.</t>
           <t>Two options to populate the localizations property are:</t>
           <ul>
             <li>One Patch per Property: For each vCard property with a LANGUAGE parameter, set the complete path in the PatchObject to the JSContact property that the vCard property converts to.  The value of the patch is the converted property value.  This is simple to process and adequate if the vCard only contains a few properties with the LANGUAGE parameter.</li>
@@ -3485,7 +3485,8 @@ JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8259.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9555.xml"/>
-        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-calext-jscontact-uid.xml"/>
+	<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-calext-jscontact-uid.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-calext-jscontact-profiles.xml"/>
       </references>
       <references>
         <name>Informative References</name>
