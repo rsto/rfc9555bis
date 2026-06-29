@@ -3285,7 +3285,7 @@ ADR;JSCOMPS="s,\, ;10;s, ;11;3":;;54321 Oak St;Reston;;;;;;;Oak St;54321;;;;;;
             <dd>Specifies the JSContact identifier of the associated property.</dd>
             <dt>Description:</dt>
             <dd>
-              <t>This parameter specifies the JSON object key of the JSContact object to which a vCard property converts to. For example, this parameter set on an EMAIL property defines the key of the EmailAddress object in the Card object's "emails" property (see below for an example).</t>
+              <t>This parameter specifies the JSON object key of the JSContact object to which a vCard property converts. For example, this parameter set on an EMAIL property defines the key of the EmailAddress object in the Card object's "emails" property (see below for an example).</t>
               <t>The value of the JSID parameter <bcp14>MUST</bcp14> be a valid key according to the definition of the JSContact property to which the property that this parameter is set on converts to. Typically, this requires the value to be a valid <xref target="RFC9553" section="1.4.1" sectionFormat="parens">Id</xref>.</t>
             </dd>
             <dt>Format Definition:</dt>
