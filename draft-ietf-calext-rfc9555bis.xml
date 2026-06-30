@@ -1570,6 +1570,24 @@ UID:urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6
 "uid": "urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6"
 ]]></sourcecode>
           </figure>
+          <t>Implementations <bcp14>MAY</bcp14> preserve the value type of the UID property using the <xref target="jscontact-prop-vcard">"vCard" property</xref>. To do so, they add an entry for the path "uid" in the "convertedProperties" property with the "valueType" property indicating the value type (see <xref target="test-vcard-prop-uid-valuetype"/>).</t>
+          <figure anchor="test-vcard-prop-uid-valuetype">
+            <name>UID Conversion Example with Value Type</name>
+            <sourcecode type="vcard"><![CDATA[
+UID;VALUE=text:77A50EF0-54CA-40B0-B878-B3580B4100A2
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"uid": "77A50EF0-54CA-40B0-B878-B3580B4100A2",
+"vCard": {
+  "convertedProperties": {
+    "uid": {
+      "name": "uid",
+      "valueType": "text"
+    }
+  }
+}
+]]></sourcecode>
+          </figure>
         </section>
         <section anchor="vcard-prop-url">
           <name>URL</name>
