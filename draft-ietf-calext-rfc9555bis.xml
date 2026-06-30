@@ -1303,7 +1303,7 @@ PRODID:ACME Contacts App version 1.23.5
         </section>
         <section anchor="vcard-prop-pronouns">
           <name>PRONOUNS</name>
-          <t>The PRONOUNS property (<xref target="RFC9554" derivedContent="RFC9554" section="3.4" sectionFormat="of"/>) converts to the SpeakToAs object's pronouns property (<xref target="test-vcard-prop-pronouns"/>).</t>
+          <t>The PRONOUNS property (<xref target="RFC9554" derivedContent="RFC9554" section="3.4" sectionFormat="of"/>) converts to a Pronouns object (<xref target="RFC9553" section="2.2.4"/>) in the pronouns property of the SpeakToAs object (<xref target="test-vcard-prop-pronouns"/>).</t>
           <figure anchor="test-vcard-prop-pronouns">
             <name>PRONOUNS Conversion Example</name>
             <sourcecode type="vcard"><![CDATA[
