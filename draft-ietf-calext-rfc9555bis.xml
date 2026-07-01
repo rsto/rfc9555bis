@@ -258,7 +258,7 @@ item2.X-FOO:bar
       "group": "item2"
     }, "unknown", "bar"]
   ]
-]
+}
 ]]></sourcecode>
           </figure>
         </section>
@@ -695,7 +695,7 @@ CALURI;MEDIATYPE=text/calendar:https://ftp.example.com/calA.ics
   "CAL-2": {
     "kind": "calendar",
     "uri": "https://ftp.example.com/calA.ics",
-    "mediaType": "text/vcard"
+    "mediaType": "text/calendar"
   }
 }
 ]]></sourcecode>
@@ -810,7 +810,7 @@ DEATHPLACE:
     "date": {
       "year": 1996,
       "month": 4,
-      "year": 15
+      "day": 15
     },
     "place": {
       "full": "5 Court Street\nNew England, ND 58647\nU.S.A."
@@ -879,7 +879,7 @@ FBURL;MEDIATYPE=text/calendar:https://example.com/busy/project-a.ifb
   "FBURL-2": {
     "kind": "freeBusy",
     "uri": "https://example.com/busy/project-a.ifb",
-    "mediaType": "text/vcard"
+    "mediaType": "text/calendar"
   }
 }
 ]]></sourcecode>
@@ -3260,7 +3260,7 @@ X-BAR:bam
       "unknown",
       "bam"
     ]
-  ],
+  ]
 }
 ]]></sourcecode>
           </figure>
@@ -3717,7 +3717,7 @@ JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
   "email1": {
     "address": "jane_doe@example.com"
   }
-}
+},
 "vCard": {
   "convertedProperties": {
     "emails/email1": {
@@ -3745,16 +3745,15 @@ JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
   "os1": {
     "uri": "xmpp:alice@example.com",
     "vCardName": "impp"
-  },
+  }
 }
 ]]></sourcecode>
                 <sourcecode type="json"><![CDATA[
 "onlineServices": {
   "os1": {
-    "uri": "xmpp:alice@example.com",
-    "vCardName": "impp"
-  },
-}
+    "uri": "xmpp:alice@example.com"
+  }
+},
 "vCard": {
   "convertedProperties": {
     "onlineServices/os1": {
