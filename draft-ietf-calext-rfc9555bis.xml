@@ -64,7 +64,7 @@
         <t>This document outlines how to convert between the <xref target="RFC6350">vCard</xref> and <xref target="RFC9553">JSContact</xref> data formats.  It describes which elements are common to both, but also highlights where the two formats differ. For each common element, it defines a conversion rule and includes an example of how to convert that element. All vCard and JSContact elements currently registered at IANA are in scope, but not all of these elements are common to both formats.</t>
         <t>For elements that have no counterpart in the other format, it is the goal of this document to define how to preserve them during conversion, but in general it is not the goal to achieve this by defining new standard elements. Instead, this document updates <xref target="RFC6350"/> and <xref target="RFC9553"/> by defining vCard and JSContact elements to preserve elements that have no equivalent in the other format. These conversion-specific properties are defined in Section <xref target="vcard-prop-jsprop" format="counter"/> for vCard, and <xref target="jscontact-prop-vcard"/> for JSContact. </t>
         <t>This document obsoletes <xref target="RFC9555"/>. For contents that remain unchanged, it includes all verified errata for the obsoleted document. The conversion rules are updated for JSContact version "2.0", defined in <xref target="I-D.ietf-calext-jscontact-uid"/>.</t>
-        <t><xref target="updates-to-jscontact"/> replaces the JSContact "vCardProps", "vCardParams" and "vCardParam" properties originally defined in <xref target="RFC9555"/> with the new "vCard" property. The new property allows for edge cases where the former elements were insufficient. For vCard, <xref target="updates-to-vcard"/> replaces the <xref target="RFC9554" section="4.7" sectionFormat="parens">PROP-ID</xref> parameter with the new JSID parameter. Both changes align the conversion-specific elements of vCard and JSContact with those defined for iCalendar and JSCalendar in <xref target="I-D.ietf-calext-jscalendar-icalendar"/>, allowing for code reuse for implementations that support these formats.</t>
+        <t><xref target="updates-to-jscontact"/> replaces the JSContact "vCardProps", "vCardParams" and "vCardName" properties originally defined in <xref target="RFC9555"/> with the new "vCard" property. The new property allows for edge cases where the former elements were insufficient. For vCard, <xref target="updates-to-vcard"/> replaces the <xref target="RFC9554" section="4.7" sectionFormat="parens">PROP-ID</xref> parameter with the new JSID parameter. Both changes align the conversion-specific elements of vCard and JSContact with those defined for iCalendar and JSCalendar in <xref target="I-D.ietf-calext-jscalendar-icalendar"/>, allowing for code reuse for implementations that support these formats.</t>
       </section>
       <section>
         <name>How to Read the Examples</name>
@@ -204,7 +204,7 @@ FN:Joannes Chrysostomus Wolfg
         </section>
         <section anchor="vcard-param-derived">
           <name>DERIVED</name>
-          <t>The DERIVED parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.4" sectionFormat="of"/>) does not convert to JSContact.  If the DERIVED parameter is set to "true" on a vCard property, then implementations <bcp14>MUST</bcp14> not convert that property to JSContact.</t>
+          <t>The DERIVED parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.4" sectionFormat="of"/>) does not convert to JSContact.  If the DERIVED parameter is set to "true" on a vCard property, then implementations <bcp14>MUST NOT</bcp14> convert that property to JSContact.</t>
         </section>
         <section anchor="vcard-param-geo">
           <name>GEO</name>
@@ -212,7 +212,7 @@ FN:Joannes Chrysostomus Wolfg
         </section>
         <section anchor="vcard-param-group">
           <name>GROUP</name>
-          <t>The GROUP parameter (<xref target="RFC7095" derivedContent="RFC7095" section="7.1" sectionFormat="of"/>) does not convert to JSContact.  It exclusively is for use in jCard and <bcp14>MUST NOT</bcp14> be set in a vCard.</t>
+          <t>The GROUP parameter (<xref target="RFC7095" derivedContent="RFC7095" section="3.3.1.2" sectionFormat="of"/>) does not convert to JSContact.  It exclusively is for use in jCard and <bcp14>MUST NOT</bcp14> be set in a vCard.</t>
           <t>Preserving the exact group name when converting from vCard to JSContact and back to vCard is not necessary.  Any group identifiers will do, as long as the resulting vCard groups its properties equally to the original vCard.  Implementations <bcp14>MAY</bcp14> preserve the original group name in the VCardProperty object's "parameters" property (<xref target="jscontact-prop-vcard"/>).</t>
           <t>The following examples illustrate how to convert the GROUP parameter:</t>
           <figure anchor="test-vcard-param-group">
@@ -248,7 +248,7 @@ item1.X-ABLabel:Test
           </figure>
           <figure anchor="test-vcard-param-group-2">
             <name>Example of How to Preserve the Group Name for an Unknown Property</name>
-            <sourcecode><![CDATA[
+            <sourcecode type="vcard"><![CDATA[
 item2.X-FOO:bar
 ]]></sourcecode>
             <sourcecode type="json"><![CDATA[
@@ -1306,7 +1306,7 @@ ORG;SORT-AS="ABC":ABC\, Inc.;North American Division;Marketing
         </section>
         <section anchor="vcard-prop-org-directory">
           <name>ORG-DIRECTORY</name>
-          <t>The ORG-DIRECTORY property (<xref target="RFC6715" derivedContent="RFC6715" section="2.4" sectionFormat="of"/>) <xref target="RFC6715"/> converts to a Directory object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.2" sectionFormat="of"/>) in the Card object's "directories" property (<xref target="test-vcard-prop-org-directory"/>).  The Directory object's "kind" property is set to "directory".  The "uri" property is set to the ORG-DIRECTORY property value.</t>
+          <t>The ORG-DIRECTORY property (<xref target="RFC6715" derivedContent="RFC6715" section="2.4" sectionFormat="of"/>) converts to a Directory object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.2" sectionFormat="of"/>) in the Card object's "directories" property (<xref target="test-vcard-prop-org-directory"/>).  The Directory object's "kind" property is set to "directory".  The "uri" property is set to the ORG-DIRECTORY property value.</t>
           <t>The INDEX, PREF, and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <t>The path of the ORG-DIRECTORY property in the <xref target="jscontact-prop-vcard" sectionFormat="parens">"convertedProperties" property</xref> is "directories/{id}", where "{id}" denotes the identifier of the Directory object.</t>
           <t>The following example illustrates how to convert the ORG-DIRECTORY property:</t>
@@ -2535,7 +2535,7 @@ item1.X-ABLabel:foo
       </section>
       <section anchor="convert-jscontact-to-vcard-new-link">
         <name>Link</name>
-        <t>The Link object converts to one of the following properties, determined by the Link object's "kind" property value. If the "kind" property is not set then it converts to the <xref target="vcard-prop-url">URL property.</xref>. If the "kind" is "contact" then it converts to the <xref target="vcard-prop-contact-uri">CONTACT-URI</xref> property.</t>
+        <t>The Link object converts to one of the following properties, determined by the Link object's "kind" property value. If the "kind" property is not set then it converts to the <xref target="vcard-prop-url">URL property</xref>. If the "kind" is "contact" then it converts to the <xref target="vcard-prop-contact-uri">CONTACT-URI</xref> property.</t>
         <t>Its "uri" property converts to the property value. Its other properties convert as follows:</t>
         <table anchor="jscontact-to-vcard-props-link">
           <name>Properties of the Link object</name>
@@ -2594,7 +2594,7 @@ item1.X-ABLabel:foo
       </section>
       <section anchor="convert-jscontact-to-vcard-new-media">
         <name>Media</name>
-        <t>The Media object converts to one of the following properties, determined by the Media object's "kind" property value. If the "kind" is "photo" then it converts to the <xref target="vcard-prop-photo">PHOTO property.</xref>. If the "kind" is "logo" then it converts to the <xref target="vcard-prop-logo">LOGO property</xref>. If the "kind" is "sound" then it converts to the "<xref target="vcard-prop-sound">SOUND property</xref>.</t>
+        <t>The Media object converts to one of the following properties, determined by the Media object's "kind" property value. If the "kind" is "photo" then it converts to the <xref target="vcard-prop-photo">PHOTO property</xref>. If the "kind" is "logo" then it converts to the <xref target="vcard-prop-logo">LOGO property</xref>. If the "kind" is "sound" then it converts to the <xref target="vcard-prop-sound">SOUND property</xref>.</t>
         <t>Its "uri" property converts to the property value. Its other properties convert as follows:</t>
         <table anchor="jscontact-to-vcard-props-media">
           <name>Properties of the Media object</name>
@@ -2718,7 +2718,7 @@ item1.X-ABLabel:foo
         </ul>
         <t>The "full" property converts to the <xref target="vcard-prop-fn">FN property</xref>.</t>
         <t>The "full" property is optional, but the FN property is defined to be mandatory in <xref target="RFC6350"/>. How to set the FN property if the "full" property is not set is implementation-specific. Implementations <bcp14>MAY</bcp14> derive the full name from the NameComponents objects.  If the "isOrdered" property value is "true", then this can be done by concatenating the name component values.  Alternatively, an implementation can choose any other heuristic to generate the full name from its components such as <xref target="CLDRPersonName"/>. If the FN property value is derived, implementations <bcp14>SHOULD</bcp14> set the <xref target="RFC9554" section="4.4" sectionFormat="parens">DERIVED parameter</xref>.</t>
-        <t>The other properties convert  as follows:</t>
+        <t>The other properties convert as follows:</t>
         <table anchor="jscontact-to-vcard-props-name">
           <name>Properties of the Name object</name>
           <thead>
@@ -2891,7 +2891,7 @@ item1.X-ABLabel:foo
         <name>OnlineService</name>
         <t>The OnlineService object converts to the <xref target="vcard-prop-impp">IMPP property</xref> or <xref target="vcard-prop-socialprofile">SOCIALPROFILE property</xref>. Which property to convert to is implementation-specific. Implementations <bcp14>SHOULD</bcp14> preserve the property name indicated in the <xref target="jscontact-prop-vcard">vCard property</xref>.</t>
         <t>If its "uri" property is set, but neither the user or "service" properties are set, then implementations <bcp14>SHOULD</bcp14> choose IMPP if the "uri" property value is a URI with scheme "xmpp".</t>
-        <t>It other properties convert as follows:</t>
+        <t>Its other properties convert as follows:</t>
         <table anchor="jscontact-to-vcard-props-online-service">
           <name>Properties of the OnlineService object</name>
           <thead>
@@ -2959,9 +2959,9 @@ item1.X-ABLabel:foo
       </section>
       <section anchor="convert-jscontact-to-vcard-new-organization">
         <name>Organization</name>
-        <t>The Organization object converts to the <xref target="vcard-prop-org">ORG property.</xref></t>
-        <t>Its "name" property converts the first component in the structured property value. The "name" property of any OrgUnit object in its "units" property converts to additional components in the structured property value, in order to appearance.</t>
-        <t>Its "sortAs" property converts the first component in the structured value of the <xref target="vcard-param-sort-as">SORT-AS parameter</xref>. The "sortAs" property of any OrgUnit object in its "units" property converts to additional components in the structured parameter value, in order to appearance.</t>
+        <t>The Organization object converts to the <xref target="vcard-prop-org">ORG property</xref>.</t>
+        <t>Its "name" property converts to the first component in the structured property value. The "name" property of any OrgUnit object in its "units" property converts to additional components in the structured property value, in order of appearance.</t>
+        <t>Its "sortAs" property converts to the first component in the structured value of the <xref target="vcard-param-sort-as">SORT-AS parameter</xref>. The "sortAs" property of any OrgUnit object in its "units" property converts to additional components in the structured parameter value, in order of appearance.</t>
         <t>Its other properties convert as follows:</t>
         <table anchor="jscontact-to-vcard-props-organization">
           <name>Properties of the Organization object</name>
@@ -2990,7 +2990,7 @@ item1.X-ABLabel:foo
       </section>
       <section anchor="convert-jscontact-to-vcard-new-personal-info">
         <name>PersonalInfo</name>
-        <t>The PersonalInfo object converts to one of the following properties, determined by the PersonalInfo object's "kind" property value. If the "kind" is "expertise" then it converts to the <xref target="vcard-prop-expertise">EXPERTISE property.</xref>. If the "kind" is "hobby" then it converts to the <xref target="vcard-prop-hobby">HOBBY property</xref>. If the "kind" is "interest" then it converts to the "<xref target="vcard-prop-interest">INTEREST property</xref>.</t>
+        <t>The PersonalInfo object converts to one of the following properties, determined by the PersonalInfo object's "kind" property value. If the "kind" is "expertise" then it converts to the <xref target="vcard-prop-expertise">EXPERTISE property</xref>. If the "kind" is "hobby" then it converts to the <xref target="vcard-prop-hobby">HOBBY property</xref>. If the "kind" is "interest" then it converts to the <xref target="vcard-prop-interest">INTEREST property</xref>.</t>
         <t>Its "value" property converts to the property value. Its other properties convert as follows:</t>
         <table anchor="jscontact-to-vcard-props-personal-info">
           <name>Properties of the PersonalInfo object</name>
@@ -3137,9 +3137,9 @@ item1.X-ABLabel:foo
       </section>
       <section anchor="convert-jscontact-to-vcard-new-speak-to-as">
         <name>SpeakToAs</name>
-        <t>The SpeakToAs object converts to the <xref target="vcard-prop-gramgender">GRAMGENDER property</xref> and <xref target="vcard-prop-pronouns">PRONOUNS property.</xref>.</t>
+        <t>The SpeakToAs object converts to the <xref target="vcard-prop-gramgender">GRAMGENDER property</xref> and <xref target="vcard-prop-pronouns">PRONOUNS property</xref>.</t>
         <t>Its "grammaticalGender" property converts to the property value of the GRAMGENDER property.</t>
-        <t>Its "pronouns" property converts to PRONOUNS properties, one for each entry. The Pronouns object's "pronouns" property converts the property value. Its other properties convert as follows:</t>
+        <t>Its "pronouns" property converts to PRONOUNS properties, one for each entry. The Pronouns object's "pronouns" property converts to the property value. Its other properties convert as follows:</t>
         <table anchor="jscontact-to-vcard-props-pronouns">
           <name>Properties of the Pronouns object</name>
           <thead>
@@ -3177,8 +3177,8 @@ item1.X-ABLabel:foo
       </section>
       <section anchor="convert-jscontact-to-vcard-new-title">
         <name>Title</name>
-        <t>The Title object converts to one of the following properties, determined by the Title object's "kind" property value. If the "kind" is "title" or not set then it converts to the <xref target="vcard-prop-title">TITLE property.</xref>. If the "kind" is "role" then it converts to the <xref target="vcard-prop-role">ROLE property</xref>.</t>
-        <t>Its "name" property converts the property value. Its "organizationId" property converts by assigning the TITLE property and the ORG property to the same vCard property group (see <xref target="vcard-prop-role"/>).</t>
+        <t>The Title object converts to one of the following properties, determined by the Title object's "kind" property value. If the "kind" is "title" or not set then it converts to the <xref target="vcard-prop-title">TITLE property</xref>. If the "kind" is "role" then it converts to the <xref target="vcard-prop-role">ROLE property</xref>.</t>
+        <t>Its "name" property converts to the property value. Its "organizationId" property converts by assigning the TITLE property and the ORG property to the same vCard property group (see <xref target="vcard-prop-role"/>).</t>
         <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
       </section>
       <section>
@@ -3650,7 +3650,7 @@ JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
       <t>This section documents all significant differences from RFC 9555. Insignificant differences, such as formatting, grammar or typos are not documented.</t>
       <section>
         <name>Applied Errata</name>
-        <t>The following errrata was applied to to this document:</t>
+        <t>The following errata was applied to this document:</t>
         <ul>
           <li>
             <eref target="https://www.rfc-editor.org/errata/eid8555">Errata 8555</eref>
