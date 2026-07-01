@@ -460,7 +460,7 @@ TEL;PROP-ID=xyz;VALUE=uri:tel:+1-555-555-5555;ext=5555
               <tr>
                 <td align="left">post office box</td>
                 <td align="left">postOfficeBox</td>
-                <td align="left"><xref target="RFC6350"/> recommends that this component not be set, but this is now disputable given the new components.  Instead, set this component and use the new ADR value format defined in <xref target="RFC9554"/>.</td>
+                <td align="left"><xref target="RFC6350"/> recommends that this component not be set.</td>
               </tr>
               <tr>
                 <td align="left">extended address</td>
