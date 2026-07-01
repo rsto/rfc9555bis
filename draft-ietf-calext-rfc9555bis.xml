@@ -3520,7 +3520,138 @@ JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
     </section>
     <section anchor="IANA">
       <name>IANA Considerations</name>
-      <t>TBD</t>
+      <t>This document obsoletes <xref target="RFC9555"/>. It registers new elements in the vCard and JSContact registries, updates the reference of entries that <xref target="RFC9555"/> originally registered to this document, and obsoletes the JSContact elements that this document replaces.</t>
+      <section>
+        <name>Changes to the "vCard Element Registries"</name>
+        <t>IANA will add the following entry to the "Parameters" registry:</t>
+        <dl spacing="compact">
+          <dt>Parameter</dt>
+          <dd>JSID</dd>
+          <dt>Reference</dt>
+          <dd>
+            <xref target="vcard-param-jsid"/>
+          </dd>
+        </dl>
+        <t>IANA will update the Reference to this document for the following entry in the "Properties" registry, which <xref target="RFC9555"/> originally registered:</t>
+        <dl spacing="compact">
+          <dt>Property</dt>
+          <dd>JSPROP</dd>
+          <dt>Reference</dt>
+          <dd>
+            <xref target="vcard-prop-jsprop"/>
+          </dd>
+        </dl>
+        <t>IANA will update the Reference to this document for the following entries in the "Parameters" registry, which <xref target="RFC9555"/> originally registered:</t>
+        <dl spacing="compact">
+          <dt>Parameter</dt>
+          <dd>JSCOMPS</dd>
+          <dt>Reference</dt>
+          <dd>
+            <xref target="vcard-param-jscomps"/>
+          </dd>
+        </dl>
+        <dl spacing="compact">
+          <dt>Parameter</dt>
+          <dd>JSPTR</dd>
+          <dt>Reference</dt>
+          <dd>
+            <xref target="vcard-param-jsptr"/>
+          </dd>
+        </dl>
+      </section>
+      <section>
+        <name>Changes to the "JSContact Registries"</name>
+        <section>
+          <name>"JSContact Properties" Registry</name>
+          <t>IANA will add the following entry to the "JSContact Properties" registry:</t>
+          <dl spacing="compact">
+            <dt>Property Name</dt>
+            <dd>vCard</dd>
+            <dt>Property Type</dt>
+            <dd>VCard</dd>
+            <dt>Property Context</dt>
+            <dd>Card</dd>
+            <dt>Reference or Description</dt>
+            <dd>
+              <xref target="jscontact-prop-vcard"/>
+            </dd>
+            <dt>Intended Usage</dt>
+            <dd>common</dd>
+            <dt>Change Controller</dt>
+            <dd>IETF</dd>
+          </dl>
+          <t>IANA will change the Intended Usage from "common" to "obsolete" for the following entries in the "JSContact Properties" registry, which <xref target="RFC9555"/> originally registered. For each entry, the Property Name and its changed fields are listed.</t>
+          <dl spacing="compact">
+            <dt>Property Name</dt>
+            <dd>vCardProps</dd>
+            <dt>Reference or Description</dt>
+            <dd>
+              <xref target="jscontact-obsoleted-properties"/>
+            </dd>
+            <dt>Intended Usage</dt>
+            <dd>obsolete</dd>
+          </dl>
+          <dl spacing="compact">
+            <dt>Property Name</dt>
+            <dd>vCardParams</dd>
+            <dt>Reference or Description</dt>
+            <dd>
+              <xref target="jscontact-obsoleted-properties"/>
+            </dd>
+            <dt>Intended Usage</dt>
+            <dd>obsolete</dd>
+          </dl>
+          <dl spacing="compact">
+            <dt>Property Name</dt>
+            <dd>vCardName</dd>
+            <dt>Reference or Description</dt>
+            <dd>
+              <xref target="jscontact-obsoleted-properties"/>
+            </dd>
+            <dt>Intended Usage</dt>
+            <dd>obsolete</dd>
+          </dl>
+        </section>
+        <section>
+          <name>"JSContact Types" Registry</name>
+          <t>IANA will add the following entries to the "JSContact Types" registry:</t>
+          <dl spacing="compact">
+            <dt>Type Name</dt>
+            <dd>VCard</dd>
+            <dt>Type Reference</dt>
+            <dd>
+              <xref target="jscontact-prop-vcard"/>
+            </dd>
+            <dt>Intended Usage</dt>
+            <dd>common</dd>
+            <dt>Change Controller</dt>
+            <dd>IETF</dd>
+          </dl>
+          <dl spacing="compact">
+            <dt>Type Name</dt>
+            <dd>VCardProperty</dd>
+            <dt>Type Reference</dt>
+            <dd>
+              <xref target="jscontact-prop-vcard"/>
+            </dd>
+            <dt>Intended Usage</dt>
+            <dd>common</dd>
+            <dt>Change Controller</dt>
+            <dd>IETF</dd>
+          </dl>
+          <t>IANA will change the Intended Usage from "common" to "obsolete" for the following entry in the "JSContact Types" registry, which <xref target="RFC9555"/> originally registered. For each entry, the Type Name and its changed fields are listed.</t>
+          <dl spacing="compact">
+            <dt>Type Name</dt>
+            <dd>JCardProp</dd>
+            <dt>Type Reference</dt>
+            <dd>
+              <xref target="jscontact-obsoleted-types"/>
+            </dd>
+            <dt>Intended Usage</dt>
+            <dd>obsolete</dd>
+          </dl>
+        </section>
+      </section>
     </section>
   </middle>
   <back>
@@ -3645,7 +3776,7 @@ JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
       </section>
       <section>
         <name>Changes to JSContact</name>
-        <section>
+        <section anchor="jscontact-obsoleted-properties">
           <name>Obsoleted Properties</name>
           <t>The following JSContact properties became obsolete:</t>
           <dl newline="true" spacing="normal" anchor="obsolete-prop-vcardprops">
@@ -3743,7 +3874,7 @@ JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
             </dd>
           </dl>
         </section>
-        <section>
+        <section anchor="jscontact-obsoleted-types">
           <name>Obsoleted Types</name>
           <t>The following JSContact type definitions became obsolete:</t>
           <dl newline="true" spacing="normal">
