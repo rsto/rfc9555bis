@@ -582,7 +582,7 @@ ADR;TYPE=work;CC=US:;;54321 Oak St;Reston;VA;20190;USA;;;;54321;Oak St;;;;;;
 }
 ]]></sourcecode>
           </figure>
-          <t>See <xref target="vcard-param-jscomps-examples"/> for examples of using the JSCOMPS parameter for vCard-structured property values.</t>
+          <t>See <xref target="vcard-param-jscomps-examples"/> for examples of how to use the JSCOMPS parameter for structured property values.</t>
         </section>
         <section anchor="vcard-prop-anniversary">
           <name>ANNIVERSARY</name>
@@ -641,7 +641,7 @@ BIRTHPLACE:
         <section anchor="vcard-prop-birthplace">
           <name>BIRTHPLACE</name>
           <t>The BIRTHPLACE property (<xref target="RFC6474" derivedContent="RFC6474" section="2.1" sectionFormat="of"/>) converts to an Anniversary object in the Card object's anniversaries property (<xref target="test-vcard-prop-anniversary"/>). Its value converts to an Address object in the Anniversary place property. The Anniversary kind is "birth".</t>
-          <t>A property value of type TEXT converts to the Address object's full property. A property value of type URI using the "geo:" URI scheme converts to the Address object's coordinates property. A property having any other value type does not convert to an Anniversary object.</t>
+          <t>A property value of type TEXT converts to the Address object's full property. A property value of type URI that uses the "geo:" URI scheme converts to the Address object's coordinates property. A property having any other value does not convert to an Anniversary object.</t>
           <t>See <xref target="vcard-prop-bday"/> for an example and how to convert a BIRTHPLACE property together with a BDAY property.</t>
         </section>
         <section anchor="vcard-prop-caladruri">
@@ -812,7 +812,7 @@ DEATHPLACE:
         <section anchor="vcard-prop-deathplace">
           <name>DEATHPLACE</name>
           <t>The DEATHPLACE property (<xref target="RFC6474" derivedContent="RFC6474" section="2.2" sectionFormat="of"/>) converts to an Anniversary object in the Card object's anniversaries property (<xref target="test-vcard-prop-anniversary"/>). Its value converts to an Address object in the Anniversary place property. The Anniversary kind is "death".</t>
-          <t>A property value of type TEXT converts to the Address object's full property. A property value of type URI using the "geo:" URI scheme converts to the Address object's coordinates property. A property having any other value type does not convert to an Anniversary object.</t>
+          <t>A property value of type TEXT converts to the Address object's full property. A property value of type URI that uses the "geo:" URI scheme converts to the Address object's coordinates property. A property having any other value does not convert to an Anniversary object.</t>
           <t>See <xref target="vcard-prop-deathdate"/> for an example and how to convert a DEATHPLACE property together with a DEATHDATE property.</t>
         </section>
         <section anchor="vcard-prop-expertise">
@@ -946,7 +946,7 @@ HOBBY;INDEX=2;LEVEL=high:sewing
           <name>IMPP</name>
           <t>The IMPP property (<xref target="RFC6350" derivedContent="RFC6350" section="6.4.3" sectionFormat="of"/>) converts to an OnlineService object (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>) in the Card object's onlineServices property (<xref target="test-vcard-prop-impp"/>).  The "uri" property is set to the IMPP value.</t>
           <t>The SERVICE-TYPE, USERNAME, PREF, and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
-          <t>Implementations <bcp14>MAY</bcp14> indicate that the OnlineService object converted from the IMPP property by adding an entry for the "uri" property of the OnlineService object in the "vCard/convertedProperties" property.</t>
+          <t>Implementations <bcp14>MAY</bcp14> use the <xref target="jscontact-prop-vcard">"vCard" property</xref> to indicate that the OnlineService object was converted from the IMPP property.</t>
           <t>The following example illustrates how to convert the IMPP property:</t>
           <figure anchor="test-vcard-prop-impp">
             <name>IMPP Conversion Example</name>
@@ -1202,7 +1202,7 @@ N;SORT-AS="Stevenson,John Philip":Stevenson;John;Philip,Paul;Dr.;Jr.,M.D.,A.C.P.
 }
 ]]></sourcecode>
           </figure>
-          <t>See <xref target="vcard-param-jscomps-examples"/> for examples of using the JSCOMPS parameter for vCard-structured property values.</t>
+          <t>See <xref target="vcard-param-jscomps-examples"/> for examples of how to use the JSCOMPS parameter for structured property values.</t>
         </section>
         <section anchor="vcard-prop-nickname">
           <name>NICKNAME</name>
@@ -1436,8 +1436,8 @@ group1.ORG:ABC, Inc.
         <section anchor="vcard-prop-socialprofile">
           <name>SOCIALPROFILE</name>
           <t>The SOCIALPROFILE property (<xref target="RFC9554" derivedContent="RFC9554" section="3.5" sectionFormat="of"/>) converts to an OnlineService object (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>) in the Card object's onlineServices property (<xref target="test-vcard-prop-socialprofile"/>). If the SOCIALPROFILE property value is of type URI, then the "uri" property is set, otherwise, the "user" property is set.</t>
-          <t>Implementations <bcp14>MAY</bcp14> indicate that the OnlineService object converted from the SOCIALPROFILE property by adding an entry for the "uri" or "user" property of the OnlineService object in the "vCard/convertedProperties" property.</t>
           <t>The SERVICE-TYPE, USERNAME, PREF, and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <t>Implementations <bcp14>MAY</bcp14> use the <xref target="jscontact-prop-vcard">"vCard" property</xref> to indicate that the OnlineService object was converted from the SOCIALPROFILE property.</t>
           <t>The following example illustrates how to convert the SOCIALPROFILE property:</t>
           <figure anchor="test-vcard-prop-socialprofile">
             <name>SOCIALPROFILE Conversion Example</name>
@@ -1604,7 +1604,7 @@ TITLE:Research Scientist
         <section anchor="vcard-prop-uid">
           <name>UID</name>
           <t>The UID property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.6" sectionFormat="of"/>) converts to the Card object's uid property (<xref target="test-vcard-prop-uid"/>).</t>
-          <t>Implementations <bcp14>MAY</bcp14> preserve the value type of the UID property using the <xref target="jscontact-prop-vcard">"vCard" property</xref>. To do so, they add an entry for the path "uid" in the "convertedProperties" property with the "valueType" property indicating the value type (see <xref target="test-vcard-prop-uid-valuetype"/>).</t>
+          <t>Implementations <bcp14>MAY</bcp14> use the <xref target="jscontact-prop-vcard">"vCard" property</xref> to preserve the value type of the UID property.</t>
           <t>The following examples illustrate how to convert the UID property:</t>
           <figure anchor="test-vcard-prop-uid">
             <name>UID Conversion Example</name>
