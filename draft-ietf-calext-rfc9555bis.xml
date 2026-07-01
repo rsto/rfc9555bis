@@ -612,7 +612,7 @@ ANNIVERSARY:19860201
         </section>
         <section anchor="vcard-prop-bday">
           <name>BDAY</name>
-          <t>The BDAY property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.5" sectionFormat="of"/>) converts to an Anniversary object in the Card object's "anniversaries" property (<xref target="test-vcard-prop-anniversary"/>). Its value converts to the Anniversary object's "date" property. The Anniversary "kind" is "birth".</t>
+          <t>The BDAY property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.5" sectionFormat="of"/>) converts to an Anniversary object in the Card object's "anniversaries" property (<xref target="test-vcard-prop-bday"/>). Its value converts to the Anniversary object's "date" property. The Anniversary "kind" is "birth".</t>
           <t>If the property value type is <xref target="RFC6350" derivedContent="RFC6350" section="4.3.5" sectionFormat="parens">DATE</xref> and defines at least a year or a month and day, then the value converts to a PartialDate object. If the property value type is <xref target="RFC6350" derivedContent="RFC6350" section="4.3.5" sectionFormat="parens">TIMESTAMP</xref> then the value converts to the Timestamp object's "utc" property. Otherwise it does not convert to JSContact.</t>
           <t>A BDAY property and the BIRTHPLACE property (see <xref target="vcard-prop-birthplace"/>) convert to the same Anniversary object if their ALTID parameter values match or are not set on either property.</t>
           <t>The path of the BDAY property in the <xref target="jscontact-prop-vcard" sectionFormat="parens">"convertedProperties" property</xref> is "anniversaries/{id}", where "{id}" denotes the identifier of the Anniversary object.</t>
@@ -643,7 +643,7 @@ BIRTHPLACE:
         </section>
         <section anchor="vcard-prop-birthplace">
           <name>BIRTHPLACE</name>
-          <t>The BIRTHPLACE property (<xref target="RFC6474" derivedContent="RFC6474" section="2.1" sectionFormat="of"/>) converts to an Anniversary object in the Card object's "anniversaries" property (<xref target="test-vcard-prop-anniversary"/>). Its value converts to an Address object in the Anniversary object's "place" property. The Anniversary "kind" is "birth".</t>
+          <t>The BIRTHPLACE property (<xref target="RFC6474" derivedContent="RFC6474" section="2.1" sectionFormat="of"/>) converts to an Anniversary object in the Card object's "anniversaries" property (<xref target="test-vcard-prop-bday"/>). Its value converts to an Address object in the Anniversary object's "place" property. The Anniversary "kind" is "birth".</t>
           <t>A property value of type TEXT converts to the Address object's "full" property. A property value of type URI that uses the "geo:" URI scheme converts to the Address object's "coordinates" property. A property having any other value does not convert to an Anniversary object.</t>
           <t>See <xref target="vcard-prop-bday"/> for an example and how to convert a BIRTHPLACE property together with a BDAY property.</t>
           <t>The path of the BIRTHPLACE property in the <xref target="jscontact-prop-vcard" sectionFormat="parens">"convertedProperties" property</xref> is "anniversaries/{id}/place", where "{id}" denotes the identifier of the Anniversary object.</t>
@@ -791,7 +791,7 @@ EMAIL;PREF=1:jane_doe@example.com
         </section>
         <section anchor="vcard-prop-deathdate">
           <name>DEATHDATE</name>
-          <t>The DEATHDATE property (<xref target="RFC6474" derivedContent="RFC6474" section="2.3" sectionFormat="of"/>) converts to an Anniversary object in the Card object's "anniversaries" property (<xref target="test-vcard-prop-anniversary"/>). Its value converts to the Anniversary object's "date" property. The Anniversary "kind" is "death".</t>
+          <t>The DEATHDATE property (<xref target="RFC6474" derivedContent="RFC6474" section="2.3" sectionFormat="of"/>) converts to an Anniversary object in the Card object's "anniversaries" property (<xref target="test-vcard-prop-deathdate"/>). Its value converts to the Anniversary object's "date" property. The Anniversary "kind" is "death".</t>
           <t>See <xref target="vcard-prop-bday"/> how to convert property values of type TIMESTAMP and DATE.</t>
           <t>A DEATHDATE property and the DEATHPLACE property (see <xref target="vcard-prop-deathplace"/>) convert to the same Anniversary object if their ALTID parameter values match or are not set on either property.</t>
           <t>The path of the DEATHDATE property in the <xref target="jscontact-prop-vcard" sectionFormat="parens">"convertedProperties" property</xref> is "anniversaries/{id}", where "{id}" denotes the identifier of the Anniversary object.</t>
@@ -822,7 +822,7 @@ DEATHPLACE:
         </section>
         <section anchor="vcard-prop-deathplace">
           <name>DEATHPLACE</name>
-          <t>The DEATHPLACE property (<xref target="RFC6474" derivedContent="RFC6474" section="2.2" sectionFormat="of"/>) converts to an Anniversary object in the Card object's "anniversaries" property (<xref target="test-vcard-prop-anniversary"/>). Its value converts to an Address object in the Anniversary object's "place" property. The Anniversary "kind" is "death".</t>
+          <t>The DEATHPLACE property (<xref target="RFC6474" derivedContent="RFC6474" section="2.2" sectionFormat="of"/>) converts to an Anniversary object in the Card object's "anniversaries" property (<xref target="test-vcard-prop-deathdate"/>). Its value converts to an Address object in the Anniversary object's "place" property. The Anniversary "kind" is "death".</t>
           <t>A property value of type TEXT converts to the Address object's "full" property. A property value of type URI that uses the "geo:" URI scheme converts to the Address object's "coordinates" property. A property having any other value does not convert to an Anniversary object.</t>
           <t>See <xref target="vcard-prop-deathdate"/> for an example and how to convert a DEATHPLACE property together with a DEATHDATE property.</t>
           <t>The path of the DEATHPLACE property in the <xref target="jscontact-prop-vcard" sectionFormat="parens">"convertedProperties" property</xref> is "anniversaries/{id}/place", where "{id}" denotes the identifier of the Anniversary object.</t>
