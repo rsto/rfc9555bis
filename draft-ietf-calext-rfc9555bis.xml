@@ -1124,7 +1124,8 @@ LOGO:https://www.example.com/pub/logos/abccorp.jpg
         </section>
         <section anchor="vcard-prop-member">
           <name>MEMBER</name>
-          <t>The MEMBER property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.5" sectionFormat="of"/>) converts to the Card object's members property (<xref target="test-vcard-prop-member"/>).  Each MEMBER property value is a key in the members property.  The PREF parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.3" sectionFormat="of"/>) does not convert to JSContact.</t>
+          <t>The MEMBER property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.5" sectionFormat="of"/>) converts to the Card object's members property (<xref target="test-vcard-prop-member"/>).  Each MEMBER property value is a key in the members property.</t>
+          <t><xref target="RFC6350"/> defines the MEMBER property value type to be URI, but UID property values can either be URI or TEXT values. How to convert "member" property values that are no valid URI is implementation-specific. The PREF parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.3" sectionFormat="of"/>) does not convert to JSContact.</t>
           <t>The path of the MEMBER property in the <xref target="jscontact-prop-vcard" sectionFormat="parens">"convertedProperties" property</xref> is "members/{value}", where "{value}" denotes the MEMBER property value.</t>
           <t>The following example illustrates how to convert the MEMBER property:</t>
           <figure anchor="test-vcard-prop-member">
