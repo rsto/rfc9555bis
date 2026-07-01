@@ -1702,7 +1702,7 @@ URL:https://example.org/restaurant.french/~chezchic.html
           <name>X-ABLabel</name>
           <t>The X-ABLabel property is experimental but widely in use in existing vCard data.  It converts to the label property of a JSContact object.
 	  The X-ABLabel property is preceded by a vCard property group name, and the label converts to the JSContact object, which was converted from a vCard property of the same group.</t>
-          <t>The group name is not preserved; implementations are free to choose any unique group name when converting back to vCard.  For an example on how to preserve the group name, see <xref target="vcard-param-group"/>.</t>
+          <t>The group name is not preserved; implementations are free to choose any unique group name when converting back to vCard.  For an example on how to preserve the group name, see <xref target="vcard-param-group"/>. The path of the X-ABLabel property in the <xref target="jscontact-prop-vcard" sectionFormat="parens">"convertedProperties" property</xref> is "*/label", where "*" denotes the path of the object on which the label is set.</t>
           <t>The following example illustrates how to convert the X-ABLabel property:</t>
           <figure anchor="test-vcard-prop-xablabel">
             <name>X-ABLabel Conversion Example</name>
