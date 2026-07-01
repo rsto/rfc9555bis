@@ -2042,6 +2042,16 @@ item1.X-ABLabel:foo
               </td>
             </tr>
             <tr>
+              <td>cryptoKeys</td>
+              <td>
+                <xref target="RFC9553" section="2.6.1" sectionFormat="comma"/>
+              </td>
+              <td>KEY</td>
+              <td>
+                <xref target="convert-jscontact-to-vcard-new-crypto-key">CryptoKey object</xref>
+              </td>
+            </tr>
+            <tr>
               <td>directories</td>
               <td>
                 <xref target="RFC9553" section="2.6.2" sectionFormat="comma"/>
@@ -2273,6 +2283,7 @@ item1.X-ABLabel:foo
             </tr>
           </tbody>
         </table>
+        <t>The Card object's "@type" and "version" properties do not convert to a vCard property; a vCard generated from a Card always has a VERSION property value of "4.0" (see <xref target="vcard-prop-version"/>).</t>
         <t>The "localizations" property converts by converting the properties in the PatchObject using the same rules as outlined in <xref target="jscontact-to-vcard-props-card"/>. The <xref target="vcard-param-language">LANGUAGE parameter</xref> <bcp14>MUST</bcp14> be set on each resulting property with the parameter value being the language key of the "localizations" property. The <xref target="vcard-param-altid">ALTID parameter</xref> <bcp14>MUST</bcp14> be set and its value be equal for all properties having the same JSON pointer path in the "localizations" property and the non-localized Card.</t>
         <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
       </section>
@@ -2963,6 +2974,16 @@ item1.X-ABLabel:foo
           </thead>
           <tbody>
             <tr>
+              <td>label</td>
+              <td>
+                <xref target="RFC9553" section="2.8.4" sectionFormat="comma"/>
+              </td>
+              <td>X-ABLabel (Property)</td>
+              <td>
+                <xref target="vcard-prop-xablabel"/>
+              </td>
+            </tr>
+            <tr>
               <td>listAs</td>
               <td>
                 <xref target="RFC9553" section="2.8.4" sectionFormat="comma"/>
@@ -3139,9 +3160,6 @@ item1.X-ABLabel:foo
         <t>The Title object converts to one of the following properties, determined by the Title object's "kind" property value. If the "kind" is "title" or not set then it converts to the <xref target="vcard-prop-title">TITLE property</xref>. If the "kind" is "role" then it converts to the <xref target="vcard-prop-role">ROLE property</xref>.</t>
         <t>Its "name" property converts to the property value. Its "organizationId" property converts by assigning the TITLE property and the ORG property to the same vCard property group (see <xref target="vcard-prop-role"/>).</t>
         <t>Other properties <bcp14>MAY</bcp14> be converted to <xref target="vcard-prop-jsprop">JSPROP properties</xref>.</t>
-      </section>
-      <section>
-        <name>New vCard Parameters</name>
       </section>
     </section>
     <section anchor="updates-to-jscontact">
