@@ -184,23 +184,23 @@ FN:Joannes Chrysostomus Wolfg
         </section>
         <section anchor="vcard-param-author">
           <name>AUTHOR</name>
-          <t>The AUTHOR parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.1" sectionFormat="of"/>) on a NOTE property converts to the Author object's "uri" property (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.3" sectionFormat="of"/>).  That Author object is set as the value of the Note object's "author" property (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.3" sectionFormat="of"/>).</t>
+          <t>The AUTHOR parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.1" sectionFormat="of"/>) on a NOTE property converts to the "uri" property of the Author object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.3" sectionFormat="of"/>).  That Author object is set as the value of the "author" property of the Note object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.3" sectionFormat="of"/>).</t>
         </section>
         <section anchor="vcard-param-author-name">
           <name>AUTHOR-NAME</name>
-          <t>The AUTHOR-NAME parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.2" sectionFormat="of"/>) on a NOTE property converts to the Author object's "name" property (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.3" sectionFormat="of"/>).  That Author object is set as the value of the Note object's "author" property.</t>
+          <t>The AUTHOR-NAME parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.2" sectionFormat="of"/>) on a NOTE property converts to the "name" property of the Author object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.3" sectionFormat="of"/>).  That Author object is set as the value of the "author" property of the Note object.</t>
         </section>
         <section anchor="vcard-param-calscale">
           <name>CALSCALE</name>
-          <t>The CALSCALE parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.8" sectionFormat="of"/>) set on a BDAY, DEATHDATE, or ANNIVERSARY property converts to the PartialDate object's "calendarScale" property (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.1" sectionFormat="of"/>).</t>
+          <t>The CALSCALE parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.8" sectionFormat="of"/>) set on a BDAY, DEATHDATE, or ANNIVERSARY property converts to the "calendarScale" property of the PartialDate object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.1" sectionFormat="of"/>).</t>
         </section>
         <section anchor="vcard-param-cc">
           <name>CC</name>
-          <t>The CC parameter (<xref target="RFC8605" derivedContent="RFC8605" section="3.1" sectionFormat="of"/>) on an ADR property converts to the Address object's "countryCode" property (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1.1" sectionFormat="of"/>).</t>
+          <t>The CC parameter (<xref target="RFC8605" derivedContent="RFC8605" section="3.1" sectionFormat="of"/>) on an ADR property converts to the "countryCode" property of the Address object (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1.1" sectionFormat="of"/>).</t>
         </section>
         <section anchor="vcard-param-created">
           <name>CREATED</name>
-          <t>The CREATED parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.3" sectionFormat="of"/>) on a NOTE property converts to the Note object's "created" property (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.3" sectionFormat="of"/>).</t>
+          <t>The CREATED parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.3" sectionFormat="of"/>) on a NOTE property converts to the "created" property of the Note object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.3" sectionFormat="of"/>).</t>
         </section>
         <section anchor="vcard-param-derived">
           <name>DERIVED</name>
@@ -208,7 +208,7 @@ FN:Joannes Chrysostomus Wolfg
         </section>
         <section anchor="vcard-param-geo">
           <name>GEO</name>
-          <t>The GEO parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.10" sectionFormat="of"/>) set on an ADR property converts to the Address object's "coordinates" property (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1.1" sectionFormat="of"/>). Also see the conversion of the GEO property in <xref target="vcard-prop-geo"/>.</t>
+          <t>The GEO parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.10" sectionFormat="of"/>) set on an ADR property converts to the "coordinates" property of the Address object (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1.1" sectionFormat="of"/>). Also see the conversion of the GEO property in <xref target="vcard-prop-geo"/>.</t>
         </section>
         <section anchor="vcard-param-group">
           <name>GROUP</name>
@@ -328,11 +328,11 @@ TITLE;ALTID=1;LANGUAGE=fr:Patron
         </section>
         <section anchor="vcard-param-label">
           <name>LABEL</name>
-          <t>The LABEL parameter (<xref target="RFC6350" derivedContent="RFC6350" section="6.3.1" sectionFormat="of"/>) on an ADR property converts to the Address object's "full" property (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>).</t>
+          <t>The LABEL parameter (<xref target="RFC6350" derivedContent="RFC6350" section="6.3.1" sectionFormat="of"/>) on an ADR property converts to the "full" property of the Address object (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>).</t>
         </section>
         <section anchor="vcard-param-level">
           <name>LEVEL</name>
-          <t>The LEVEL parameter (<xref target="RFC6715" derivedContent="RFC6715" section="3.2" sectionFormat="of"/>) converts to the PersonalInfo object's "level" property (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.4" sectionFormat="of"/>).  If this parameter is set on the EXPERTISE property, then its values convert as follows:
+          <t>The LEVEL parameter (<xref target="RFC6715" derivedContent="RFC6715" section="3.2" sectionFormat="of"/>) converts to the "level" property of the PersonalInfo object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.4" sectionFormat="of"/>).  If this parameter is set on the EXPERTISE property, then its values convert as follows:
       </t>
           <ul spacing="compact">
             <li>"beginner" converts to "low";</li>
@@ -343,7 +343,7 @@ TITLE;ALTID=1;LANGUAGE=fr:Patron
         </section>
         <section anchor="vcard-param-mediatype">
           <name>MEDIATYPE</name>
-          <t>The MEDIATYPE parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.7" sectionFormat="of"/>) converts to the Resource object's "mediaType" property (<xref target="RFC9553" derivedContent="RFC9553" section="1.4.4" sectionFormat="of"/>).</t>
+          <t>The MEDIATYPE parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.7" sectionFormat="of"/>) converts to the "mediaType" property of the Resource object (<xref target="RFC9553" derivedContent="RFC9553" section="1.4.4" sectionFormat="of"/>).</t>
         </section>
         <section anchor="vcard-param-phonetic">
           <name>PHONETIC</name>
@@ -414,7 +414,7 @@ TEL;PROP-ID=xyz;VALUE=uri:tel:+1-555-555-5555;ext=5555
         </section>
         <section anchor="vcard-param-service-type">
           <name>SERVICE-TYPE</name>
-          <t>The SERVICE-TYPE parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.9" sectionFormat="of"/>) converts to the OnlineService object's "service" property (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>).</t>
+          <t>The SERVICE-TYPE parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.9" sectionFormat="of"/>) converts to the "service" property of the OnlineService object (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>).</t>
         </section>
         <section anchor="vcard-param-sort-as">
           <name>SORT-AS</name>
@@ -426,11 +426,11 @@ TEL;PROP-ID=xyz;VALUE=uri:tel:+1-555-555-5555;ext=5555
         </section>
         <section anchor="vcard-param-tz">
           <name>TZ</name>
-          <t>The TZ parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.11" sectionFormat="of"/>) on an ADR property converts to the Address object's "timeZone" property (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>).  Also see the conversion of the TZ property in <xref target="vcard-prop-tz"/>.</t>
+          <t>The TZ parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.11" sectionFormat="of"/>) on an ADR property converts to the "timeZone" property of the Address object (<xref target="RFC9553" derivedContent="RFC9553" section="2.5.1" sectionFormat="of"/>).  Also see the conversion of the TZ property in <xref target="vcard-prop-tz"/>.</t>
         </section>
         <section anchor="vcard-param-username">
           <name>USERNAME</name>
-          <t>The USERNAME parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.10" sectionFormat="of"/>) converts to the OnlineService object's "user" property (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>).</t>
+          <t>The USERNAME parameter (<xref target="RFC9554" derivedContent="RFC9554" section="4.10" sectionFormat="of"/>) converts to the "user" property of the OnlineService object (<xref target="RFC9553" derivedContent="RFC9553" section="2.3.2" sectionFormat="of"/>).</t>
         </section>
         <section anchor="vcard-param-value">
           <name>VALUE</name>
@@ -664,7 +664,7 @@ CALADRURI:https://example.com/calendar/jdoe
         </section>
         <section anchor="vcard-prop-caluri">
           <name>CALURI</name>
-          <t>The CALURI property (<xref target="RFC6350" derivedContent="RFC6350" section="6.9.3" sectionFormat="of"/>) converts to a Calendar object (<xref target="RFC9553" derivedContent="RFC9553" section="2.4.1" sectionFormat="of"/>).  The converted object is set in the "calendars" property of the Card object.  The Calendar object's "kind" property is set to "calendar".  The CALURI property value converts to the "uri" property of the Calendar object.  The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <t>The CALURI property (<xref target="RFC6350" derivedContent="RFC6350" section="6.9.3" sectionFormat="of"/>) converts to a Calendar object (<xref target="RFC9553" derivedContent="RFC9553" section="2.4.1" sectionFormat="of"/>).  The converted object is set in the "calendars" property of the Card object.  The "kind" property of the Calendar object is set to "calendar".  The CALURI property value converts to the "uri" property of the Calendar object.  The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <t>The following example illustrates how to convert the CALURI property:</t>
           <figure anchor="test-vcard-prop-caluri">
             <name>CALURI Conversion Example</name>
@@ -715,7 +715,7 @@ CATEGORIES:internet,IETF,Industry,Information Technology
         </section>
         <section anchor="vcard-prop-contact-uri">
           <name>CONTACT-URI</name>
-          <t>The CONTACT-URI property (<xref target="RFC8605" derivedContent="RFC8605" section="2.1" sectionFormat="of"/>) converts to a Link object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.3" sectionFormat="of"/>).  The converted object is set in the "links" property of the Card object.  The Link object's "kind" property is set to "contact".  The CONTACT-URI property value converts to the "uri" property of the Link object.  The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <t>The CONTACT-URI property (<xref target="RFC8605" derivedContent="RFC8605" section="2.1" sectionFormat="of"/>) converts to a Link object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.3" sectionFormat="of"/>).  The converted object is set in the "links" property of the Card object.  The "kind" property of the Link object is set to "contact".  The CONTACT-URI property value converts to the "uri" property of the Link object.  The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <t>The following example illustrates how to convert the CONTACT-URI property:</t>
           <figure anchor="test-vcard-prop-contact-uri">
             <name>CONTACT-URI Conversion Example</name>
@@ -807,7 +807,7 @@ DEATHPLACE:
         </section>
         <section anchor="vcard-prop-expertise">
           <name>EXPERTISE</name>
-          <t>The EXPERTISE property (<xref target="RFC6715" derivedContent="RFC6715" section="2.1" sectionFormat="of"/>) converts to a PersonalInfo object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.4" sectionFormat="of"/>).  The converted object is set in the "personalInfo" property of the Card object.  The PersonalInfo object's "kind" property is set to "expertise".  The EXPERTISE property value converts to the "value" property of the PersonalInfo object.  The INDEX and LEVEL parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <t>The EXPERTISE property (<xref target="RFC6715" derivedContent="RFC6715" section="2.1" sectionFormat="of"/>) converts to a PersonalInfo object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.4" sectionFormat="of"/>).  The converted object is set in the "personalInfo" property of the Card object.  The "kind" property of the PersonalInfo object is set to "expertise".  The EXPERTISE property value converts to the "value" property of the PersonalInfo object.  The INDEX and LEVEL parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <t>The following example illustrates how to convert the EXPERTISE property:</t>
           <figure anchor="test-vcard-prop-expertise">
             <name>EXPERTISE Conversion Example</name>
@@ -835,7 +835,7 @@ EXPERTISE;INDEX=1;LEVEL=expert:chemistry
         </section>
         <section anchor="vcard-prop-fburl">
           <name>FBURL</name>
-          <t>The FBURL property (<xref target="RFC6350" derivedContent="RFC6350" section="6.9.1" sectionFormat="of"/>) converts to a Calendar object (<xref target="RFC9553" derivedContent="RFC9553" section="2.4.1" sectionFormat="of"/>).  The converted object is set in the "calendars" property of the Card object.  The Calendar object's "kind" property is set to "freeBusy".  The FBURL property value converts to the "uri" property of the Calendar object.  The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <t>The FBURL property (<xref target="RFC6350" derivedContent="RFC6350" section="6.9.1" sectionFormat="of"/>) converts to a Calendar object (<xref target="RFC9553" derivedContent="RFC9553" section="2.4.1" sectionFormat="of"/>).  The converted object is set in the "calendars" property of the Card object.  The "kind" property of the Calendar object is set to "freeBusy".  The FBURL property value converts to the "uri" property of the Calendar object.  The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <t>The following example illustrates how to convert the FBURL property:</t>
           <figure anchor="test-vcard-prop-fburl">
             <name>FBURL Conversion Example</name>
@@ -904,7 +904,7 @@ GRAMGENDER:NEUTER
         </section>
         <section anchor="vcard-prop-hobby">
           <name>HOBBY</name>
-          <t>The HOBBY property (<xref target="RFC6715" derivedContent="RFC6715" section="2.2" sectionFormat="of"/>) converts to a PersonalInfo object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.4" sectionFormat="of"/>).  The converted object is set in the "personalInfo" property of the Card object.  The PersonalInfo object's "kind" property is set to "hobby".  The HOBBY property value converts to the "value" property of the PersonalInfo object.  The INDEX and LEVEL parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <t>The HOBBY property (<xref target="RFC6715" derivedContent="RFC6715" section="2.2" sectionFormat="of"/>) converts to a PersonalInfo object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.4" sectionFormat="of"/>).  The converted object is set in the "personalInfo" property of the Card object.  The "kind" property of the PersonalInfo object is set to "hobby".  The HOBBY property value converts to the "value" property of the PersonalInfo object.  The INDEX and LEVEL parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <t>The following example illustrates how to convert the HOBBY property:</t>
           <figure anchor="test-vcard-prop-hobby">
             <name>HOBBY Conversion Example</name>
@@ -959,7 +959,7 @@ IMPP;PREF=1:xmpp:alice@example.com
         </section>
         <section anchor="vcard-prop-interest">
           <name>INTEREST</name>
-          <t>The INTEREST property (<xref target="RFC6715" derivedContent="RFC6715" section="2.3" sectionFormat="of"/>) converts to a PersonalInfo object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.4" sectionFormat="of"/>).  The converted object is set in the "personalInfo" property of the Card object.  The PersonalInfo object's "kind" property is set to "interest".  The INTEREST property value converts to the "value" property of the PersonalInfo object.  The INDEX and LEVEL parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <t>The INTEREST property (<xref target="RFC6715" derivedContent="RFC6715" section="2.3" sectionFormat="of"/>) converts to a PersonalInfo object (<xref target="RFC9553" derivedContent="RFC9553" section="2.8.4" sectionFormat="of"/>).  The converted object is set in the "personalInfo" property of the Card object.  The "kind" property of the PersonalInfo object is set to "interest".  The INTEREST property value converts to the "value" property of the PersonalInfo object.  The INDEX and LEVEL parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <t>The following example illustrates how to convert the INTEREST property:</t>
           <figure anchor="test-vcard-prop-interest">
             <name>INTEREST Conversion Example</name>
@@ -1064,7 +1064,7 @@ LANGUAGE:de-AT
         </section>
         <section anchor="vcard-prop-logo">
           <name>LOGO</name>
-          <t>The LOGO property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.3" sectionFormat="of"/>) converts to a Media object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.4" sectionFormat="of"/>).  The converted object is set in the "media" property of the Card object.  The Media object's "kind" property is set to "logo".  The LOGO property value converts to the "uri" property of the Media object.  The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <t>The LOGO property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.3" sectionFormat="of"/>) converts to a Media object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.4" sectionFormat="of"/>).  The converted object is set in the "media" property of the Card object.  The "kind" property of the Media object is set to "logo".  The LOGO property value converts to the "uri" property of the Media object.  The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <t>The following example illustrates how to convert the LOGO property:</t>
           <figure anchor="test-vcard-prop-logo">
             <name>LOGO Conversion Example</name>
@@ -1280,7 +1280,7 @@ ORG;SORT-AS="ABC":ABC\, Inc.;North American Division;Marketing
         </section>
         <section anchor="vcard-prop-org-directory">
           <name>ORG-DIRECTORY</name>
-          <t>The ORG-DIRECTORY property (<xref target="RFC6715" derivedContent="RFC6715" section="2.4" sectionFormat="of"/>) converts to a Directory object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.2" sectionFormat="of"/>).  The converted object is set in the "directories" property of the Card object.  The Directory object's "kind" property is set to "directory".  The ORG-DIRECTORY property value converts to the "uri" property of the Directory object.  The INDEX, PREF, and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <t>The ORG-DIRECTORY property (<xref target="RFC6715" derivedContent="RFC6715" section="2.4" sectionFormat="of"/>) converts to a Directory object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.2" sectionFormat="of"/>).  The converted object is set in the "directories" property of the Card object.  The "kind" property of the Directory object is set to "directory".  The ORG-DIRECTORY property value converts to the "uri" property of the Directory object.  The INDEX, PREF, and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <t>The following example illustrates how to convert the ORG-DIRECTORY property:</t>
           <figure anchor="test-vcard-prop-org-directory">
             <name>ORG-DIRECTORY Conversion Example</name>
@@ -1306,7 +1306,7 @@ ORG-DIRECTORY;PREF=1:ldap://ldap.tech.example/o=Tech,ou=Engineering
         </section>
         <section anchor="vcard-prop-photo">
           <name>PHOTO</name>
-          <t>The PHOTO property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.4" sectionFormat="of"/>) converts to a Media object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.4" sectionFormat="of"/>).  The converted object is set in the "media" property of the Card object.  The Media object's "kind" property is set to "photo".  The PHOTO property value converts to the "uri" property of the Media object.  The PREF and MEDIATYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <t>The PHOTO property (<xref target="RFC6350" derivedContent="RFC6350" section="6.2.4" sectionFormat="of"/>) converts to a Media object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.4" sectionFormat="of"/>).  The converted object is set in the "media" property of the Card object.  The "kind" property of the Media object is set to "photo".  The PHOTO property value converts to the "uri" property of the Media object.  The PREF and MEDIATYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <t>The following example illustrates how to convert the PHOTO property:</t>
           <figure anchor="test-vcard-prop-photo">
             <name>PHOTO Conversion Example</name>
@@ -1410,8 +1410,8 @@ REV:19951031T222710Z
         </section>
         <section anchor="vcard-prop-role">
           <name>ROLE</name>
-          <t>The ROLE property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.2" sectionFormat="of"/>) converts to a Title object (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.5" sectionFormat="of"/>).  The converted object is set in the "titles" property of the Card object.  The Title object's "kind" property is set to "role".  The ROLE property value converts to the "name" property of the Title object.</t>
-          <t>If the vCard contains an ORG property and either the ROLE and ORG property are not part of a vCard property group, or they are both in the same group, then the Title object's "organizationId" property is set to the identifier to which the ORG property converts in the Card object's "organizations" property.  The ALTID and LANGUAGE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <t>The ROLE property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.2" sectionFormat="of"/>) converts to a Title object (<xref target="RFC9553" derivedContent="RFC9553" section="2.2.5" sectionFormat="of"/>).  The converted object is set in the "titles" property of the Card object.  The "kind" property of the Title object is set to "role".  The ROLE property value converts to the "name" property of the Title object.</t>
+          <t>If the vCard contains an ORG property and either the ROLE and ORG property are not part of a vCard property group, or they are both in the same group, then the "organizationId" property of the Title object is set to the identifier to which the ORG property converts in the "organizations" property of the Card object.  The ALTID and LANGUAGE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <t>The following example illustrates how to convert the ROLE property:</t>
           <figure anchor="test-vcard-prop-role">
             <name>ROLE Conversion Example</name>
@@ -1458,7 +1458,7 @@ SOCIALPROFILE;SERVICE-TYPE=Mastodon:https://example.com/@foo
         </section>
         <section anchor="vcard-prop-sound">
           <name>SOUND</name>
-          <t>The SOUND property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.5" sectionFormat="of"/>) converts to a Media object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.4" sectionFormat="of"/>).  The converted object is set in the "media" property of the Card object.  The Media object's "kind" property is set to "sound".  The SOUND property value converts to the "uri" property of the Media object.  The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <t>The SOUND property (<xref target="RFC6350" derivedContent="RFC6350" section="6.7.5" sectionFormat="of"/>) converts to a Media object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.4" sectionFormat="of"/>).  The converted object is set in the "media" property of the Card object.  The "kind" property of the Media object is set to "sound".  The SOUND property value converts to the "uri" property of the Media object.  The PREF and TYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <t>The following example illustrates how to convert the SOUND property:</t>
           <figure anchor="test-vcard-prop-sound">
             <name>SOUND Conversion Example</name>
@@ -1478,7 +1478,7 @@ SOUND:CID:JOHNQPUBLIC.19960229T080000.xyzMail@example.com
         </section>
         <section anchor="vcard-prop-source">
           <name>SOURCE</name>
-          <t>The SOURCE property (<xref target="RFC6350" derivedContent="RFC6350" section="6.1.3" sectionFormat="of"/>) converts to a Directory object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.2" sectionFormat="of"/>).  The converted object is set in the "directories" property of the Card object.  The Directory object's "kind" property is set to "entry".  The SOURCE property value converts to the "uri" property of the Directory object.  The PREF and MEDIATYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
+          <t>The SOURCE property (<xref target="RFC6350" derivedContent="RFC6350" section="6.1.3" sectionFormat="of"/>) converts to a Directory object (<xref target="RFC9553" derivedContent="RFC9553" section="2.6.2" sectionFormat="of"/>).  The converted object is set in the "directories" property of the Card object.  The "kind" property of the Directory object is set to "entry".  The SOURCE property value converts to the "uri" property of the Directory object.  The PREF and MEDIATYPE parameters convert according to the rules defined in <xref target="vcard-parameters"/>.</t>
           <t>The following example illustrates how to convert the SOURCE property:</t>
           <figure anchor="test-vcard-prop-source">
             <name>SOURCE Conversion Example</name>
