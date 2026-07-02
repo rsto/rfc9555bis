@@ -1100,11 +1100,11 @@ LOGO:https://www.example.com/pub/logos/abccorp.jpg
         <section anchor="vcard-prop-member">
           <name>MEMBER</name>
           <t>The MEMBER property (<xref target="RFC6350" derivedContent="RFC6350" section="6.6.5" sectionFormat="of"/>) converts to the Card object's "members" property.  Each MEMBER property value is a key in the "members" property.</t>
-          <t><xref target="RFC6350"/> defines the MEMBER property value type to be URI, but UID property values can either be URI or TEXT values. How to convert "member" property values that are no valid URI is implementation-specific. The PREF parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.3" sectionFormat="of"/>) does not convert to JSContact.</t>
-          <t>The path of the MEMBER property in the <xref target="jscontact-prop-vcard" sectionFormat="parens">"convertedProperties" property</xref> is "members/{value}", where "{value}" denotes the MEMBER property value.</t>
-          <t>The following example illustrates how to convert the MEMBER property:</t>
+          <t><xref target="RFC6350"/> defines the MEMBER property value type to be URI only, but <xref target="I-D.ietf-calext-vcard4-bis"/> extends its definition to also allow free-form text. The PREF parameter (<xref target="RFC6350" derivedContent="RFC6350" section="5.3" sectionFormat="of"/>) does not convert to JSContact.</t>
+          <t>Implementations <bcp14>MAY</bcp14> use the <xref target="jscontact-prop-vcard">"vCard" property</xref> to preserve the value type of the MEMBER property. The path of the MEMBER property in the <xref target="jscontact-prop-vcard" sectionFormat="parens">"convertedProperties" property</xref> is "members/{value}", where "{value}" denotes the MEMBER property value.</t>
+          <t>The following examples illustrate how to convert the MEMBER property:</t>
           <figure anchor="test-vcard-prop-member">
-            <name>Group Example</name>
+            <name>Converting the MEMBER Property</name>
             <sourcecode type="vcard"><![CDATA[
 KIND:group
 FN:The Doe family
@@ -1120,6 +1120,27 @@ MEMBER:urn:uuid:b8767877-b4a1-4c70-9acc-505d3819e519
 "members": {
   "urn:uuid:03a0e51f-d1aa-4385-8a53-e29025acd8af": true,
   "urn:uuid:b8767877-b4a1-4c70-9acc-505d3819e519": true
+}
+]]></sourcecode>
+          </figure>
+          <figure anchor="test-vcard-prop-member-text">
+            <name>Converting the MEMBER Property with text value</name>
+            <sourcecode type="vcard"><![CDATA[
+KIND:group
+MEMBER;VALUE=text:AD8B50F23FF244F1@example.com
+]]></sourcecode>
+            <sourcecode type="json"><![CDATA[
+"kind": "group",
+"members": {
+  "AD8B50F23FF244F1@example.com": true
+},
+"vCard": {
+  "convertedProperties": {
+    "members/AD8B50F23FF244F1@example.com": {
+      "name": "member",
+      "valueType": "text"
+    }
+  }
 }
 ]]></sourcecode>
           </figure>
@@ -3703,6 +3724,7 @@ JSPROP;JSPTR="phones/phone1/example.com:foo~1bar":
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9555.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-calext-jscontact-uid.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-calext-jscontact-profiles.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-calext-vcard4-bis.xml"/>
       </references>
       <references>
         <name>Informative References</name>
